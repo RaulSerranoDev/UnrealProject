@@ -3,6 +3,8 @@
 
 #include "Player/GamePlayerController.h"
 
+#include "Interaction/HighlightInterface.h"
+
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
 #include <InputAction.h>
@@ -13,10 +15,17 @@ AGamePlayerController::AGamePlayerController()
 	bReplicates = true;
 }
 
+void AGamePlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
+}
+
 void AGamePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	check(GameContext);	// TODO: Comprobar
+	check(GameContext);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem< UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	check(Subsystem);
@@ -55,4 +64,19 @@ void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 
 	ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 	ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+}
+
+void AGamePlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+
+	LastActor = CurrentActor;
+	CurrentActor = Cast<IHighlightInterface>(CursorHit.GetActor());
+
+	if (LastActor == CurrentActor) return;
+
+	if (LastActor) LastActor->UnHighlightActor();
+	if (CurrentActor) CurrentActor->HighlightActor();
 }

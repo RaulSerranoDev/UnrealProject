@@ -33,7 +33,7 @@ void AGamePlayerController::BeginPlay()
 
 void AGamePlayerController::SetupInputComponent()
 {
-	Super::BeginPlay();
+	Super::SetupInputComponent();
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 

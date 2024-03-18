@@ -4,6 +4,9 @@
 #include "Character/PlayerCharacter.h"
 
 #include <GameFramework/CharacterMovementComponent.h>
+#include <AbilitySystem/GameAbilitySystemComponent.h>
+
+#include "Player/GamePlayerState.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -16,4 +19,27 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InitAbilityActorInfo();
+}
+
+void APlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	InitAbilityActorInfo();
+}
+
+void APlayerCharacter::InitAbilityActorInfo()
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	AbilitySystemComponent = GamePlayerState->GetAbilitySystemComponent();
+	AttributeSet = GamePlayerState->GetAttributeSet();
+	AbilitySystemComponent->InitAbilityActorInfo(GamePlayerState, this);
 }

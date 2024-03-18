@@ -6,9 +6,6 @@
 #include "Character/CharacterBase.h"
 #include "PlayerCharacter.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class AURA_API APlayerCharacter : public ACharacterBase
 {
@@ -16,5 +13,18 @@ class AURA_API APlayerCharacter : public ACharacterBase
 	
 public:
 	APlayerCharacter();
+
+	/**
+	 * Init ability actor info for the server
+	 */
+	virtual void PossessedBy(AController* NewController) override;
+
+	/**
+	 * Init ability actor info for the client
+	 */
+	virtual void OnRep_PlayerState() override;
+
+private:
+	void InitAbilityActorInfo();
 
 };

@@ -3,10 +3,12 @@
 
 #include "Character/PlayerCharacter.h"
 
-#include <GameFramework/CharacterMovementComponent.h>
-#include <AbilitySystem/GameAbilitySystemComponent.h>
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 #include "Player/GamePlayerState.h"
+#include "Player/GamePlayerController.h"
+#include "UI/HUD/GameHUD.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -42,4 +44,12 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = GamePlayerState->GetAbilitySystemComponent();
 	AttributeSet = GamePlayerState->GetAttributeSet();
 	AbilitySystemComponent->InitAbilityActorInfo(GamePlayerState, this);
+
+	if (AGamePlayerController* GamePlayerController = Cast<AGamePlayerController>(GetController()))
+	{
+		if (AGameHUD* GameHUD = Cast<AGameHUD>(GamePlayerController->GetHUD()))
+		{
+			GameHUD->InitOverlay(GamePlayerController, GamePlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }

@@ -30,6 +30,8 @@ void AEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	const UGameAttributeSet* GameAttributeSet = Cast<UGameAttributeSet>(ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(UGameAttributeSet::StaticClass()));
 	UGameAttributeSet* MutableGameAttributeSet = const_cast<UGameAttributeSet*>(GameAttributeSet);
 	MutableGameAttributeSet->SetHealth(GameAttributeSet->GetHealth() + 25.f);
+	MutableGameAttributeSet->SetMana(GameAttributeSet->GetMana() - 25.f);
+
 	Destroy();
 }
 

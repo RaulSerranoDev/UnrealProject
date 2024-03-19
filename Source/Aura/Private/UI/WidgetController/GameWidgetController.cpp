@@ -10,3 +10,7 @@ void UGameWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 	AbilitySystemComponent = WCParams.AbilitySystemComponent;
 	AttributeSet = WCParams.AttributeSet;
 }
+
+void UGameWidgetController::BroadcastInitialValues()
+{
+}

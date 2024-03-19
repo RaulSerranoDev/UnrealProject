@@ -14,3 +14,7 @@ void UGameWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 void UGameWidgetController::BroadcastInitialValues()
 {
 }
+
+void UGameWidgetController::BindCallbacksToDependencies()
+{
+}

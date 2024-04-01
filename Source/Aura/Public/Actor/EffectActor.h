@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "EffectActor.generated.h"
 
 class UGameplayEffect;
@@ -69,4 +70,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
+
+protected:
+	TMap<uint32, FActiveGameplayEffectHandle> ActiveInfiniteEffects;
+
 };

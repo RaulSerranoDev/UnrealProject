@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.H"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayEffectTypes.h"
 
 AEffectActor::AEffectActor()
 {

@@ -4,8 +4,8 @@
 #include "Character/PlayerCharacter.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
-#include "AbilitySystem/GameAbilitySystemComponent.h"
 
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Player/GamePlayerState.h"
 #include "Player/GamePlayerController.h"
 #include "UI/HUD/GameHUD.h"
@@ -44,6 +44,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = GamePlayerState->GetAbilitySystemComponent();
 	AttributeSet = GamePlayerState->GetAttributeSet();
 	AbilitySystemComponent->InitAbilityActorInfo(GamePlayerState, this);
+	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	if (AGamePlayerController* GamePlayerController = Cast<AGamePlayerController>(GetController()))
 	{

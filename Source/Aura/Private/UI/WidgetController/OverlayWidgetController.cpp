@@ -20,17 +20,10 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	const UGameAttributeSet* GameAttributeSet = CastChecked<UGameAttributeSet>(AttributeSet);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		GameAttributeSet->GetHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
-
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		GameAttributeSet->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
-
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		GameAttributeSet->GetManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
-
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		GameAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+	BindToAttributeValueChangeDelegate(GameAttributeSet->GetHealthAttribute(), &OnHealthChanged);
+	BindToAttributeValueChangeDelegate(GameAttributeSet->GetMaxHealthAttribute(), &OnMaxHealthChanged);
+	BindToAttributeValueChangeDelegate(GameAttributeSet->GetManaAttribute(), &OnManaChanged);
+	BindToAttributeValueChangeDelegate(GameAttributeSet->GetMaxManaAttribute(), &OnMaxManaChanged);
 
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
@@ -50,22 +43,13 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	);
 }
 
-void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
+void UOverlayWidgetController::BindToAttributeValueChangeDelegate(const FGameplayAttribute& Attribute, FOnValueChangedSignature* AttributeChangeDelegate)
 {
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		Attribute).AddLambda(
+			[AttributeChangeDelegate](const FOnAttributeChangeData& Data)
+			{
+				AttributeChangeDelegate->Broadcast(Data.NewValue);
+			}
+	);
 }

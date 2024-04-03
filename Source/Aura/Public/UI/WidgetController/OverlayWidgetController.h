@@ -9,6 +9,7 @@
 
 struct FOnAttributeChangeData;
 class UGameUserWidget;
+struct FGameplayAttribute;
 
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
@@ -40,6 +41,7 @@ class AURA_API UOverlayWidgetController : public UGameWidgetController
 	GENERATED_BODY()
 
 public:
+
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
@@ -59,15 +61,11 @@ public:
 	FMessageWidgetRowSignature MessageWidgetRow;
 
 protected:
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data) const;
-	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
-protected:
+	void BindToAttributeValueChangeDelegate(const FGameplayAttribute& Attribute, FOnValueChangedSignature* AttributeChangeDelegate);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;

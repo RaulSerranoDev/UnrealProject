@@ -53,4 +53,6 @@ void APlayerCharacter::InitAbilityActorInfo()
 			GameHUD->InitOverlay(GamePlayerController, GamePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+
+	InitializePrimaryAttributes();
 }

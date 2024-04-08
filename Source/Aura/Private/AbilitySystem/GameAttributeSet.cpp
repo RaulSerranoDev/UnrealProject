@@ -10,7 +10,7 @@
 
 UGameAttributeSet::UGameAttributeSet()
 {
-	InitHealth(50.f);
+	InitHealth(10.f);
 	InitMaxHealth(100.f);
 	InitMana(25.f);
 	InitMaxMana(50.f);
@@ -35,28 +35,28 @@ void UGameAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribu
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 
-	if (Attribute == GetHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue, 0, GetMaxHealth());
-	}
-	if (Attribute == GetManaAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue, 0, GetMaxMana());
-	}
+	//if (Attribute == GetHealthAttribute())
+	//{
+	//	NewValue = FMath::Clamp(NewValue, 0, GetMaxHealth());
+	//}
+	//if (Attribute == GetManaAttribute())
+	//{
+	//	NewValue = FMath::Clamp(NewValue, 0, GetMaxMana());
+	//}
 }
 
 void UGameAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	if (Attribute == GetMaxHealthAttribute())
+	/*if (Attribute == GetMaxHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, NewValue));
 	}
 	if (Attribute == GetMaxManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, NewValue));
-	}
+	}*/
 }
 
 void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

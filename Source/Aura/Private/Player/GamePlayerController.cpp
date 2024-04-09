@@ -75,7 +75,7 @@ void AGamePlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = CurrentActor;
-	CurrentActor = Cast<IHighlightInterface>(CursorHit.GetActor());
+	CurrentActor = CursorHit.GetActor();
 
 	if (LastActor == CurrentActor) return;
 

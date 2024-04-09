@@ -12,13 +12,13 @@ struct FInputActionValue;
 class IHighlightInterface;
 
 /**
- * 
+ *
  */
 UCLASS()
 class AURA_API AGamePlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
 public:
 	AGamePlayerController();
 
@@ -39,6 +39,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	IHighlightInterface* LastActor;
-	IHighlightInterface* CurrentActor;
+	TScriptInterface<IHighlightInterface> LastActor;
+	TScriptInterface<IHighlightInterface> CurrentActor;
 };

@@ -2,19 +2,18 @@
 
 
 #include "UI/HUD/GameHUD.h"
-
 #include "UI/Widget/GameUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 
 UOverlayWidgetController* AGameHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if (!OverlayWidgetController)
-	{
-		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
-		OverlayWidgetController->SetWidgetControllerParams(WCParams);
-		OverlayWidgetController->BindCallbacksToDependencies();
-	}
-	return OverlayWidgetController;
+	return CreateOrGetWidgetController<UOverlayWidgetController>(OverlayWidgetController, OverlayWidgetControllerClass, WCParams);
+}
+
+UAttributeMenuWidgetController* AGameHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	return CreateOrGetWidgetController<UAttributeMenuWidgetController>(AttributeMenuWidgetController, AttributeMenuWidgetControllerClass, WCParams);
 }
 
 void AGameHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)

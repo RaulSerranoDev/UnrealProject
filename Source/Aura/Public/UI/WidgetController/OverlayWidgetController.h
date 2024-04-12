@@ -41,7 +41,6 @@ class AURA_API UOverlayWidgetController : public UGameWidgetController
 	GENERATED_BODY()
 
 public:
-
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
@@ -61,7 +60,6 @@ public:
 	FMessageWidgetRowSignature MessageWidgetRow;
 
 protected:
-
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
@@ -69,7 +67,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
-
 };
 
 template<typename T>

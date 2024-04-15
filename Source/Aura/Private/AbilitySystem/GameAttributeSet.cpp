@@ -7,11 +7,28 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameGameplayTags.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
-	InitHealth(10.f);
-	InitMana(10.f);
+	TagsToAttributes.Add(TAG_Attributes_Primary_Strength, GetStrengthAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Primary_Intelligence, GetIntelligenceAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Primary_Resilience, GetResilienceAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Primary_Vigor, GetVigorAttribute());
+
+	TagsToAttributes.Add(TAG_Attributes_Secondary_Armor, GetArmorAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_ArmorPenetration, GetArmorPenetrationAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_BlockChance, GetBlockChanceAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_HealthRegeneration, GetHealthRegenerationAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_ManaRegeneration, GetManaRegenerationAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_MaxHealth, GetMaxHealthAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Secondary_MaxMana, GetMaxManaAttribute());
+
+	TagsToAttributes.Add(TAG_Attributes_Vital_Health, GetHealthAttribute());
+	TagsToAttributes.Add(TAG_Attributes_Vital_Mana, GetManaAttribute());
 }
 
 void UGameAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

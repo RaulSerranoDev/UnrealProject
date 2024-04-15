@@ -3,7 +3,6 @@
 
 #include "Input/InputConfig.h"
 
-// TODO: Si surgen errores mirar comentario seccion 99
 const UInputAction* UInputConfig::FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
 {
 	if (AbilityInputActions.Contains(InputTag))

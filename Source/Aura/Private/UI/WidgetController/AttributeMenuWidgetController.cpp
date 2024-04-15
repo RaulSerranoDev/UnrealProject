@@ -4,7 +4,6 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
-#include "GameGameplayTags.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {

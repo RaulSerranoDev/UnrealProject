@@ -11,11 +11,13 @@
 
 UGameAttributeSet::UGameAttributeSet()
 {
+	/* Primary Attributes */
 	TagsToAttributes.Add(TAG_Attributes_Primary_Strength, GetStrengthAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Primary_Intelligence, GetIntelligenceAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Primary_Resilience, GetResilienceAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Primary_Vigor, GetVigorAttribute());
 
+	/* Secondary Attributes */
 	TagsToAttributes.Add(TAG_Attributes_Secondary_Armor, GetArmorAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Secondary_ArmorPenetration, GetArmorPenetrationAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Secondary_BlockChance, GetBlockChanceAttribute());
@@ -27,6 +29,7 @@ UGameAttributeSet::UGameAttributeSet()
 	TagsToAttributes.Add(TAG_Attributes_Secondary_MaxHealth, GetMaxHealthAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Secondary_MaxMana, GetMaxManaAttribute());
 
+	/* Vital Attributes */
 	TagsToAttributes.Add(TAG_Attributes_Vital_Health, GetHealthAttribute());
 	TagsToAttributes.Add(TAG_Attributes_Vital_Mana, GetManaAttribute());
 }

@@ -14,6 +14,7 @@ class IHighlightInterface;
 class UInputConfig;
 struct FInputActionInstance;
 class UGameAbilitySystemComponent;
+class USplineComponent;
 
 /**
  *
@@ -52,9 +53,21 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputConfig> InputConfig;
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
+
 	TObjectPtr<UGameAbilitySystemComponent> GameAbilitySystemComponent;
 
 	TScriptInterface<IHighlightInterface> LastActor;
 	TScriptInterface<IHighlightInterface> CurrentActor;
+
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
+
 };

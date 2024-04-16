@@ -5,6 +5,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/SplineComponent.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
@@ -94,18 +96,36 @@ void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Valu
 
 void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (!GetASC()) return;
-	GetASC()->AbilityInputTagReleased(InputTag);
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
+	{
+		if (!GetASC()) return;
+		GetASC()->AbilityInputTagReleased(InputTag);
+	}
+	else
+	{
+		APawn* ControlledPawn = GetPawn();
+		if (FollowTime < ShortPressThreshold && ControlledPawn)
+		{
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+			{
+				Spline->ClearSplinePoints();
+				for (const FVector& Point : NavPath->PathPoints)
+				{
+					Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
+					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
+				}
+				bAutoRunning = true;
+			}
+		}
+
+		FollowTime = 0.f;
+		bTargeting = false;
+	}
 }
 
 void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
 {
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB))
-	{
-		if (!GetASC()) return;
-		GetASC()->AbilityInputTagHeld(InputTag);
-	}
-	else if (bTargeting)
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
 	{
 		if (!GetASC()) return;
 		GetASC()->AbilityInputTagHeld(InputTag);

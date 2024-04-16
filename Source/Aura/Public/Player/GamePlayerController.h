@@ -13,6 +13,7 @@ struct FInputActionValue;
 class IHighlightInterface;
 class UInputConfig;
 struct FInputActionInstance;
+class UGameAbilitySystemComponent;
 
 /**
  *
@@ -39,6 +40,8 @@ private:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag);
 
+	UGameAbilitySystemComponent* GetASC();
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> GameContext;
@@ -48,6 +51,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UGameAbilitySystemComponent> GameAbilitySystemComponent;
 
 	TScriptInterface<IHighlightInterface> LastActor;
 	TScriptInterface<IHighlightInterface> CurrentActor;

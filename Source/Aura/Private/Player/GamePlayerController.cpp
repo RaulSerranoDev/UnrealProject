@@ -3,8 +3,10 @@
 
 #include "Player/GamePlayerController.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -81,15 +83,26 @@ void AGamePlayerController::CursorTrace()
 
 void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
 }
 
 void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *InputTag.ToString());
+	if (!GetASC()) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *InputTag.ToString());
+	if (!GetASC()) return;
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+UGameAbilitySystemComponent* AGamePlayerController::GetASC()
+{
+	if (!GameAbilitySystemComponent)
+	{
+		GameAbilitySystemComponent = Cast<UGameAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return GameAbilitySystemComponent;
 }

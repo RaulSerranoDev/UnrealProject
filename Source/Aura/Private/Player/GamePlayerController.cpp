@@ -120,7 +120,7 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
 	{
-		if (!GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 	}
 	else
 	{
@@ -151,7 +151,7 @@ void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Inst
 {
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
 	{
-		if (!GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{

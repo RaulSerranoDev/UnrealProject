@@ -79,7 +79,6 @@ void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AGamePlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
@@ -121,12 +120,11 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
 	{
-		if (!GetASC()) return;
-		GetASC()->AbilityInputTagReleased(InputTag);
+		if (!GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 	}
 	else
 	{
-		APawn* ControlledPawn = GetPawn();
+		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime < ShortPressThreshold && ControlledPawn)
 		{
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
@@ -135,7 +133,6 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for (const FVector& Point : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
 				}
 				if (!NavPath->PathPoints.IsEmpty())
 				{
@@ -154,18 +151,14 @@ void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Inst
 {
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
 	{
-		if (!GetASC()) return;
-		GetASC()->AbilityInputTagHeld(InputTag);
+		if (!GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
 
 		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Selection, false, Hit))
-		{
-			CachedDestination = Hit.ImpactPoint;
-		}
+		if (GetHitResultUnderCursor(ECC_Selection, false, Hit) && Hit.bBlockingHit)	CachedDestination = Hit.ImpactPoint;
 
 		if (APawn* ControlledPawn = GetPawn())
 		{

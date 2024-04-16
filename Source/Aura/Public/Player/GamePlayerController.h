@@ -64,6 +64,7 @@ private:
 
 	TScriptInterface<IHighlightInterface> LastActor;
 	TScriptInterface<IHighlightInterface> CurrentActor;
+	FHitResult CursorHit;
 
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
-#include "Input/InputConfig.h"
+#include "InputConfig.h"
 #include "GameInputComponent.generated.h"
 
 /**
@@ -28,23 +28,20 @@ inline void UGameInputComponent::BindAbilityActions(const UInputConfig* InputCon
 
 	for (auto& Pair : InputConfig->AbilityInputActions)
 	{
-		FGameplayTag& Tag = Pair.Key;
-		UInputAction& Action = Pair.Value;
-
-		if (!Tag.IsValid() || !Action)
+		if (!Pair.Key.IsValid() || !Pair.Value)
 			continue;
 
 		if (PressedFunc)
 		{
-			BindAction(Action, ETriggerEvent::Started, Object, PressedFunc, Tag);
+			BindAction(Pair.Value, ETriggerEvent::Started, Object, PressedFunc, Pair.Key);
 		}
 		if (ReleasedFunc)
 		{
-			BindAction(Action, ETriggerEvent::Canceled, Object, ReleasedFunc, Tag);
+			BindAction(Pair.Value, ETriggerEvent::Completed, Object, ReleasedFunc, Pair.Key);
 		}
 		if (HeldFunc)
 		{
-			BindAction(Action, ETriggerEvent::Triggered, Object, HeldFunc, Tag);
+			BindAction(Pair.Value, ETriggerEvent::Triggered, Object, HeldFunc, Pair.Key);
 		}
 	}
 }

@@ -2,13 +2,9 @@
 
 
 #include "Player/GamePlayerController.h"
-
+#include "EnhancedInputSubsystems.h"
+#include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
-
-#include <EnhancedInputSubsystems.h>
-#include <EnhancedInputComponent.h>
-#include <InputAction.h>
-#include <InputActionValue.h>
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -46,9 +42,9 @@ void AGamePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGamePlayerController::Move);
+	UGameInputComponent* GameInputComponent = CastChecked<UGameInputComponent>(InputComponent);
+	GameInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	GameInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -81,4 +77,19 @@ void AGamePlayerController::CursorTrace()
 
 	if (LastActor) LastActor->UnHighlightActor();
 	if (CurrentActor) CurrentActor->HighlightActor();
+}
+
+void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *InputTag.ToString());
+}
+
+void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *InputTag.ToString());
 }

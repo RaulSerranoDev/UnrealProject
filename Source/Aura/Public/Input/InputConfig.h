@@ -9,8 +9,6 @@
 
 class UInputAction;
 
-// TODO: Si surgen errores mirar comentario seccion 99
-
 /**
  *
  */
@@ -21,6 +19,10 @@ class AURA_API UInputConfig : public UDataAsset
 
 public:
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = false) const;
+
+#if WITH_EDITOR
+	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
+#endif	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "{AttributeName}"))
 	TMap<FGameplayTag, UInputAction*> AbilityInputActions;

@@ -11,6 +11,9 @@
 #include "Interaction/HighlightInterface.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "GameGameplayTags.h"
+#include "Interaction/SelectableInterface.h"
+
+#define ECC_Selection ECC_GameTraceChannel1
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -24,6 +27,7 @@ void AGamePlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
+	AutoRun();
 }
 
 void AGamePlayerController::BeginPlay()
@@ -68,6 +72,7 @@ void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
+	bAutoRunning = false;
 	ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 	ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 }
@@ -85,6 +90,24 @@ void AGamePlayerController::CursorTrace()
 
 	if (LastActor) LastActor->UnHighlightActor();
 	if (CurrentActor) CurrentActor->HighlightActor();
+}
+
+void AGamePlayerController::AutoRun()
+{
+	if (!bAutoRunning) return;
+
+	if (APawn* ControlledPawn = GetPawn<APawn>())
+	{
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
 }
 
 void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
@@ -114,7 +137,11 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
 				}
-				bAutoRunning = true;
+				if (!NavPath->PathPoints.IsEmpty())
+				{
+					CachedDestination = NavPath->PathPoints.Last();
+					bAutoRunning = true;
+				}
 			}
 		}
 
@@ -135,7 +162,7 @@ void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Inst
 		FollowTime += GetWorld()->GetDeltaSeconds();
 
 		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		if (GetHitResultUnderCursor(ECC_Selection, false, Hit))
 		{
 			CachedDestination = Hit.ImpactPoint;
 		}

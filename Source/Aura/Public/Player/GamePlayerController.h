@@ -36,6 +36,7 @@ protected:
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void CursorTrace();
+	void AutoRun();
 
 	void AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);

@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
 
+#include "Player/GamePlayerController.h"
+
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
 {
 	UTargetDataUnderMouse* MyObj = NewAbilityTask< UTargetDataUnderMouse>(OwningAbility);
@@ -13,8 +15,6 @@ void UTargetDataUnderMouse::Activate()
 {
 	Super::Activate();
 
-	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
-	FHitResult CursorHit;
-	PC->GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
-	ValidData.Broadcast(CursorHit.Location);
+	AGamePlayerController* PC = Cast<AGamePlayerController>(Ability->GetCurrentActorInfo()->PlayerController);
+	ValidData.Broadcast(PC->GetCursorHit().Location);
 }

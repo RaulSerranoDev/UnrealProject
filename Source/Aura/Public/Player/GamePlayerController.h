@@ -28,6 +28,7 @@ public:
 	AGamePlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+	inline FHitResult GetCursorHit() const { return CursorHit; };
 
 protected:
 	virtual void BeginPlay() override;

@@ -34,7 +34,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-protected:
 	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 

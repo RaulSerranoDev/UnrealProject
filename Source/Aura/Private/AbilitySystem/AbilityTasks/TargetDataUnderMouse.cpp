@@ -2,7 +2,7 @@
 
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
-
+#include "AbilitySystemComponent.h"
 #include "Player/GamePlayerController.h"
 
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
@@ -15,6 +15,37 @@ void UTargetDataUnderMouse::Activate()
 {
 	Super::Activate();
 
+	const bool bIsLocallyControlled = Ability->GetCurrentActorInfo()->IsLocallyControlled();
+	if (bIsLocallyControlled)
+	{
+		SendMouseCursorData();
+	}
+	else
+	{
+		// TODO: We are on the server, so listen for target data
+	}
+}
+
+void UTargetDataUnderMouse::SendMouseCursorData()
+{
+	FScopedPredictionWindow ScopedPrediction(AbilitySystemComponent.Get());
+
 	AGamePlayerController* PC = Cast<AGamePlayerController>(Ability->GetCurrentActorInfo()->PlayerController);
-	ValidData.Broadcast(PC->GetCursorHit().Location);
+
+	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
+	Data->HitResult = PC->GetCursorHit();
+	FGameplayAbilityTargetDataHandle DataHandle;
+	DataHandle.Add(Data);
+
+	AbilitySystemComponent->ServerSetReplicatedTargetData(
+		GetAbilitySpecHandle(),
+		GetActivationPredictionKey(),
+		DataHandle,
+		FGameplayTag(),
+		AbilitySystemComponent->ScopedPredictionKey);
+
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
 }

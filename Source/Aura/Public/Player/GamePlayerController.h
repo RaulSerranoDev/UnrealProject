@@ -35,9 +35,12 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
-	void Move(const FInputActionValue& InputActionValue);
 	void CursorTrace();
 	void AutoRun();
+
+	void Move(const FInputActionValue& InputActionValue);
+	void ShiftPressed() { bShiftKeyDown = true; };
+	void ShiftReleased() { bShiftKeyDown = false; };
 
 	void AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -51,6 +54,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputConfig> InputConfig;
@@ -73,4 +79,5 @@ private:
 	bool bAutoRunning = false;
 	bool bTargeting = false;
 
+	bool bShiftKeyDown = false;
 };

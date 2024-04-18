@@ -56,25 +56,9 @@ void AGamePlayerController::SetupInputComponent()
 
 	UGameInputComponent* GameInputComponent = CastChecked<UGameInputComponent>(InputComponent);
 	GameInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	GameInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &ThisClass::ShiftPressed);
+	GameInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &ThisClass::ShiftReleased);
 	GameInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-}
-
-void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
-{
-	APawn* ControlledPawn = GetPawn<APawn>();
-	if (!ControlledPawn)
-		return;
-
-	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
-	const FRotator Rotation = GetControlRotation();
-	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-	bAutoRunning = false;
-	ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
-	ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 }
 
 void AGamePlayerController::CursorTrace()
@@ -109,6 +93,24 @@ void AGamePlayerController::AutoRun()
 	}
 }
 
+void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
+{
+	APawn* ControlledPawn = GetPawn<APawn>();
+	if (!ControlledPawn)
+		return;
+
+	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
+	const FRotator Rotation = GetControlRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	bAutoRunning = false;
+	ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+	ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+}
+
 void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB)) return;
@@ -118,38 +120,35 @@ void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Valu
 
 void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown) return;
+
+	const APawn* ControlledPawn = GetPawn();
+	if (FollowTime < ShortPressThreshold && ControlledPawn)
 	{
-		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
-	}
-	else
-	{
-		const APawn* ControlledPawn = GetPawn();
-		if (FollowTime < ShortPressThreshold && ControlledPawn)
+		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 		{
-			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+			Spline->ClearSplinePoints();
+			for (const FVector& Point : NavPath->PathPoints)
 			{
-				Spline->ClearSplinePoints();
-				for (const FVector& Point : NavPath->PathPoints)
-				{
-					Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
-				}
-				if (!NavPath->PathPoints.IsEmpty())
-				{
-					CachedDestination = NavPath->PathPoints.Last();
-					bAutoRunning = true;
-				}
+				Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
+			}
+			if (!NavPath->PathPoints.IsEmpty())
+			{
+				CachedDestination = NavPath->PathPoints.Last();
+				bAutoRunning = true;
 			}
 		}
-
-		FollowTime = 0.f;
-		bTargeting = false;
 	}
+
+	FollowTime = 0.f;
+	bTargeting = false;
 }
 
 void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
 {
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting)
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown)
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}

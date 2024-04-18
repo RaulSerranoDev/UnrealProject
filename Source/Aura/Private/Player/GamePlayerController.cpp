@@ -2,18 +2,19 @@
 
 
 #include "Player/GamePlayerController.h"
+
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/SplineComponent.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
+
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "GameGameplayTags.h"
 #include "Interaction/SelectableInterface.h"
-
-#define ECC_Selection ECC_GameTraceChannel1
+#include "Aura/Aura.h"
 
 AGamePlayerController::AGamePlayerController()
 {

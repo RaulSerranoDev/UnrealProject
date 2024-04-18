@@ -32,7 +32,7 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 		ProjectileClass,
 		SpawnTransform,
 		GetOwningActorFromActorInfo(),
-		Cast<APawn>(GetOwningActorFromActorInfo()),
+		Cast<APawn>(GetAvatarActorFromActorInfo()),
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	// TODO: Give the Projectile a Gameplay Effect Spec for causing Damage

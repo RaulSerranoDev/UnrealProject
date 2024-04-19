@@ -3,6 +3,9 @@
 
 #include "AbilitySystem/Abilities/ProjectileSpell.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+
 #include "Actor/Projectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -20,8 +23,10 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	if (!CombatInterface) return;
 
+	APawn* Pawn = Cast<APawn>(GetAvatarActorFromActorInfo());
+
 	const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
-	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+	FRotator Rotation = (ProjectileTargetLocation - Pawn->GetActorLocation()).Rotation();
 	Rotation.Pitch = 0.f;
 
 	FTransform SpawnTransform;
@@ -32,10 +37,13 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 		ProjectileClass,
 		SpawnTransform,
 		GetOwningActorFromActorInfo(),
-		Cast<APawn>(GetAvatarActorFromActorInfo()),
+		Pawn,
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-	// TODO: Give the Projectile a Gameplay Effect Spec for causing Damage
+	const UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
+
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+	Projectile->DamageEffectSpecHandle = SpecHandle;
 
 	Projectile->FinishSpawning(SpawnTransform);
 }

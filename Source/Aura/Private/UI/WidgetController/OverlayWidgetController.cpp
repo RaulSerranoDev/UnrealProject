@@ -20,10 +20,10 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	const UGameAttributeSet* GameAttributeSet = CastChecked<UGameAttributeSet>(AttributeSet);
 
-	BindToAttributeValueChangeDelegate(GameAttributeSet->GetHealthAttribute(), &OnHealthChanged);
-	BindToAttributeValueChangeDelegate(GameAttributeSet->GetMaxHealthAttribute(), &OnMaxHealthChanged);
-	BindToAttributeValueChangeDelegate(GameAttributeSet->GetManaAttribute(), &OnManaChanged);
-	BindToAttributeValueChangeDelegate(GameAttributeSet->GetMaxManaAttribute(), &OnMaxManaChanged);
+	UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, GameAttributeSet->GetHealthAttribute(), &OnHealthChanged);
+	UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, GameAttributeSet->GetMaxHealthAttribute(), &OnMaxHealthChanged);
+	UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, GameAttributeSet->GetManaAttribute(), &OnManaChanged);
+	UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, GameAttributeSet->GetMaxManaAttribute(), &OnMaxManaChanged);
 
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
@@ -40,16 +40,5 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 				}
 			}
 		}
-	);
-}
-
-void UOverlayWidgetController::BindToAttributeValueChangeDelegate(const FGameplayAttribute& Attribute, FOnValueChangedSignature* AttributeChangeDelegate)
-{
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		Attribute).AddLambda(
-			[AttributeChangeDelegate](const FOnAttributeChangeData& Data)
-			{
-				AttributeChangeDelegate->Broadcast(Data.NewValue);
-			}
 	);
 }

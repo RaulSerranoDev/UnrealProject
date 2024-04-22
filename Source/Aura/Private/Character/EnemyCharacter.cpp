@@ -2,9 +2,11 @@
 
 
 #include "Character/EnemyCharacter.h"
+#include "Components/WidgetComponent.h"
 #include "Aura/Aura.h"
-#include <AbilitySystem/GameAbilitySystemComponent.h>
-#include <AbilitySystem/GameAttributeSet.h>
+#include "AbilitySystem/GameAbilitySystemComponent.h"
+#include "AbilitySystem/GameAttributeSet.h"
+#include "UI/Widget/GameUserWidget.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -17,6 +19,9 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	AttributeSet = CreateDefaultSubobject<UGameAttributeSet>("AttributeSet");
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(GetRootComponent());
 }
 
 void AEnemyCharacter::HighlightActor()
@@ -39,7 +44,9 @@ int32 AEnemyCharacter::GetPlayerLevel()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 	InitAbilityActorInfo();
+	SetupHealthBar();
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
@@ -48,4 +55,21 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AEnemyCharacter::SetupHealthBar()
+{
+	if (UGameUserWidget* UserWidget = Cast<UGameUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		UserWidget->SetWidgetController(this);
+	}
+
+	if (const UGameAttributeSet* AS = Cast<UGameAttributeSet>(AttributeSet))
+	{
+		UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, AS->GetHealthAttribute(), &OnHealthChanged);
+		UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, AS->GetMaxHealthAttribute(), &OnMaxHealthChanged);
+
+		OnHealthChanged.Broadcast(AS->GetHealth());
+		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
+	}
 }

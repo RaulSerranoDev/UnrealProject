@@ -7,6 +7,7 @@
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "UI/Widget/GameUserWidget.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -55,6 +56,11 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AEnemyCharacter::InitializeDefaultAttributes() const
+{
+	UGameAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
 void AEnemyCharacter::SetupHealthBar()

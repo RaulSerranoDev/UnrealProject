@@ -32,6 +32,8 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputTag_2);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputTag_3);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputTag_4);
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damage);
+
 //#include "CoreMinimal.h"
 //#include "GameplayTagContainer.h"
 

@@ -8,6 +8,7 @@
 
 #include "Actor/Projectile.h"
 #include "Interaction/CombatInterface.h"
+#include "GameGameplayTags.h"
 
 void UProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -44,6 +45,7 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 	Projectile->DamageEffectSpecHandle = SpecHandle;
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Damage, 50.f);
 
 	Projectile->FinishSpawning(SpawnTransform);
 }

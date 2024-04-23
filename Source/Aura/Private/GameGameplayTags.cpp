@@ -131,6 +131,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_4,
 	"Input Tag for 4 key"
 )
 
+/*
+*  Meta Tags
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage,
+	"Damage",
+	"Damage"
+)
+
 //FGameGameplayTags FGameGameplayTags::GameplayTags;
 //
 //void FGameGameplayTags::InitalizeNativeGameplayTags()

@@ -42,10 +42,11 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	const UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
-
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
-	Projectile->DamageEffectSpecHandle = SpecHandle;
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Damage, 50.f);
 
+	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Damage, ScaledDamage);
+
+	Projectile->DamageEffectSpecHandle = SpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);
 }

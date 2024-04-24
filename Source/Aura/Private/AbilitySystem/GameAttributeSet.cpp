@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameGameplayTags.h"
+#include "Interaction/CombatInterface.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
@@ -88,7 +89,15 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0;
-			if (!bFatal)
+			if (bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast< ICombatInterface>(Props.TargetAvatarActor);
+				if (!CombatInterface)
+					return;
+
+				CombatInterface->Die();
+			}
+			else
 			{
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(TAG_Effects_HitReact);

@@ -44,6 +44,20 @@ int32 AEnemyCharacter::GetPlayerLevel()
 	return Level;
 }
 
+void AEnemyCharacter::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
+void AEnemyCharacter::MulticastHandleDeath_Implementation()
+{
+	Super::MulticastHandleDeath_Implementation();
+
+	FDetachmentTransformRules DetachmentTransformRules = FDetachmentTransformRules::KeepWorldTransform;
+	HealthBar->DetachFromComponent(DetachmentTransformRules);
+}
+
 void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;

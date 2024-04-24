@@ -140,6 +140,16 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage,
 	"Damage"
 )
 
+/*
+*  Effects
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Effects_HitReact,
+	"Effects.HitReact",
+	"Tag granted when Hit Reacting"
+)
+
+
 //FGameGameplayTags FGameGameplayTags::GameplayTags;
 //
 //void FGameGameplayTags::InitalizeNativeGameplayTags()

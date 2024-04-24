@@ -3,11 +3,13 @@
 
 #include "Character/EnemyCharacter.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Aura/Aura.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "UI/Widget/GameUserWidget.h"
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
+#include "GameGameplayTags.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -42,12 +44,20 @@ int32 AEnemyCharacter::GetPlayerLevel()
 	return Level;
 }
 
+void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 	InitAbilityActorInfo();
-	SetupHealthBar();
+
+	InitHitReact();
+	InitHealthBarWidget();
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
@@ -63,7 +73,17 @@ void AEnemyCharacter::InitializeDefaultAttributes() const
 	UGameAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
-void AEnemyCharacter::SetupHealthBar()
+void AEnemyCharacter::InitHitReact()
+{
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(TAG_Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this,
+		&ThisClass::HitReactTagChanged
+	);
+}
+
+void AEnemyCharacter::InitHealthBarWidget()
 {
 	if (UGameUserWidget* UserWidget = Cast<UGameUserWidget>(HealthBar->GetUserWidgetObject()))
 	{

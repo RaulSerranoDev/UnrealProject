@@ -34,6 +34,9 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputTag_4);
 
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damage);
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Effects_HitReact);
+
+
 //#include "CoreMinimal.h"
 //#include "GameplayTagContainer.h"
 

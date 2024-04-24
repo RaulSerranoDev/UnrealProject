@@ -10,6 +10,7 @@
 #include "EnemyCharacter.generated.h"
 
 class UWidgetComponent;
+struct FGameplayTag;
 
 /**
  *
@@ -31,11 +32,7 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	/** end Combat Interface */
 
-	UPROPERTY(BlueprintAssignable)
-	FOnAttributeChangedSignature OnHealthChanged;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnAttributeChangedSignature OnMaxHealthChanged;
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,7 +41,21 @@ protected:
 	virtual void InitializeDefaultAttributes() const override;
 
 private:
-	void SetupHealthBar();
+	void InitHitReact();
+	void InitHealthBarWidget();
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 250.f;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")

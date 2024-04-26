@@ -15,7 +15,6 @@ float UMMC_Base::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec
 	// Gather tags from source and target
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
-
 	FAggregatorEvaluateParameters EvalParams;
 	EvalParams.SourceTags = SourceTags;
 	EvalParams.TargetTags = TargetTags;

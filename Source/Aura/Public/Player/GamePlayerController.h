@@ -15,6 +15,7 @@ class UInputConfig;
 struct FInputActionInstance;
 class UGameAbilitySystemComponent;
 class USplineComponent;
+class UDamageTextComponent;
 
 /**
  *
@@ -28,7 +29,11 @@ public:
 	AGamePlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+
 	inline FHitResult GetCursorHit() const { return CursorHit; };
+
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
 
 protected:
 	virtual void BeginPlay() override;
@@ -63,6 +68,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;

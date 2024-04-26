@@ -7,8 +7,10 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
+
 #include "GameGameplayTags.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/GamePlayerController.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
@@ -91,11 +93,10 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			const bool bFatal = NewHealth <= 0;
 			if (bFatal)
 			{
-				ICombatInterface* CombatInterface = Cast< ICombatInterface>(Props.TargetAvatarActor);
-				if (!CombatInterface)
-					return;
-
-				CombatInterface->Die();
+				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+				{
+					CombatInterface->Die();
+				}
 			}
 			else
 			{
@@ -103,6 +104,8 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				TagContainer.AddTag(TAG_Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+
+			ShowFloatingText(Props, LocalIncomingDamage);
 		}
 	}
 }
@@ -137,6 +140,16 @@ void UGameAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
 		Props.TargetASC = &Data.Target;
+	}
+}
+
+void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	if (Props.SourceCharacter == Props.TargetCharacter) return;
+
+	if (AGamePlayerController* PC = Cast<AGamePlayerController>(Props.SourceController))
+	{
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 	}
 }
 

@@ -8,6 +8,7 @@
 #include "Components/SplineComponent.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
+#include "GameFramework/Character.h"
 
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
@@ -15,6 +16,7 @@
 #include "GameGameplayTags.h"
 #include "Interaction/SelectableInterface.h"
 #include "Aura/Aura.h"
+#include "UI/Widget/DamageTextComponent.h"
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -29,6 +31,17 @@ void AGamePlayerController::PlayerTick(float DeltaTime)
 
 	CursorTrace();
 	AutoRun();
+}
+
+void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+{
+	if (!IsValid(TargetCharacter) || !DamageTextComponentClass) return;
+
+	UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
+	DamageText->RegisterComponent();
+	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	DamageText->SetDamageText(DamageAmount);
 }
 
 void AGamePlayerController::BeginPlay()

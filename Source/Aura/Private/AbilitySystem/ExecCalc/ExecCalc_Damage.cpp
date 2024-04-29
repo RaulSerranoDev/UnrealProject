@@ -135,10 +135,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// Critical Hit Resistance reduces Critical Hit Chance by a certain percentage
 	float EffectiveCriticalHitChance = FMath::Max<float>(SourceCriticalHitChance - TargetCriticalHitResistance * CriticalHitResistanceCoefficient, 0.f);
-	const bool bCrit = bCritErrorTolerance ? FMath::RandRange(1, 100) <= EffectiveCriticalHitChance : FMath::FRandRange(UE_SMALL_NUMBER, 100.0f) <= EffectiveCriticalHitChance;
+	const bool bCriticalHit = bCritErrorTolerance ? FMath::RandRange(1, 100) <= EffectiveCriticalHitChance : FMath::FRandRange(UE_SMALL_NUMBER, 100.0f) <= EffectiveCriticalHitChance;
 
 	// Double damage plus a bonus if critical hit
-	Damage = bCrit ? Damage * 2 + SourceCriticalHitDamage : Damage;
+	Damage = bCriticalHit ? Damage * 2 + SourceCriticalHitDamage : Damage;
 
 	/*
 	* Apply Damage

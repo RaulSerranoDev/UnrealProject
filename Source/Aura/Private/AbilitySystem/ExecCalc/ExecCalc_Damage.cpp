@@ -10,6 +10,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilityTypes.h"
 
 struct GameDamageStatics
 {
@@ -77,6 +78,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	const UCharacterClassInfo* CharacterClassInfo = UGameAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+
 	/*
 	* Block Chance
 	*/
@@ -86,8 +89,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().BlockChanceDef, EvalParams, TargetBlockChance);
 	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.f);
 
-	// If Block, halve the damage.
 	const bool bBlocked = bBlockErrorTolerance ? FMath::RandRange(1, 100) <= TargetBlockChance : FMath::FRandRange(UE_SMALL_NUMBER, 100.0f) <= TargetBlockChance;
+
+	UGameAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
+
+	// If Block, halve the damage.
 	Damage = bBlocked ? Damage * 0.5f : Damage;
 
 	/*
@@ -136,6 +142,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// Critical Hit Resistance reduces Critical Hit Chance by a certain percentage
 	float EffectiveCriticalHitChance = FMath::Max<float>(SourceCriticalHitChance - TargetCriticalHitResistance * CriticalHitResistanceCoefficient, 0.f);
 	const bool bCriticalHit = bCritErrorTolerance ? FMath::RandRange(1, 100) <= EffectiveCriticalHitChance : FMath::FRandRange(UE_SMALL_NUMBER, 100.0f) <= EffectiveCriticalHitChance;
+
+	UGameAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 
 	// Double damage plus a bonus if critical hit
 	Damage = bCriticalHit ? Damage * 2 + SourceCriticalHitDamage : Damage;

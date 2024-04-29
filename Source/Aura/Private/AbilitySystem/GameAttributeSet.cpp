@@ -11,6 +11,7 @@
 #include "GameGameplayTags.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/GamePlayerController.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
@@ -105,7 +106,10 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 
-			ShowFloatingText(Props, LocalIncomingDamage);
+			const bool bBlocked = UGameAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+			const bool bCritical = UGameAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+
+			ShowFloatingText(Props, LocalIncomingDamage, bBlocked, bCritical);
 		}
 	}
 }
@@ -143,7 +147,7 @@ void UGameAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
-void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlocked, bool bCritical) const
 {
 	if (Props.SourceCharacter == Props.TargetCharacter) return;
 

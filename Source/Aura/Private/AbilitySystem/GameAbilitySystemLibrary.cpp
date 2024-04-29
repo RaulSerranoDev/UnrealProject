@@ -10,6 +10,7 @@
 #include "UI/WidgetController/GameWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "Game/MainGameModeBase.h"
+#include "AbilityTypes.h"
 
 UOverlayWidgetController* UGameAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -78,6 +79,34 @@ UCharacterClassInfo* UGameAbilitySystemLibrary::GetCharacterClassInfo(const UObj
 {
 	AMainGameModeBase* GM = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	return GM ? GM->CharacterClassInfo : nullptr;
+}
+
+bool UGameAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->IsBlockedHit() : false;
+}
+
+bool UGameAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->IsCriticalHit() : false;
+}
+
+void UGameAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bBlocked)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetIsBlockedHit(bBlocked);
+	}
+}
+
+void UGameAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& EffectContextHandle, bool bCritical)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetIsCriticalHit(bCritical);
+	}
 }
 
 void UGameAbilitySystemLibrary::ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC)

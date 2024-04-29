@@ -21,5 +21,6 @@ public:
 
 private:
 	const bool bBlockErrorTolerance = true;
+	const bool bCritErrorTolerance = true;
 
 };

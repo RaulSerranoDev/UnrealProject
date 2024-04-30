@@ -33,7 +33,7 @@ public:
 	inline FHitResult GetCursorHit() const { return CursorHit; };
 
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlocked, bool bCritical);
 
 protected:
 	virtual void BeginPlay() override;

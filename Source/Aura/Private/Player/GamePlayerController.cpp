@@ -33,7 +33,7 @@ void AGamePlayerController::PlayerTick(float DeltaTime)
 	AutoRun();
 }
 
-void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlocked, bool bCritical)
 {
 	if (!IsValid(TargetCharacter) || !DamageTextComponentClass) return;
 
@@ -41,7 +41,7 @@ void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 	DamageText->RegisterComponent();
 	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	DamageText->SetDamageText(DamageAmount);
+	DamageText->SetDamageText(DamageAmount, bBlocked, bCritical);
 }
 
 void AGamePlayerController::BeginPlay()

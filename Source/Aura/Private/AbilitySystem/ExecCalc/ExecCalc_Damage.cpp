@@ -74,10 +74,15 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvalParams.TargetTags = TargetTags;
 
 	// Get Damage Set By Caller Magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(TAG_Damage, false);
+	float Damage = 0.f;
 	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(TAG_Damage);
+	FGameplayTagContainer AllResistanceTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(TAG_Attributes_Resistance);
 	for (const auto& Tag : AllDamageTags)
 	{
+		if (Tag.MatchesAny(AllResistanceTags))	// TODO: Maybe this is wrong I have to check
+		{
+
+		}
 		Damage += Spec.GetSetByCallerMagnitude(Tag, false);
 	}
 

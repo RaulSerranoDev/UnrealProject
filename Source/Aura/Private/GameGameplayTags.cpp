@@ -98,6 +98,35 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Mana,
 )
 
 /*
+*  Resistance Attributes
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance,
+	"Attributes.Resistance",
+	"Resistance"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Fire,
+	"Attributes.Resistance.Fire",
+	"Fire Resistance"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Lightning,
+	"Attributes.Resistance.Lightning",
+	"Lightning Resistance"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Arcane,
+	"Attributes.Resistance.Arcane",
+	"Arcane Resistance"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Physical,
+	"Attributes.Resistance.Physical",
+	"Physical Resistance"
+)
+
+/*
 *  Input Tags
 */
 
@@ -132,7 +161,7 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_4,
 )
 
 /*
-*  Meta Tags
+*  Damage Types
 */
 
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage,
@@ -143,6 +172,21 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage,
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Fire,
 	"Damage.Fire",
 	"Fire Damage Type"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Lightning,
+	"Damage.Lightning",
+	"Lightning Damage Type"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Arcane,
+	"Damage.Arcane",
+	"Arcane Damage Type"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Physical,
+	"Damage.Physical",
+	"Physical Damage Type"
 )
 
 /*

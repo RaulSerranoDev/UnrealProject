@@ -140,6 +140,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage,
 	"Damage"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Fire,
+	"Damage.Fire",
+	"Fire Damage Type"
+)
+
 /*
 *  Effects
 */

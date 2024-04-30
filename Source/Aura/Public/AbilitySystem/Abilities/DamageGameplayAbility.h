@@ -16,6 +16,10 @@ class AURA_API UDamageGameplayAbility : public UGameGameplayAbility
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
-	FScalableFloat Damage;
+	TMap<FGameplayTag, FScalableFloat> DamageTypes;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
 };

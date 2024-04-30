@@ -74,7 +74,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvalParams.TargetTags = TargetTags;
 
 	// Get Damage Set By Caller Magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(TAG_Damage);
+	float Damage = Spec.GetSetByCallerMagnitude(TAG_Damage, false);
+	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(TAG_Damage);
+	for (const auto& Tag : AllDamageTags)
+	{
+		Damage += Spec.GetSetByCallerMagnitude(Tag, false);
+	}
 
 	const UCharacterClassInfo* CharacterClassInfo = UGameAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 

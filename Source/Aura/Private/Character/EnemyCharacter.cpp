@@ -10,6 +10,9 @@
 #include "UI/Widget/GameUserWidget.h"
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
 #include "GameGameplayTags.h"
+#include "AI/GameAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -25,6 +28,17 @@ AEnemyCharacter::AEnemyCharacter()
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+}
+
+void AEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!HasAuthority()) return;
+
+	GameAIController = Cast<AGameAIController>(NewController);
+	GameAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	GameAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AEnemyCharacter::HighlightActor()

@@ -11,6 +11,8 @@
 
 class UWidgetComponent;
 struct FGameplayTag;
+class UBehaviorTree;
+class AGameAIController;
 
 /**
  *
@@ -22,6 +24,8 @@ class AURA_API AEnemyCharacter : public ACharacterBase, public IHighlightInterfa
 
 public:
 	AEnemyCharacter();
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	/** Enemy Interface */
 	virtual void HighlightActor() override;
@@ -72,5 +76,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<AGameAIController> GameAIController;
 
 };

@@ -22,7 +22,6 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Secondary_ManaRegeneration)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Secondary_MaxHealth)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Secondary_MaxMana)
 
-UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Resistance)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Resistance_Fire)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Resistance_Lightning)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Attributes_Resistance_Arcane)
@@ -47,8 +46,8 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damage_Physical);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Effects_HitReact);
 
 
-//#include "CoreMinimal.h"
-//#include "GameplayTagContainer.h"
+#include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 
 /**
  * GameGameplayTags
@@ -56,19 +55,15 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Effects_HitReact);
  * Singleton containing native Gameplay Tags
  */
 
- //struct FGameGameplayTags
- //{
- //public:
- //	static const FGameGameplayTags& Get() { return GameplayTags; }
- //	static void InitalizeNativeGameplayTags();
- //
- //	FGameplayTag Attributes_Secondary_Armor;
- //
- //	FGameplayTag Attributes_Vital_Health;
- //	FGameplayTag Attributes_Vital_Mana;
- //
- //protected:
- //
- //private:
- //	static FGameGameplayTags GameplayTags;
- //};
+struct FGameGameplayTags
+{
+public:
+	static const FGameGameplayTags& Get() { return GameplayTags; }
+	static void InitalizeNativeGameplayTags();
+
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+
+private:
+	static FGameGameplayTags GameplayTags;
+
+};

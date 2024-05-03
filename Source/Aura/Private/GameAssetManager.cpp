@@ -17,5 +17,5 @@ void UGameAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
 
-	//FGameGameplayTags::InitalizeNativeGameplayTags();
+	FGameGameplayTags::InitalizeNativeGameplayTags();
 }

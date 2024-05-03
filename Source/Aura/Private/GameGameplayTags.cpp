@@ -87,11 +87,6 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Secondary_MaxMana,
 *  Resistance Attributes
 */
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance,
-	"Attributes.Resistance",
-	"Resistance"
-)
-
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Fire,
 	"Attributes.Resistance.Fire",
 	"Fire Resistance"
@@ -199,22 +194,12 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Effects_HitReact,
 )
 
 
-//FGameGameplayTags FGameGameplayTags::GameplayTags;
-//
-//void FGameGameplayTags::InitalizeNativeGameplayTags()
-//{
-//	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
-//		FName("Attributes.Secondary.Armor"), 
-//		FString("Reduces damage taken, improves Block Chance")
-//	);
-//
-//	GameplayTags.Attributes_Vital_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(
-//		FName("Attributes.Vital.Health"),
-//		FString("Amount of damage a player can take before death")
-//	);
-//
-//	GameplayTags.Attributes_Vital_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(
-//		FName("Attributes.Vital.Mana"),
-//		FString("A resource used to cast spells")
-//	);
-//}
+FGameGameplayTags FGameGameplayTags::GameplayTags;
+
+void FGameGameplayTags::InitalizeNativeGameplayTags()
+{
+	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Fire, TAG_Attributes_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Lightning, TAG_Attributes_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Arcane, TAG_Attributes_Resistance_Arcane);
+	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Physical, TAG_Attributes_Resistance_Physical);
+}

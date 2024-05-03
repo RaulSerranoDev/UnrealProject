@@ -84,20 +84,6 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Secondary_MaxMana,
 )
 
 /*
-*  Vital Attributes
-*/
-
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Health,
-	"Attributes.Vital.Health",
-	"Amount of damage a player can take before death"
-)
-
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Mana,
-	"Attributes.Vital.Mana",
-	"A resource used to cast spells"
-)
-
-/*
 *  Resistance Attributes
 */
 
@@ -124,6 +110,20 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Arcane,
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Physical,
 	"Attributes.Resistance.Physical",
 	"Physical Resistance"
+)
+
+/*
+*  Vital Attributes
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Health,
+	"Attributes.Vital.Health",
+	"Amount of damage a player can take before death"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Mana,
+	"Attributes.Vital.Mana",
+	"A resource used to cast spells"
 )
 
 /*

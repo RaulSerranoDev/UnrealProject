@@ -35,7 +35,7 @@ void AGamePlayerController::PlayerTick(float DeltaTime)
 
 void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlocked, bool bCritical)
 {
-	if (!IsValid(TargetCharacter) || !DamageTextComponentClass) return;
+	if (!IsValid(TargetCharacter) || !DamageTextComponentClass || !IsLocalController()) return;
 
 	UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
 	DamageText->RegisterComponent();

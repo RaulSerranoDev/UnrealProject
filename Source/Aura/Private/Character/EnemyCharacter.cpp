@@ -79,8 +79,11 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
-	InitializeDefaultAttributes();
-	UGameAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+		UGameAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	}
 }
 
 void AEnemyCharacter::InitializeDefaultAttributes() const

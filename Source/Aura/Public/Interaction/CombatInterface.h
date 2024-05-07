@@ -27,11 +27,17 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation();
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void UpdateFacingTarget(const FVector& Target);
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsDead() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* GetAvatar();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void UpdateFacingTarget(const FVector& Target);
 
 	virtual void Die() = 0;
 	virtual int32 GetPlayerLevel() const;

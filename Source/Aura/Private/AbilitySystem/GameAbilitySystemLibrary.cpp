@@ -119,6 +119,34 @@ void UGameAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& E
 	}
 }
 
+void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
+	const UObject* WorldContextObject,
+	TArray<AActor*>& OutOverlappingActors,
+	const TArray<AActor*>& ActorsToIgnore,
+	float Radius,
+	const FVector& SphereOrigin,
+	FName FilterTag)
+{
+	FCollisionQueryParams SphereParams;
+	SphereParams.MobilityType = EQueryMobilityType::Dynamic;
+	SphereParams.AddIgnoredActors(ActorsToIgnore);
+
+	// query scene to see what we hit
+	TArray<FOverlapResult> Overlaps;
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		World->OverlapMultiByObjectType(Overlaps, SphereOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeSphere(Radius), SphereParams);
+		for (FOverlapResult& Overlap : Overlaps)
+		{
+			if ((FilterTag.IsNone() || Overlap.GetActor()->ActorHasTag(FilterTag))
+				&& Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
+			{
+				OutOverlappingActors.AddUnique(Overlap.GetActor());
+			}
+		}
+	}
+}
+
 void UGameAbilitySystemLibrary::ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC)
 {
 	const FGameplayEffectSpecHandle AttributesSpecHandle = ASC->MakeOutgoingSpec(GEClass, Level, ContextHandle);

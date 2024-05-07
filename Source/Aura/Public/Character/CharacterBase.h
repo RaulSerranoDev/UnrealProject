@@ -24,9 +24,14 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	/** Combat Interface */
 	virtual FVector GetCombatSocketLocation_Implementation() override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+
 	virtual void Die() override;
+	/** Combat Interface */
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -69,6 +74,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	bool bDead = false;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")

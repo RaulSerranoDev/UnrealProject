@@ -39,6 +39,16 @@ UAnimMontage* ACharacterBase::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
+bool ACharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* ACharacterBase::GetAvatar_Implementation()
+{
+	return this;
+}
+
 void ACharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
@@ -60,6 +70,8 @@ void ACharacterBase::MulticastHandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Dissolve();
+
+	bDead = true;
 }
 
 void ACharacterBase::BeginPlay()

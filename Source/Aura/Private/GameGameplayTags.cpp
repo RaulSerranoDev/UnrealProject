@@ -194,6 +194,25 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
 )
 
 /*
+*  Montage
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_Weapon,
+	"Montage.Attack.Weapon",
+	"Weapon"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_LeftHand,
+	"Montage.Attack.LeftHand",
+	"Left Hand"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_RightHand,
+	"Montage.Attack.RightHand",
+	"Right Hand"
+)
+
+/*
 *  Effects
 */
 

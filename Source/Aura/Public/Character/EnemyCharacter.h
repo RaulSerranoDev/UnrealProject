@@ -7,6 +7,7 @@
 #include "Interaction/HighlightInterface.h"
 #include "AttributeDelegateTypes.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Interaction/EnemyInterface.h"
 #include "EnemyCharacter.generated.h"
 
 class UWidgetComponent;
@@ -18,7 +19,7 @@ class AGameAIController;
  *
  */
 UCLASS()
-class AURA_API AEnemyCharacter : public ACharacterBase, public IHighlightInterface
+class AURA_API AEnemyCharacter : public ACharacterBase, public IHighlightInterface, public IEnemyInterface
 {
 	GENERATED_BODY()
 
@@ -27,15 +28,20 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	/** Enemy Interface */
+	/** Highlight Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
-	/** end Enemy Interface */
+	/** end Highlight Interface */
 
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel() const override;
 	virtual void Die() override;
 	/** end Combat Interface */
+
+	/** Enemy Interface */
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	AActor* GetCombatTarget_Implementation() const override;
+	/** end Enemy Interface */
 
 	virtual void MulticastHandleDeath_Implementation() override;
 
@@ -66,6 +72,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.f;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")

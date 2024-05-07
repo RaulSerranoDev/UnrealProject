@@ -11,6 +11,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "Game/MainGameModeBase.h"
 #include "AbilityTypes.h"
+#include "Interaction/CombatInterface.h"
 
 UOverlayWidgetController* UGameAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -63,7 +64,7 @@ void UGameAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	}
 }
 
-void UGameAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+void UGameAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass)
 {
 	if (UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject))
 	{
@@ -71,6 +72,15 @@ void UGameAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 			ASC->GiveAbility(AbilitySpec);
+		}
+		const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+		for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultInfo.StartupAbilities)
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(ASC->GetAvatarActor()))
+			{
+				FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, CombatInterface->GetPlayerLevel());
+				ASC->GiveAbility(AbilitySpec);
+			}
 		}
 	}
 }

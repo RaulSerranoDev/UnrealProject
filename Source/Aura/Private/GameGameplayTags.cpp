@@ -185,6 +185,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Physical,
 )
 
 /*
+*  Abilities
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
+	"Abilities.Attack",
+	"Attack Ability Tag"
+)
+
+/*
 *  Effects
 */
 

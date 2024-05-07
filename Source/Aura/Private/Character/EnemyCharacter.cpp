@@ -106,7 +106,7 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	if (HasAuthority())
 	{
 		InitializeDefaultAttributes();
-		UGameAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+		UGameAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
 }
 

@@ -166,6 +166,11 @@ void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	if (AGamePlayerController* PC = Cast<AGamePlayerController>(Props.SourceController))
 	{
 		PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlocked, bCritical);
+		return;
+	}
+	if (AGamePlayerController* PC = Cast<AGamePlayerController>(Props.TargetController))
+	{
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlocked, bCritical);
 	}
 }
 

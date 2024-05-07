@@ -21,12 +21,9 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
 
-	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
-	if (!CombatInterface) return;
-
 	APawn* Pawn = Cast<APawn>(GetAvatarActorFromActorInfo());
 
-	const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 	FRotator Rotation = (ProjectileTargetLocation - Pawn->GetActorLocation()).Rotation();
 
 	FTransform SpawnTransform;

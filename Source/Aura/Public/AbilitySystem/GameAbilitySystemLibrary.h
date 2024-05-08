@@ -51,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayMechanics", meta = (WorldContext = "WorldContextObject"))
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin, FName FilterTag = NAME_None);
 
+	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
+	static bool IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor);
+
 private:
 	static void ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC);
 

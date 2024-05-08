@@ -59,6 +59,11 @@ TArray<FTaggedMontage> ACharacterBase::GetAttackMontages_Implementation()
 	return AttackMontages;
 }
 
+FGameplayTag ACharacterBase::GetSpellMontageTag_Implementation()
+{
+	return SpellMontageTag;
+}
+
 void ACharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));

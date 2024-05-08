@@ -30,6 +30,7 @@ public:
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual FGameplayTag GetSpellMontageTag_Implementation() override;
 
 	virtual void Die() override;
 	/** Combat Interface */
@@ -71,6 +72,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TMap<FGameplayTag, FName> MeshTagNameSocketMap;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FGameplayTag SpellMontageTag;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

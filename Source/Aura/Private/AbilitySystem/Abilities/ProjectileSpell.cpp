@@ -25,7 +25,7 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
-		TAG_Montage_Attack_Weapon);
+		ICombatInterface::Execute_GetSpellMontageTag(GetAvatarActorFromActorInfo()));
 	FRotator Rotation = (ProjectileTargetLocation - Pawn->GetActorLocation()).Rotation();
 
 	FTransform SpawnTransform;

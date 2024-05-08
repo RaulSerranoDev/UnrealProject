@@ -52,6 +52,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FGameplayTag GetSpellMontageTag();
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 

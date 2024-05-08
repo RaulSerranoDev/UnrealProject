@@ -28,10 +28,15 @@ UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-FVector ACharacterBase::GetCombatSocketLocation_Implementation()
+FVector ACharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+	FVector SocketLocation;
+	if ((IsValid(Weapon) && GetSocketLocationOnMesh(MontageTag, WeaponTagNameSocketMap, Weapon, SocketLocation))
+		|| GetSocketLocationOnMesh(MontageTag, MeshTagNameSocketMap, GetMesh(), SocketLocation))
+	{
+		return SocketLocation;
+	}
+	return FVector();
 }
 
 UAnimMontage* ACharacterBase::GetHitReactMontage_Implementation()
@@ -125,4 +130,17 @@ void ACharacterBase::Dissolve()
 		Weapon->SetMaterial(0, DynamicMatInst);
 		StartWeaponDissolveTimeline(DynamicMatInst);
 	}
+}
+
+bool ACharacterBase::GetSocketLocationOnMesh(const FGameplayTag& MontageTag, const TMap<FGameplayTag, FName>& SocketMeshMap, const USkeletalMeshComponent* SocketMesh, FVector& Location) const
+{
+	for (auto TagNamePair : SocketMeshMap)
+	{
+		if (TagNamePair.Key.MatchesTagExact(MontageTag))
+		{
+			Location = SocketMesh->GetSocketLocation(TagNamePair.Value);
+			return true;
+		}
+	}
+	return false;
 }

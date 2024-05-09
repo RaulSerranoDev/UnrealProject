@@ -149,6 +149,9 @@ void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
 
 bool UGameAbilitySystemLibrary::IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor)
 {
+	if (!FirstActor || !SecondActor)
+		return true;
+
 	const bool bBothArePlayers = FirstActor->ActorHasTag(FName("Player")) && SecondActor->ActorHasTag(FName("Player"));
 	const bool bBothAreEnemies = FirstActor->ActorHasTag(FName("Enemy")) && SecondActor->ActorHasTag(FName("Enemy"));
 	const bool bSameTeam = bBothArePlayers || bBothAreEnemies;

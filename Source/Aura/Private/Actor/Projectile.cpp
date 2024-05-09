@@ -10,8 +10,9 @@
 #include "Components/AudioComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-
 #include "Aura/Aura.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
+
 
 AProjectile::AProjectile()
 {
@@ -55,7 +56,8 @@ void AProjectile::BeginPlay()
 void AProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor == GetInstigator() || !DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data->GetContext().GetEffectCauser() == OtherActor) return;
+	if (OtherActor == GetInstigator() || !DamageEffectSpecHandle.IsValid() || !DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data->GetContext().GetEffectCauser() == OtherActor) return;
+	if (UGameAbilitySystemLibrary::IsOnSameTeam(DamageEffectSpecHandle.Data->GetContext().GetEffectCauser(), OtherActor)) return;
 
 	if (!bClientHit)
 	{

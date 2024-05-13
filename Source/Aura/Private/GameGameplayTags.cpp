@@ -194,22 +194,46 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
 )
 
 /*
-*  Montage
+*  Combat Sockets
 */
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_Weapon,
-	"Montage.Attack.Weapon",
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_Weapon,
+	"CombatSocket.Weapon",
 	"Weapon"
 )
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_LeftHand,
-	"Montage.Attack.LeftHand",
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_LeftHand,
+	"CombatSocket.LeftHand",
 	"Left Hand"
 )
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_RightHand,
-	"Montage.Attack.RightHand",
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_RightHand,
+	"CombatSocket.RightHand",
 	"Right Hand"
+)
+
+/*
+*  Montage Tags
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_1,
+	"Montage.Attack.1",
+	"Attack 1"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_2,
+	"Montage.Attack.2",
+	"Attack 2"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_3,
+	"Montage.Attack.3",
+	"Attack 3"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Montage_Attack_4,
+	"Montage.Attack.4",
+	"Attack 4"
 )
 
 /*

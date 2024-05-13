@@ -32,7 +32,8 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual FGameplayTag GetSpellMontageTag_Implementation() override;
-	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
+	virtual UNiagaraSystem* GetBloodEffect_Implementation(bool bIsCritical) override;
+	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag);
 
 	virtual void Die() override;
 	/** Combat Interface */
@@ -96,6 +97,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<UNiagaraSystem> BloodEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UNiagaraSystem> CriticalBloodEffect;
 
 	bool bDead = false;
 

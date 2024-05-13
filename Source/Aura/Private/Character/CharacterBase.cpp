@@ -64,9 +64,21 @@ FGameplayTag ACharacterBase::GetSpellMontageTag_Implementation()
 	return SpellMontageTag;
 }
 
-UNiagaraSystem* ACharacterBase::GetBloodEffect_Implementation()
+UNiagaraSystem* ACharacterBase::GetBloodEffect_Implementation(bool bIsCritical)
 {
-	return BloodEffect;
+	return bIsCritical ? CriticalBloodEffect : BloodEffect;
+}
+
+FTaggedMontage ACharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag)
+{
+	for (FTaggedMontage TaggedMontage : AttackMontages)
+	{
+		if (TaggedMontage.MontageTag == MontageTag)
+		{
+			return TaggedMontage;
+		}
+	}
+	return FTaggedMontage();
 }
 
 void ACharacterBase::Die()

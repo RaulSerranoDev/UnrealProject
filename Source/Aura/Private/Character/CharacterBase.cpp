@@ -4,6 +4,7 @@
 #include "Character/CharacterBase.h"
 
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Aura/Aura.h"
@@ -90,6 +91,8 @@ void ACharacterBase::Die()
 
 void ACharacterBase::MulticastHandleDeath_Implementation()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
+
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);

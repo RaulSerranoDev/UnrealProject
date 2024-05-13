@@ -64,6 +64,11 @@ FGameplayTag ACharacterBase::GetSpellMontageTag_Implementation()
 	return SpellMontageTag;
 }
 
+UNiagaraSystem* ACharacterBase::GetBloodEffect_Implementation()
+{
+	return BloodEffect;
+}
+
 void ACharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));

@@ -26,7 +26,7 @@ class AURA_API UDamageGameplayAbility : public UGameGameplayAbility
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void CauseDamage(AActor* TargetActor);
+	FGameplayEffectContextHandle CauseDamage(AActor* TargetActor);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")

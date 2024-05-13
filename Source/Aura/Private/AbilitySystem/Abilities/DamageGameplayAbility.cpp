@@ -5,7 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 
-void UDamageGameplayAbility::CauseDamage(AActor* TargetActor)
+FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
 	for (TTuple<FGameplayTag, FDamageRange> Pair : DamageTypes)
@@ -18,4 +18,6 @@ void UDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	}
 
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+
+	return DamageSpecHandle.Data->GetContext();
 }

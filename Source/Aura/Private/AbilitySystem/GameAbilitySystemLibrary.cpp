@@ -2,9 +2,12 @@
 
 
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemComponent.h"
+#include "DrawDebugHelpers.h"
+
 #include "UI/HUD/GameHUD.h"
 #include "Player/GamePlayerState.h"
 #include "UI/WidgetController/GameWidgetController.h"
@@ -125,7 +128,8 @@ void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
 	const TArray<AActor*>& ActorsToIgnore,
 	float Radius,
 	const FVector& SphereOrigin,
-	FName FilterTag)
+	FName FilterTag,
+	bool bShowDebugSphere)
 {
 	FCollisionQueryParams SphereParams;
 	SphereParams.MobilityType = EQueryMobilityType::Dynamic;
@@ -143,6 +147,11 @@ void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
 			{
 				OutOverlappingActors.AddUnique(Overlap.GetActor());
 			}
+		}
+
+		if (bShowDebugSphere)
+		{
+			DrawDebugSphere(World, SphereOrigin, Radius, 12, FColor::Magenta, false, 0.5f);
 		}
 	}
 }

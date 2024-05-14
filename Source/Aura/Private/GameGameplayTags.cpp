@@ -212,6 +212,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_RightHand,
 	"Right Hand"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_Tail,
+	"CombatSocket.Tail",
+	"Tail"
+)
+
 /*
 *  Montage Tags
 */

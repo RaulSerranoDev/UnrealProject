@@ -49,7 +49,7 @@ public:
 	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bCritical);
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayMechanics", meta = (WorldContext = "WorldContextObject"))
-	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin, FName FilterTag = NAME_None);
+	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin, FName FilterTag = NAME_None, bool bShowDebugSphere = false);
 
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
 	static bool IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor);

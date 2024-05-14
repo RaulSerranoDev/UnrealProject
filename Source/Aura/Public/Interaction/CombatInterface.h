@@ -71,6 +71,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	int32 GetMinionCount();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void AddMinionCount(int32 Amount = 1);
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 

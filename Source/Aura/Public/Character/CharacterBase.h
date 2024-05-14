@@ -34,6 +34,7 @@ public:
 	virtual UNiagaraSystem* GetBloodEffect_Implementation(bool bIsCritical) override;
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
+	virtual void AddMinionCount_Implementation(int32 Amount) override;
 
 	virtual void Die() override;
 	/** Combat Interface */

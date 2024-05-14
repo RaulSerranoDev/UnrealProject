@@ -60,11 +60,6 @@ TArray<FTaggedMontage> ACharacterBase::GetAttackMontages_Implementation()
 	return AttackMontages;
 }
 
-FGameplayTag ACharacterBase::GetSpellMontageTag_Implementation()
-{
-	return SpellMontageTag;
-}
-
 UNiagaraSystem* ACharacterBase::GetBloodEffect_Implementation(bool bIsCritical)
 {
 	return bIsCritical ? CriticalBloodEffect : BloodEffect;

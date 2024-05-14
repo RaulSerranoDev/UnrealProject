@@ -63,9 +63,6 @@ public:
 	TArray<FTaggedMontage> GetAttackMontages();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FGameplayTag GetSpellMontageTag();
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UNiagaraSystem* GetBloodEffect(bool bIsCritical);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

@@ -193,6 +193,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
 	"Attack Ability Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Summon,
+	"Abilities.Summon",
+	"Summon Ability Tag"
+)
+
 /*
 *  Combat Sockets
 */

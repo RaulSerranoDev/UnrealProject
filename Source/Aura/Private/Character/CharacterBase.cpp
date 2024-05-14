@@ -15,6 +15,7 @@ ACharacterBase::ACharacterBase()
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetWorldLocation(FVector(0, 0, GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_EffectActor, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);

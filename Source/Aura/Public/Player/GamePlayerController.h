@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
+#include "Player/OcclusionAwarePlayerController.h"
 #include "GameplayTagContainer.h"
 #include "GamePlayerController.generated.h"
 
@@ -21,7 +21,7 @@ class UDamageTextComponent;
  *
  */
 UCLASS()
-class AURA_API AGamePlayerController : public APlayerController
+class AURA_API AGamePlayerController : public AOcclusionAwarePlayerController
 {
 	GENERATED_BODY()
 

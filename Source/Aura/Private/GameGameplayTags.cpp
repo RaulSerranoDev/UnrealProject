@@ -125,6 +125,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Vital_Mana,
 *  Input Tags
 */
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag,
+	"InputTag",
+	"Input Tag"
+)
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_LMB,
 	"InputTag.LMB",
 	"Input Tag for Left Mouse Button"
@@ -187,6 +192,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Damage_Physical,
 /*
 *  Abilities
 */
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities,
+	"Abilities",
+	"Abilities Tag"
+)
 
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
 	"Abilities.Attack",

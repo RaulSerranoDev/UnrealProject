@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -57,6 +58,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 void UOverlayWidgetController::OnInitializeStartupAbilities(UGameAbilitySystemComponent* ASC)
 {
-	// TODO: Get information about all given abilities, look up their Ability Info, and broadcast it to widgets
+	// TODO: Get information about all given abilities, look up their Ability Info, and broadcast it to widgets.
 	if (!ASC->bStartupAbilitiesGiven) return;
+
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			// TODO: Need a way to figure out the ability tag for a given ability spec.
+			FGameAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(UGameAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
+			Info.InputTag = UGameAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			AbilityInfoDelegate.Broadcast(Info);
+		});
+
+	ASC->ForEachAbility(BroadcastDelegate);
 }

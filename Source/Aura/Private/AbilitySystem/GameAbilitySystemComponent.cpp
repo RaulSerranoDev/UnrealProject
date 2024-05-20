@@ -4,6 +4,7 @@
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "GameGameplayTags.h"
 #include "AbilitySystem/Abilities/GameGameplayAbility.h"
+#include "Aura/GameLogChannels.h"
 
 void UGameAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -51,6 +52,47 @@ void UGameAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 
 		AbilitySpecInputReleased(AbilitySpec);
 	}
+}
+
+void UGameAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
+{
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!Delegate.ExecuteIfBound(AbilitySpec))
+		{
+			UE_LOG(LogGame, Error, TEXT("Failed to execute delegate in %hs"), __FUNCTION__);
+		}
+	}
+}
+
+FGameplayTag UGameAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (AbilitySpec.Ability)
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability->AbilityTags)
+		{
+			if (Tag.MatchesTag(TAG_Abilities))
+			{
+				return Tag;
+			}
+		}
+	}
+	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
+	return FGameplayTag();
+}
+
+FGameplayTag UGameAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(TAG_InputTag))
+		{
+			return Tag;
+		}
+	}
+	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
+	return FGameplayTag();
 }
 
 void UGameAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,

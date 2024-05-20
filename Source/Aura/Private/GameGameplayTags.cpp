@@ -198,6 +198,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Summon,
 	"Summon Ability Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
+	"Abilities.Fire.FireBolt",
+	"FireBolt Ability Tag"
+)
+
 /*
 *  Combat Sockets
 */

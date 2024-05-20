@@ -12,6 +12,7 @@ struct FOnAttributeChangeData;
 class UGameUserWidget;
 struct FGameplayAttribute;
 class UAbilityInfo;
+class UGameAbilitySystemComponent;
 
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
@@ -45,6 +46,13 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
+protected:
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+	void OnInitializeStartupAbilities(UGameAbilitySystemComponent* ASC);
+
+public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnHealthChanged;
 
@@ -61,9 +69,6 @@ public:
 	FMessageWidgetRowSignature MessageWidgetRow;
 
 protected:
-	template<typename T>
-	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 

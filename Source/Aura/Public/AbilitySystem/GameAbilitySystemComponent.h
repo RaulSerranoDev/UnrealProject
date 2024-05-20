@@ -7,6 +7,7 @@
 #include "GameAbilitySystemComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, UGameAbilitySystemComponent* /*ASC*/);
 
 /**
  *
@@ -19,7 +20,8 @@ class AURA_API UGameAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	void AbilityActorInfoSet();
 
-	FEffectAssetTags EffectAssetTags;
+	FEffectAssetTags EffectAssetTagsDelegate;
+	FAbilitiesGiven AbilitiesGivenDelegate;
 
 	void AddCharacterAbilities(const  TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 
@@ -27,7 +29,10 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 
 protected:
-	UFUNCTION(Client,Reliable)
+	UFUNCTION(Client, Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+
+public:
+	bool bStartupAbilitiesGiven = false;
 
 };

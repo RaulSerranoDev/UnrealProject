@@ -124,7 +124,8 @@ bool AOcclusionAwarePlayerController::HideOccludedActor(const AActor* Actor)
 		OccludedActor.StaticMesh = StaticMesh;
 		OccludedActor.Materials = StaticMesh->GetMaterials();
 		OccludedActor.IsOccluded = true;
-		OccludedActor.IsBlocking = StaticMesh->GetCollisionResponseToChannel(ECC_Visibility) == ECollisionResponse::ECR_Block;
+		OccludedActor.IsBlockingVisibility = StaticMesh->GetCollisionResponseToChannel(ECC_Visibility) == ECollisionResponse::ECR_Block;
+		OccludedActor.IsBlockingSelection = StaticMesh->GetCollisionResponseToChannel(ECC_Selection) == ECollisionResponse::ECR_Block;
 		OccludedActors.Add(Actor, OccludedActor);
 		OnHideOccludedActor(OccludedActor);
 
@@ -165,8 +166,8 @@ bool AOcclusionAwarePlayerController::OnShowOccludedActor(const FCameraOccludedA
 	{
 		OccludedActor.StaticMesh->SetMaterial(matIdx, OccludedActor.Materials[matIdx]);
 	}
-	OccludedActor.StaticMesh->SetCollisionResponseToChannel(ECC_Visibility, OccludedActor.IsBlocking ? ECollisionResponse::ECR_Block : ECollisionResponse::ECR_Ignore);
-	OccludedActor.StaticMesh->SetCollisionResponseToChannel(ECC_Selection, OccludedActor.IsBlocking ? ECollisionResponse::ECR_Block : ECollisionResponse::ECR_Ignore);
+	OccludedActor.StaticMesh->SetCollisionResponseToChannel(ECC_Visibility, OccludedActor.IsBlockingVisibility ? ECollisionResponse::ECR_Block : ECollisionResponse::ECR_Ignore);
+	OccludedActor.StaticMesh->SetCollisionResponseToChannel(ECC_Selection, OccludedActor.IsBlockingSelection ? ECollisionResponse::ECR_Block : ECollisionResponse::ECR_Ignore);
 
 	return true;
 }

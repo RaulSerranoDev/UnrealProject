@@ -28,7 +28,10 @@ struct FCameraOccludedActor
 	bool IsOccluded;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool IsBlocking;
+	bool IsBlockingVisibility;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool IsBlockingSelection;
 };
 
 /**

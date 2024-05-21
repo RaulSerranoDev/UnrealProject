@@ -214,6 +214,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
 )
 
 /*
+*  Cooldown
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Cooldown_Fire_FireBolt,
+	"Cooldown.Fire.FireBolt",
+	"FireBolt Cooldown Tag"
+)
+
+/*
 *  Combat Sockets
 */
 

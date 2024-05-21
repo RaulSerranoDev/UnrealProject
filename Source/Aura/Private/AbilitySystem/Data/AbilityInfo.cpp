@@ -12,6 +12,7 @@ FGameAbilityInfo UAbilityInfo::FindAbilityInfoForTag(const FGameplayTag& Ability
 	{
 		GameAbilityInfo.Icon = AbilitiesInfo[AbilityTag].Icon;
 		GameAbilityInfo.BackgroundMaterial = AbilitiesInfo[AbilityTag].BackgroundMaterial;
+		GameAbilityInfo.CooldownTag = AbilitiesInfo[AbilityTag].CooldownTag;
 		GameAbilityInfo.AbilityTag = AbilityTag;
 		return GameAbilityInfo;
 	}

@@ -41,6 +41,8 @@ void UWaitCooldownChange::EndTask()
 
 void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetASC, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
+	if (!SpecApplied.CapturedRelevantAttributes.HasNonSnapshottedAttributes()) return;
+
 	FGameplayTagContainer AssetTags;
 	SpecApplied.GetAllAssetTags(AssetTags);
 	FGameplayTagContainer GrantedTags;

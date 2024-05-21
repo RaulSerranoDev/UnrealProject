@@ -15,6 +15,14 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnMaxHealthChanged.Broadcast(GameAttributeSet->GetMaxHealth());
 	OnManaChanged.Broadcast(GameAttributeSet->GetMana());
 	OnMaxManaChanged.Broadcast(GameAttributeSet->GetMaxMana());
+
+	if (UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (ASC->bStartupAbilitiesGiven)
+		{
+			OnInitializeStartupAbilities(ASC);
+		}
+	}
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()

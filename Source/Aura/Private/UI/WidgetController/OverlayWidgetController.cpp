@@ -6,6 +6,8 @@
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Player/GamePlayerState.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -27,6 +29,9 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
+	PS->OnXPChangeDelegate.AddUObject(this, &ThisClass::OnXPChanged);
+
 	const UGameAttributeSet* GameAttributeSet = CastChecked<UGameAttributeSet>(AttributeSet);
 
 	UAttributeDelegateTypes::BindToAttributeValueChangeDelegate(AbilitySystemComponent, GameAttributeSet->GetHealthAttribute(), &OnHealthChanged);
@@ -79,4 +84,27 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UGameAbilitySystemCo
 		});
 
 	ASC->ForEachAbility(BroadcastDelegate);
+}
+
+void UOverlayWidgetController::OnXPChanged(const int32& NewXP) const
+{
+	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
+	const ULevelUpInfo* LevelUpInfo = PS->LevelUpInfo;
+	checkf(LevelUpInfo, TEXT("Unabled to find LevelUpInfo. Please fill out GamePlayerState Blueprint"));
+
+	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);
+	const int32 MaxLevel = LevelUpInfo->LevelUpInfo.Num();
+
+	if (Level <= MaxLevel && Level > 0)
+	{
+		const int32 XPRequirement = LevelUpInfo->LevelUpInfo[Level].XPRequirement;
+		const int32 PreviousXPRequirement = LevelUpInfo->LevelUpInfo[Level - 1].XPRequirement;
+
+		const int32 DeltaLevelRequirement = XPRequirement - PreviousXPRequirement;
+		const int32 XPForThisLevel = NewXP - PreviousXPRequirement;
+
+		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
+
+		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
+	}
 }

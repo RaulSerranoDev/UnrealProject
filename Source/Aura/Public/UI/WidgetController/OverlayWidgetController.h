@@ -53,6 +53,7 @@ protected:
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
 	void OnInitializeStartupAbilities(UGameAbilitySystemComponent* ASC);
+	void OnXPChanged(const int32& NewXP) const;
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
@@ -72,6 +73,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
 	FAbilityInfoSignature AbilityInfoDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Data")

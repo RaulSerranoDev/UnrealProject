@@ -9,8 +9,9 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class ULevelUpInfo;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, const int32 /*StatValue*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, const int32& /*StatValue*/);
 
 /**
  *
@@ -39,6 +40,10 @@ public:
 
 	void SetXP(int32 InXP);
 	void SetLevel(int32 InLevel);
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 protected:
 	UPROPERTY(VisibleAnywhere)

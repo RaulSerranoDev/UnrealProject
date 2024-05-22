@@ -12,6 +12,7 @@
 #include "Interaction/CombatInterface.h"
 #include "Player/GamePlayerController.h"
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
+#include "Aura/GameLogChannels.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
@@ -87,7 +88,6 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f:"), *Props.TargetAvatarActor->GetName(), GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
@@ -123,6 +123,12 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 			ShowFloatingText(Props, LocalIncomingDamage, bBlocked, bCritical);
 		}
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
+	{
+		const float LocalIncomingXP = GetIncomingXP();
+		SetIncomingXP(0);
+		UE_LOG(LogGame, Warning, TEXT("IncomingXP on %s, XP: %f:"), *Props.TargetAvatarActor->GetName(), LocalIncomingXP);
 	}
 }
 

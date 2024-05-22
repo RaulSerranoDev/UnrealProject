@@ -88,6 +88,11 @@ void ACharacterBase::AddMinionCount_Implementation(int32 Amount)
 	MinionCount += Amount;
 }
 
+ECharacterClass ACharacterBase::GetCharacterClass_Implementation() const
+{
+	return CharacterClass;
+}
+
 void ACharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));

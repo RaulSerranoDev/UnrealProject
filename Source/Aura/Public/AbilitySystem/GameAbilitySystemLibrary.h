@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
 	static bool IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor);
 
+	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|XP", meta = (WorldContext = "WorldContextObject"))
+	static int32 GetXPReward(const UObject* WorldContextObject, ECharacterClass CharacterClass, const int32& Level);
+
 private:
 	static void ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC);
 

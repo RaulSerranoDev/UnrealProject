@@ -25,6 +25,8 @@ void UOverlayWidgetController::BroadcastInitialValues()
 			OnInitializeStartupAbilities(ASC);
 		}
 	}
+	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
+	OnXPChanged(PS->GetXP());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()

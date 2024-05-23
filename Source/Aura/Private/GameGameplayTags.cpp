@@ -108,6 +108,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Resistance_Physical,
 )
 
 /*
+*  Meta Attributes
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Attributes_Meta_IncomingXP,
+	"Attributes.Meta.IncomingXP",
+	"Incoming XP Meta Attribute"
+)
+
+/*
 *  Vital Attributes
 */
 

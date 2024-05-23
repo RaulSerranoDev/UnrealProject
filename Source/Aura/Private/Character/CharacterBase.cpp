@@ -151,6 +151,7 @@ void ACharacterBase::AddCharacterAbilities()
 
 	UGameAbilitySystemComponent* ASC = CastChecked<UGameAbilitySystemComponent>(AbilitySystemComponent);
 	ASC->AddCharacterAbilities(StartupAbilities);
+	ASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 void ACharacterBase::Dissolve()

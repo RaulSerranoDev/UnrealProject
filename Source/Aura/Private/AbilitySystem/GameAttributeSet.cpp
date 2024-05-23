@@ -110,6 +110,7 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				{
 					CombatInterface->Die();
 				}
+				SendXPEvent(Props);
 			}
 			else
 			{
@@ -128,7 +129,6 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0);
-		UE_LOG(LogGame, Warning, TEXT("IncomingXP on %s, XP: %f:"), *Props.TargetAvatarActor->GetName(), LocalIncomingXP);
 	}
 }
 
@@ -177,6 +177,18 @@ void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	if (AGamePlayerController* PC = Cast<AGamePlayerController>(Props.TargetController))
 	{
 		PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlocked, bCritical);
+	}
+}
+
+void UGameAttributeSet::SendXPEvent(const FEffectProperties& Props)
+{
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		const int32 XPReward = UGameAbilitySystemLibrary::GetXPReward(Props.TargetCharacter, ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter), CombatInterface->GetPlayerLevel());
+		FGameplayEventData Payload;
+		Payload.EventTag = TAG_Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Meta_IncomingXP, Payload);
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "Player/GamePlayerState.h"
 #include "Player/GamePlayerController.h"
 #include "UI/HUD/GameHUD.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -40,11 +41,56 @@ void APlayerCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 APlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
+{
+	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->LevelUpInfo->FindLevelForXP(InXP);
+}
+
+int32 APlayerCharacter::GetXP_Implementation() const
+{
+	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->GetXP();
+}
+
+int32 APlayerCharacter::GetAttributePointsReward_Implementation(int32 Level) const
+{
+	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->LevelUpInfo->LevelUpInfo[Level].AttributePointReward;
+}
+
+int32 APlayerCharacter::GetSpellPointsReward_Implementation(int32 Level) const
+{
+	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->LevelUpInfo->LevelUpInfo[Level].SpellPointReward;
+}
+
 void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 {
 	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
 	check(GamePlayerState);
 	GamePlayerState->AddToXP(InXP);
+}
+
+void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	GamePlayerState->AddToLevel(InPlayerLevel);
+}
+
+void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+{
+	// TODO: Add AttributePoints to PlayerState
+}
+
+void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+{
+	// TODO: Add SpellPoints to PlayerState
 }
 
 void APlayerCharacter::LevelUp_Implementation()

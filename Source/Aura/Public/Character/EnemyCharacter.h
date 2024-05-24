@@ -33,7 +33,7 @@ public:
 	/** end Highlight Interface */
 
 	/** Combat Interface */
-	virtual int32 GetPlayerLevel() const override;
+	virtual int32 GetPlayerLevel_Implementation() const override;
 	virtual void Die() override;
 	/** end Combat Interface */
 

@@ -189,9 +189,9 @@ void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 
 void UGameAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
 	{
-		const int32 XPReward = UGameAbilitySystemLibrary::GetXPReward(Props.TargetCharacter, ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter), CombatInterface->GetPlayerLevel());
+		const int32 XPReward = UGameAbilitySystemLibrary::GetXPReward(Props.TargetCharacter, ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter), ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter));
 		FGameplayEventData Payload;
 		Payload.EventTag = TAG_Attributes_Meta_IncomingXP;
 		Payload.EventMagnitude = XPReward;

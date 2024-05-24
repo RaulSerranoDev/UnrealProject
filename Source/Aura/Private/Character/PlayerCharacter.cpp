@@ -47,7 +47,11 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 	GamePlayerState->AddToXP(InXP);
 }
 
-int32 APlayerCharacter::GetPlayerLevel() const
+void APlayerCharacter::LevelUp_Implementation()
+{
+}
+
+int32 APlayerCharacter::GetPlayerLevel_Implementation() const
 {
 	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
 	check(GamePlayerState);

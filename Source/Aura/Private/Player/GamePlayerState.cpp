@@ -30,18 +30,6 @@ void AGamePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(AGamePlayerState, XP);
 }
 
-void AGamePlayerState::SetXP(int32 InXP)
-{
-	XP = InXP;
-	OnXPChangeDelegate.Broadcast(XP);
-}
-
-void AGamePlayerState::SetLevel(int32 InLevel)
-{
-	Level = InLevel;
-	OnLevelChangeDelegate.Broadcast(Level);
-}
-
 void AGamePlayerState::AddToXP(int32 InXP)
 {
 	XP += InXP;
@@ -51,6 +39,18 @@ void AGamePlayerState::AddToXP(int32 InXP)
 void AGamePlayerState::AddToLevel(int32 InLevel)
 {
 	Level += InLevel;
+	OnLevelChangeDelegate.Broadcast(Level);
+}
+
+void AGamePlayerState::SetXP(int32 InXP)
+{
+	XP = InXP;
+	OnXPChangeDelegate.Broadcast(XP);
+}
+
+void AGamePlayerState::SetLevel(int32 InLevel)
+{
+	Level = InLevel;
 	OnLevelChangeDelegate.Broadcast(Level);
 }
 

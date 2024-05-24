@@ -53,10 +53,10 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 private:
-	UPROPERTY(VisibleAnywhere, Replicated = OnRepLevel)
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level)
 	int32 Level = 1;
 
-	UPROPERTY(VisibleAnywhere, Replicated = OnRep_XP)
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_XP)
 	int32 XP = 0;
 
 	UFUNCTION()

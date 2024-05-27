@@ -7,6 +7,10 @@
 #include "Interaction/PlayerInterface.h"
 #include "PlayerCharacter.generated.h"
 
+class UNiagaraComponent;
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class AURA_API APlayerCharacter : public ACharacterBase, public IPlayerInterface
 {
@@ -38,6 +42,15 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
 
+private:
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
+
+public:
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Setup|VFX")
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
+protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Setup|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
@@ -46,5 +59,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Setup|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> TopDownCameraComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> CameraBoom;
 
 };

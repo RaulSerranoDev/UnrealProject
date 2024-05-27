@@ -55,20 +55,6 @@ int32 APlayerCharacter::GetXP_Implementation() const
 	return GamePlayerState->GetXP();
 }
 
-int32 APlayerCharacter::GetAttributePointsReward_Implementation(int32 Level) const
-{
-	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
-	check(GamePlayerState);
-	return GamePlayerState->LevelUpInfo->LevelUpInfo[Level].AttributePointReward;
-}
-
-int32 APlayerCharacter::GetSpellPointsReward_Implementation(int32 Level) const
-{
-	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
-	check(GamePlayerState);
-	return GamePlayerState->LevelUpInfo->LevelUpInfo[Level].SpellPointReward;
-}
-
 void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 {
 	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
@@ -76,25 +62,27 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 	GamePlayerState->AddToXP(InXP);
 }
 
-void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
+void APlayerCharacter::LevelUp_Implementation(int32 NumLevelUps)
 {
 	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
 	check(GamePlayerState);
-	GamePlayerState->AddToLevel(InPlayerLevel);
-}
 
-void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
-{
+	GamePlayerState->AddToLevel(NumLevelUps);
+	const int32 Level = GamePlayerState->GetPlayerLevel();
+
+	int32 AttributePointsReward = 0;
+	int32 SpellPointsReward = 0;
+	for (int32 i = 0; i < NumLevelUps; i++)
+	{
+		AttributePointsReward += GamePlayerState->LevelUpInfo->LevelUpInfo[Level + 1 + i].AttributePointReward;
+		SpellPointsReward += GamePlayerState->LevelUpInfo->LevelUpInfo[Level + 1 + i].SpellPointReward;
+	}
+
 	// TODO: Add AttributePoints to PlayerState
-}
+	// AttributePointsReward
 
-void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
-{
 	// TODO: Add SpellPoints to PlayerState
-}
-
-void APlayerCharacter::LevelUp_Implementation()
-{
+	// SpellPointsReward
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation() const

@@ -27,12 +27,19 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	}
 	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
 	OnXPChanged(PS->GetXP());
+	OnPlayerLevelChangedDelegate.Broadcast(PS->GetPlayerLevel());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
 	PS->OnXPChangeDelegate.AddUObject(this, &ThisClass::OnXPChanged);
+	PS->OnLevelChangeDelegate.AddLambda(
+		[this](const int32& NewLevel)
+		{
+			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
+		}
+	);
 
 	const UGameAttributeSet* GameAttributeSet = CastChecked<UGameAttributeSet>(AttributeSet);
 

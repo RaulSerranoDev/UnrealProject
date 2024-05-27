@@ -26,8 +26,6 @@ public:
 	virtual void OnRep_PlayerState() override;
 
 	/** Player Interface */
-	virtual int32 FindLevelForXP_Implementation(int32 InXP) const override;
-	virtual int32 GetXP_Implementation() const override;
 	virtual void AddToXP_Implementation(int32 InXP) override;
 	virtual void LevelUp_Implementation(int32 NumLevelUps) override;
 	/** end Player Interface */

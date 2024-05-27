@@ -132,24 +132,17 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetIncomingXP(0);
 
 		// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncosmingXP
-		if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
 		{
-			const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
-			const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
-
-			const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter, CurrentXP + LocalIncomingXP);
-			const int32 NumLevelUps = NewLevel - CurrentLevel;
-			if (NumLevelUps > 0)
-			{
-				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter, NumLevelUps);
-
-				SetHealth(GetMaxHealth());
-				SetMana(GetMaxMana());
-			}
-
 			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 		}
 	}
+}
+
+void UGameAttributeSet::RefillVitalAttributes()
+{
+	SetHealth(GetMaxHealth());
+	SetMana(GetMaxMana());
 }
 
 void UGameAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const

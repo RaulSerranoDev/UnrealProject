@@ -68,6 +68,8 @@ public:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	void RefillVitalAttributes();
+
 	TMap<FGameplayTag, FGameplayAttribute> TagsToAttributes;
 
 	/** Attributes */

@@ -5,6 +5,7 @@
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 AGamePlayerState::AGamePlayerState()
 {
@@ -33,6 +34,23 @@ void AGamePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 void AGamePlayerState::AddToXP(int32 InXP)
 {
 	XP += InXP;
+
+	while (CanLevelUp(XP))
+	{
+		AddToLevel(1);
+
+		const int32 AttributePointsReward = LevelUpInfo->LevelUpInfo[Level - 1].AttributePointReward;;
+		const int32 SpellPointsReward = LevelUpInfo->LevelUpInfo[Level - 1].SpellPointReward;
+
+		// TODO: Add AttributePoints to PlayerState
+		// AttributePointsReward
+
+		// TODO: Add SpellPoints to PlayerState
+		// SpellPointsReward
+
+		CastChecked<UGameAttributeSet>(AttributeSet)->RefillVitalAttributes();
+	}
+
 	OnXPChangeDelegate.Broadcast(XP);
 }
 
@@ -52,6 +70,12 @@ void AGamePlayerState::SetLevel(int32 InLevel)
 {
 	Level = InLevel;
 	OnLevelChangeDelegate.Broadcast(Level);
+}
+
+bool AGamePlayerState::CanLevelUp(int32 InXP) const
+{
+	const int32 NewLevel = LevelUpInfo->FindLevelForXP(InXP);
+	return NewLevel > Level;
 }
 
 void AGamePlayerState::OnRep_Level(int32 OldLevel)

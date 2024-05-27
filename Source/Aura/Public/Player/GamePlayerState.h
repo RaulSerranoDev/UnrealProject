@@ -41,6 +41,9 @@ public:
 	void SetXP(int32 InXP);
 	void SetLevel(int32 InLevel);
 
+private:
+	bool CanLevelUp(int32 InXP) const;
+
 public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;

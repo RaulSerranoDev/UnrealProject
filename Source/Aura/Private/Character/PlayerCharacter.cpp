@@ -9,7 +9,6 @@
 #include "Player/GamePlayerState.h"
 #include "Player/GamePlayerController.h"
 #include "UI/HUD/GameHUD.h"
-#include "AbilitySystem/Data/LevelUpInfo.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -41,20 +40,6 @@ void APlayerCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-int32 APlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
-{
-	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
-	check(GamePlayerState);
-	return GamePlayerState->LevelUpInfo->FindLevelForXP(InXP);
-}
-
-int32 APlayerCharacter::GetXP_Implementation() const
-{
-	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
-	check(GamePlayerState);
-	return GamePlayerState->GetXP();
-}
-
 void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 {
 	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
@@ -64,25 +49,6 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 
 void APlayerCharacter::LevelUp_Implementation(int32 NumLevelUps)
 {
-	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
-	check(GamePlayerState);
-
-	GamePlayerState->AddToLevel(NumLevelUps);
-	const int32 Level = GamePlayerState->GetPlayerLevel();
-
-	int32 AttributePointsReward = 0;
-	int32 SpellPointsReward = 0;
-	for (int32 i = 0; i < NumLevelUps; i++)
-	{
-		AttributePointsReward += GamePlayerState->LevelUpInfo->LevelUpInfo[Level + 1 + i].AttributePointReward;
-		SpellPointsReward += GamePlayerState->LevelUpInfo->LevelUpInfo[Level + 1 + i].SpellPointReward;
-	}
-
-	// TODO: Add AttributePoints to PlayerState
-	// AttributePointsReward
-
-	// TODO: Add SpellPoints to PlayerState
-	// SpellPointsReward
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation() const
@@ -110,6 +76,9 @@ void APlayerCharacter::InitAbilityActorInfo()
 	}
 
 	InitializeDefaultAttributes();
+
+	// Suscribe to the player state level up delegate
+	GamePlayerState->OnLevelChangeDelegate.AddLambda([this](int32 NewLevel) {ThisClass::LevelUp_Implementation(NewLevel); });
 }
 
 void APlayerCharacter::InitializeDefaultAttributes() const

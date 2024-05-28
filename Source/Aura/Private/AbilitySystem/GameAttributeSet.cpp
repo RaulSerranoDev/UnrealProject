@@ -139,10 +139,26 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 }
 
+void UGameAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetMaxHealthAttribute() && bTopOfHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bTopOfHealth = false;
+	}
+	if (Attribute == GetMaxManaAttribute() && bTopOfMana)
+	{
+		SetMana(GetMaxMana());
+		bTopOfMana = false;
+	}
+}
+
 void UGameAttributeSet::RefillVitalAttributes()
 {
-	SetHealth(GetMaxHealth());
-	SetMana(GetMaxMana());
+	bTopOfHealth = true;
+	bTopOfMana = true;
 }
 
 void UGameAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const

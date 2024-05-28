@@ -122,6 +122,22 @@ void UGameAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& E
 	}
 }
 
+TArray<FGameplayTag> UGameAbilitySystemLibrary::CallerMagnitudeTags(TSubclassOf<UGameplayEffect> GameplayEffect)
+{
+	UGameplayEffect* GE = GameplayEffect.GetDefaultObject();
+
+	TArray<FGameplayTag> CallerTags;
+	for (FGameplayModifierInfo Info : GE->Modifiers)
+	{
+		if (Info.ModifierMagnitude.GetMagnitudeCalculationType() == EGameplayEffectMagnitudeCalculation::SetByCaller)
+		{
+			CallerTags.Add(Info.ModifierMagnitude.GetSetByCallerFloat().DataTag);
+		}
+	}
+
+	return CallerTags;
+}
+
 void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
 	const UObject* WorldContextObject,
 	TArray<AActor*>& OutOverlappingActors,

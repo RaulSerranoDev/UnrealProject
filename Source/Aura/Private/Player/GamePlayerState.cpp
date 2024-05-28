@@ -29,6 +29,8 @@ void AGamePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(AGamePlayerState, Level);
 	DOREPLIFETIME(AGamePlayerState, XP);
+	DOREPLIFETIME(AGamePlayerState, AttributePoints);
+	DOREPLIFETIME(AGamePlayerState, SpellPoints);
 }
 
 void AGamePlayerState::AddToXP(int32 InXP)
@@ -42,34 +44,43 @@ void AGamePlayerState::AddToXP(int32 InXP)
 		const int32 AttributePointsReward = LevelUpInfo->LevelUpInfo[Level - 1].AttributePointReward;;
 		const int32 SpellPointsReward = LevelUpInfo->LevelUpInfo[Level - 1].SpellPointReward;
 
-		// TODO: Add AttributePoints to PlayerState
-		// AttributePointsReward
-
-		// TODO: Add SpellPoints to PlayerState
-		// SpellPointsReward
+		AddToAttributePoints(AttributePointsReward);
+		AddToSpellPoints(SpellPointsReward);
 
 		CastChecked<UGameAttributeSet>(AttributeSet)->RefillVitalAttributes();
 	}
 
-	OnXPChangeDelegate.Broadcast(XP);
+	OnXPChangedDelegate.Broadcast(XP);
 }
 
 void AGamePlayerState::AddToLevel(int32 InLevel)
 {
 	Level += InLevel;
-	OnLevelChangeDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level);
+}
+
+void AGamePlayerState::AddToAttributePoints(int32 InAttributePoints)
+{
+	AttributePoints += InAttributePoints;
+	OnAttributePointsChangedDelegate.Broadcast(AttributePoints);
+}
+
+void AGamePlayerState::AddToSpellPoints(int32 InSpellPoints)
+{
+	SpellPoints += InSpellPoints;
+	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
 }
 
 void AGamePlayerState::SetXP(int32 InXP)
 {
 	XP = InXP;
-	OnXPChangeDelegate.Broadcast(XP);
+	OnXPChangedDelegate.Broadcast(XP);
 }
 
 void AGamePlayerState::SetLevel(int32 InLevel)
 {
 	Level = InLevel;
-	OnLevelChangeDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level);
 }
 
 bool AGamePlayerState::CanLevelUp(int32 InXP) const
@@ -80,10 +91,20 @@ bool AGamePlayerState::CanLevelUp(int32 InXP) const
 
 void AGamePlayerState::OnRep_Level(int32 OldLevel)
 {
-	OnLevelChangeDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level);
 }
 
-void AGamePlayerState::OnRep_XP(int32 OldLevel)
+void AGamePlayerState::OnRep_XP(int32 OldXP)
 {
-	OnXPChangeDelegate.Broadcast(XP);
+	OnXPChangedDelegate.Broadcast(XP);
+}
+
+void AGamePlayerState::OnRep_AttributePoints(int32 OldAttributePoints)
+{
+	OnAttributePointsChangedDelegate.Broadcast(AttributePoints);
+}
+
+void AGamePlayerState::OnRep_SpellPoints(int32 OldSpellPoints)
+{
+	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
 }

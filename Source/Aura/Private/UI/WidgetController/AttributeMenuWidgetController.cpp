@@ -4,6 +4,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
+#include "Player/GamePlayerState.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
@@ -14,6 +15,11 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value);
 	}
+
+	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
+
+	AttributePointsChangedDelegate.Broadcast(PS->GetAttributePoints());
+	SpellPointsChangedDelegate.Broadcast(PS->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -29,6 +35,20 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			}
 		);
 	}
+
+	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
+	PS->OnAttributePointsChangedDelegate.AddLambda(
+		[this](const int32& NewAttributePoints)
+		{
+			AttributePointsChangedDelegate.Broadcast(NewAttributePoints);
+		}
+	);
+	PS->OnSpellPointsChangedDelegate.AddLambda(
+		[this](const int32& NewSpellPoints)
+		{
+			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
+		}
+	);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& Tag, const FGameplayAttribute& Attribute) const

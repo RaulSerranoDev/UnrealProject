@@ -33,8 +33,8 @@ void UOverlayWidgetController::BroadcastInitialValues()
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
-	PS->OnXPChangeDelegate.AddUObject(this, &ThisClass::OnXPChanged);
-	PS->OnLevelChangeDelegate.AddLambda(
+	PS->OnXPChangedDelegate.AddUObject(this, &ThisClass::OnXPChanged);
+	PS->OnLevelChangedDelegate.AddLambda(
 		[this](const int32& NewLevel)
 		{
 			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);

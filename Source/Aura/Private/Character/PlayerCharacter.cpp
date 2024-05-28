@@ -94,7 +94,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	InitializeDefaultAttributes();
 
 	// Suscribe to the player state level up delegate
-	GamePlayerState->OnLevelChangeDelegate.AddLambda([this](int32 NewLevel) {ThisClass::LevelUp_Implementation(NewLevel); });
+	GamePlayerState->OnLevelChangedDelegate.AddLambda([this](int32 NewLevel) {ThisClass::LevelUp_Implementation(NewLevel); });
 }
 
 void APlayerCharacter::InitializeDefaultAttributes() const

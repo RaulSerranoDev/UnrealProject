@@ -5,6 +5,7 @@
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "Player/GamePlayerState.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
@@ -49,6 +50,12 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
 		}
 	);
+}
+
+void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	UGameAbilitySystemComponent* ASC = CastChecked<UGameAbilitySystemComponent>(AbilitySystemComponent);
+	ASC->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& Tag, const FGameplayAttribute& Attribute) const

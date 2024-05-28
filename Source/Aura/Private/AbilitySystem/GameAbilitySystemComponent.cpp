@@ -5,6 +5,8 @@
 #include "GameGameplayTags.h"
 #include "AbilitySystem/Abilities/GameGameplayAbility.h"
 #include "Aura/GameLogChannels.h"
+#include "Interaction/PlayerInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 void UGameAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -102,6 +104,29 @@ FGameplayTag UGameAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 	}
 	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
 	return FGameplayTag();
+}
+
+void UGameAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	if (!GetAvatarActor()->Implements<UPlayerInterface>()
+		|| IPlayerInterface::Execute_GetAttributePoints(GetAvatarActor()) <= 0)
+		return;
+
+	ServerUpdateAttribute(AttributeTag);
+}
+
+void UGameAbilitySystemComponent::ServerUpdateAttribute_Implementation(const FGameplayTag& AttributeTag)
+{
+	FGameplayEventData Payload;
+	Payload.EventTag = AttributeTag;
+	Payload.EventMagnitude = 1.f;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetAvatarActor(), AttributeTag, Payload);
+
+	if (!GetAvatarActor()->Implements<UPlayerInterface>())
+		return;
+
+	IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
 }
 
 void UGameAbilitySystemComponent::OnRep_ActivateAbilities()

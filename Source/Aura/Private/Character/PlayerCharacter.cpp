@@ -67,6 +67,34 @@ void APlayerCharacter::LevelUp_Implementation(int32 NumLevelUps)
 	MulticastLevelUpParticles();
 }
 
+int32 APlayerCharacter::GetAttributePoints_Implementation() const
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->GetAttributePoints();
+}
+
+int32 APlayerCharacter::GetSpellPoints_Implementation() const
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	return GamePlayerState->GetSpellPoints();
+}
+
+void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	GamePlayerState->AddToAttributePoints(InAttributePoints);
+}
+
+void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+{
+	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();
+	check(GamePlayerState);
+	GamePlayerState->AddToSpellPoints(InSpellPoints);
+}
+
 int32 APlayerCharacter::GetPlayerLevel_Implementation() const
 {
 	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();

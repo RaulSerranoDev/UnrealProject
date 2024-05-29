@@ -8,8 +8,14 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class AGamePlayerController;
+class AGamePlayerState;
+class UGameAbilitySystemComponent;
+class UGameAttributeSet;
+class UAbilityInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignature, const int32&, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FGameAbilityInfo&, Info);
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
@@ -48,10 +54,23 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
-
 	virtual void BindCallbacksToDependencies();
 
+	void BroadcastAbilityInfo();
+
 protected:
+	AGamePlayerController* GetPC();
+	AGamePlayerState* GetPS();
+	UGameAbilitySystemComponent* GetASC();
+	UGameAttributeSet* GetAS();
+
+protected:
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FAbilityInfoSignature AbilityInfoDelegate;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
 
@@ -63,4 +82,17 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<AGamePlayerController> GamePlayerController;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<AGamePlayerState> GamePlayerState;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UGameAbilitySystemComponent> GameAbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UGameAttributeSet> GameAttributeSet;
+
 };

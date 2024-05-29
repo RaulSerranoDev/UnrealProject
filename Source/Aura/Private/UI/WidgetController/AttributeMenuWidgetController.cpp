@@ -9,26 +9,26 @@
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
+	Super::BroadcastInitialValues();
+
 	check(AttributeInfo);
 
-	UGameAttributeSet* AS = CastChecked<UGameAttributeSet>(AttributeSet);
-	for (auto& Pair : AS->TagsToAttributes)
+	for (auto& Pair : GetAS()->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value);
 	}
 
-	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
-
-	AttributePointsChangedDelegate.Broadcast(PS->GetAttributePoints());
-	SpellPointsChangedDelegate.Broadcast(PS->GetSpellPoints());
+	AttributePointsChangedDelegate.Broadcast(GetPS()->GetAttributePoints());
+	SpellPointsChangedDelegate.Broadcast(GetPS()->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
+	Super::BindCallbacksToDependencies();
+
 	check(AttributeInfo);
 
-	UGameAttributeSet* AS = CastChecked<UGameAttributeSet>(AttributeSet);
-	for (auto& Pair : AS->TagsToAttributes)
+	for (auto& Pair : GetAS()->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value).AddLambda(
 			[this, Pair](const FOnAttributeChangeData& Data) {
@@ -37,14 +37,13 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		);
 	}
 
-	AGamePlayerState* PS = CastChecked<AGamePlayerState>(PlayerState);
-	PS->OnAttributePointsChangedDelegate.AddLambda(
+	GetPS()->OnAttributePointsChangedDelegate.AddLambda(
 		[this](const int32& NewAttributePoints)
 		{
 			AttributePointsChangedDelegate.Broadcast(NewAttributePoints);
 		}
 	);
-	PS->OnSpellPointsChangedDelegate.AddLambda(
+	GetPS()->OnSpellPointsChangedDelegate.AddLambda(
 		[this](const int32& NewSpellPoints)
 		{
 			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
@@ -54,8 +53,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
-	UGameAbilitySystemComponent* ASC = CastChecked<UGameAbilitySystemComponent>(AbilitySystemComponent);
-	ASC->UpgradeAttribute(AttributeTag);
+	GetASC()->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& Tag, const FGameplayAttribute& Attribute) const

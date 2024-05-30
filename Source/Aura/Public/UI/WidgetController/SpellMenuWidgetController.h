@@ -9,7 +9,7 @@
 /**
  *
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class AURA_API USpellMenuWidgetController : public UGameWidgetController
 {
 	GENERATED_BODY()

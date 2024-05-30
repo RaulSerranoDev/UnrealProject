@@ -5,6 +5,7 @@
 #include "UI/Widget/GameUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 UOverlayWidgetController* AGameHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -14,6 +15,11 @@ UOverlayWidgetController* AGameHUD::GetOverlayWidgetController(const FWidgetCont
 UAttributeMenuWidgetController* AGameHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
 {
 	return CreateOrGetWidgetController<UAttributeMenuWidgetController>(AttributeMenuWidgetController, AttributeMenuWidgetControllerClass, WCParams);
+}
+
+USpellMenuWidgetController* AGameHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	return CreateOrGetWidgetController<USpellMenuWidgetController>(SpellMenuWidgetController, SpellMenuWidgetControllerClass, WCParams);
 }
 
 void AGameHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)

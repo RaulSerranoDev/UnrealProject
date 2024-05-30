@@ -12,22 +12,40 @@
 #include "Player/GamePlayerState.h"
 #include "UI/WidgetController/GameWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 #include "Game/MainGameModeBase.h"
 #include "AbilityTypes.h"
 #include "Interaction/CombatInterface.h"
 
-UOverlayWidgetController* UGameAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+bool UGameAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AGameHUD*& OutHUD)
 {
 	if (APlayerController* PC = WorldContextObject->GetWorld()->GetFirstPlayerController())
 	{
-		if (AGameHUD* GameHUD = PC->GetHUD<AGameHUD>())
+		OutHUD = PC->GetHUD<AGameHUD>();
+		if (OutHUD)
 		{
 			AGamePlayerState* PS = PC->GetPlayerState<AGamePlayerState>();
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return GameHUD->GetOverlayWidgetController(WidgetControllerParams);
+
+			OutWCParams.PlayerController = PC;
+			OutWCParams.PlayerState = PS;
+			OutWCParams.AbilitySystemComponent = ASC;
+			OutWCParams.AttributeSet = AS;
+
+			return true;
 		}
+	}
+	return false;
+}
+
+UOverlayWidgetController* UGameAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AGameHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
+	{
+		return HUD->GetOverlayWidgetController(WCParams);
 	}
 
 	return nullptr;
@@ -35,16 +53,23 @@ UOverlayWidgetController* UGameAbilitySystemLibrary::GetOverlayWidgetController(
 
 UAttributeMenuWidgetController* UGameAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
 {
-	if (APlayerController* PC = WorldContextObject->GetWorld()->GetFirstPlayerController())
+	FWidgetControllerParams WCParams;
+	AGameHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
 	{
-		if (AGameHUD* GameHUD = PC->GetHUD<AGameHUD>())
-		{
-			AGamePlayerState* PS = PC->GetPlayerState<AGamePlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return GameHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
-		}
+		return HUD->GetAttributeMenuWidgetController(WCParams);
+	}
+
+	return nullptr;
+}
+
+USpellMenuWidgetController* UGameAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AGameHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
+	{
+		return HUD->GetSpellMenuWidgetController(WCParams);
 	}
 
 	return nullptr;

@@ -227,6 +227,51 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Summon,
 	"Summon Ability Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_HitReact,
+	"Abilities.HitReact",
+	"HitReact Ability Tag"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status,
+	"Abilities.Status",
+	"Status"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Locked,
+	"Abilities.Status.Locked",
+	"Locked Status"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Elegible,
+	"Abilities.Status.Elegible",
+	"Elegible Status"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Unlocked,
+	"Abilities.Status.Unlocked",
+	"Unlocked Status"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Equipped,
+	"Abilities.Status.Equipped",
+	"Equipped Status"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Type_Offensive,
+	"Abilities.Type.Offensive",
+	"Offensive Type"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Type_Passive,
+	"Abilities.Type.Passive",
+	"Passive Type"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Type_None,
+	"Abilities.Type.None",
+	"None Type"
+)
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
 	"Abilities.Fire.FireBolt",
 	"FireBolt Ability Tag"

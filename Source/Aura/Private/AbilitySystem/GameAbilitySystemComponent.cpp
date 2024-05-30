@@ -21,6 +21,7 @@ void UGameAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 		if (const UGameGameplayAbility* GameAbility = Cast<UGameGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(GameAbility->StartupInputTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(TAG_Abilities_Status_Equipped);
 			GiveAbility(AbilitySpec);
 		}
 	}
@@ -98,6 +99,19 @@ FGameplayTag UGameAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 	for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
 	{
 		if (Tag.MatchesTag(TAG_InputTag))
+		{
+			return Tag;
+		}
+	}
+	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
+	return FGameplayTag();
+}
+
+FGameplayTag UGameAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(TAG_Abilities_Status))
 		{
 			return Tag;
 		}

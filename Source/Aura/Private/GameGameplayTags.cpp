@@ -169,6 +169,16 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_4,
 	"Input Tag for 4 key"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_Passive_1,
+	"InputTag.Passive.1",
+	"Input Tag for Passive Ability 1"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_InputTag_Passive_2,
+	"InputTag.Passive.2",
+	"Input Tag for Passive Ability 2"
+)
+
 /*
 *  Damage Types
 */

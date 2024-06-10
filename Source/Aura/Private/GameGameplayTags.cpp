@@ -242,8 +242,8 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Locked,
 	"Locked Status"
 )
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Elegible,
-	"Abilities.Status.Elegible",
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Status_Eligible,
+	"Abilities.Status.Eligible",
 	"Elegible Status"
 )
 

@@ -34,6 +34,7 @@ void UGameWidgetController::BroadcastAbilityInfo()
 		{
 			FGameAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(UGameAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
 			Info.InputTag = UGameAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			Info.StatusTag = UGameAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		});
 

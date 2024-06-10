@@ -26,6 +26,9 @@ struct FGameAbilityInfo
 
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag AbilityTag = FGameplayTag();
+
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayTag StatusTag = FGameplayTag();
 };
 
 /**

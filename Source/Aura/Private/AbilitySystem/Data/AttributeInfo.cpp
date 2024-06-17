@@ -10,8 +10,7 @@ FGameAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& A
 	FGameAttributeInfo GameAttributeInfo = FGameAttributeInfo();
 	if (AttributesInformation.Contains(AttributeTag))
 	{
-		GameAttributeInfo.AttributeName = AttributesInformation[AttributeTag].AttributeName;
-		GameAttributeInfo.AttributeDescription = AttributesInformation[AttributeTag].AttributeDescription;
+		GameAttributeInfo = AttributesInformation[AttributeTag];
 		GameAttributeInfo.AttributeTag = AttributeTag;
 		return GameAttributeInfo;
 	}

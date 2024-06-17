@@ -277,6 +277,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
 	"FireBolt Ability Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Lightning_Electrocute,
+	"Abilities.Lightning.Electrocute",
+	"Electrocute Ability Tag"
+)
+
 /*
 *  Cooldown
 */

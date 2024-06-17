@@ -10,9 +10,7 @@ FGameAbilityInfo UAbilityInfo::FindAbilityInfoForTag(const FGameplayTag& Ability
 	FGameAbilityInfo GameAbilityInfo = FGameAbilityInfo();
 	if (AbilitiesInfo.Contains(AbilityTag))
 	{
-		GameAbilityInfo.Icon = AbilitiesInfo[AbilityTag].Icon;
-		GameAbilityInfo.BackgroundMaterial = AbilitiesInfo[AbilityTag].BackgroundMaterial;
-		GameAbilityInfo.CooldownTag = AbilitiesInfo[AbilityTag].CooldownTag;
+		GameAbilityInfo = AbilitiesInfo[AbilityTag];
 		GameAbilityInfo.AbilityTag = AbilityTag;
 		return GameAbilityInfo;
 	}

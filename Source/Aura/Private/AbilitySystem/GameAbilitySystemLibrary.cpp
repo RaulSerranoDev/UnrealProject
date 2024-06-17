@@ -119,6 +119,12 @@ UCharacterClassInfo* UGameAbilitySystemLibrary::GetCharacterClassInfo(const UObj
 	return GM ? GM->CharacterClassInfo : nullptr;
 }
 
+UAbilityInfo* UGameAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	AMainGameModeBase* GM = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	return GM ? GM->AbilityInfo : nullptr;
+}
+
 bool UGameAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());

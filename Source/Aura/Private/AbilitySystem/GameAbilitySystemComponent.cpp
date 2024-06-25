@@ -7,6 +7,8 @@
 #include "Aura/GameLogChannels.h"
 #include "Interaction/PlayerInterface.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UGameAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -120,6 +122,22 @@ FGameplayTag UGameAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbili
 	return FGameplayTag();
 }
 
+FGameplayAbilitySpec* UGameAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	FScopedAbilityListLock ActiveScopeLoc(*this);
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability->AbilityTags)
+		{
+			if (Tag.MatchesTag(AbilityTag))
+			{
+				return &AbilitySpec;
+			}
+		}
+	}
+	return nullptr;
+}
+
 void UGameAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
 	if (!GetAvatarActor()->Implements<UPlayerInterface>()
@@ -141,6 +159,25 @@ void UGameAbilitySystemComponent::ServerUpdateAttribute_Implementation(const FGa
 		return;
 
 	IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+}
+
+void UGameAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
+{
+	UAbilityInfo* AbilityInfo = UGameAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	for (const auto& TagAbility : AbilityInfo->AbilitiesInfo)
+	{
+		if (!TagAbility.Key.IsValid()) continue;
+		const FGameAbilityInfo& Info = TagAbility.Value;
+		if (Level < Info.LevelRequirement) continue;
+
+		if (!GetSpecFromAbilityTag(Info.AbilityTag))
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Info.Ability, 1);
+			AbilitySpec.DynamicAbilityTags.AddTag(TAG_Abilities_Status_Eligible);
+			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+		}
+	}
 }
 
 void UGameAbilitySystemComponent::OnRep_ActivateAbilities()

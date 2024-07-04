@@ -41,6 +41,11 @@ void AGamePlayerState::AddToXP(int32 InXP)
 	{
 		AddToLevel(1);
 
+		if (UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent))
+		{
+			ASC->UpdateAbilityStatuses(Level);
+		}
+
 		const int32 AttributePointsReward = LevelUpInfo->LevelUpInfo[Level - 1].AttributePointReward;;
 		const int32 SpellPointsReward = LevelUpInfo->LevelUpInfo[Level - 1].SpellPointReward;
 

@@ -92,7 +92,6 @@ FGameplayTag UGameAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayA
 			}
 		}
 	}
-	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
 	return FGameplayTag();
 }
 
@@ -105,7 +104,6 @@ FGameplayTag UGameAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 			return Tag;
 		}
 	}
-	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
 	return FGameplayTag();
 }
 
@@ -118,7 +116,6 @@ FGameplayTag UGameAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbili
 			return Tag;
 		}
 	}
-	UE_LOG(LogGame, Error, TEXT("Failed to GetAbility in %hs"), __FUNCTION__);
 	return FGameplayTag();
 }
 
@@ -170,12 +167,13 @@ void UGameAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 		const FGameAbilityInfo& Info = TagAbility.Value;
 		if (Level < Info.LevelRequirement) continue;
 
-		if (!GetSpecFromAbilityTag(Info.AbilityTag))
+		if (!GetSpecFromAbilityTag(TagAbility.Key))
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Info.Ability, 1);
 			AbilitySpec.DynamicAbilityTags.AddTag(TAG_Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientUpdateAbilityStatus(TagAbility.Key, TAG_Abilities_Status_Eligible);
 		}
 	}
 }
@@ -189,6 +187,11 @@ void UGameAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGivenDelegate.Broadcast();
 	}
+}
+
+void UGameAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 void UGameAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,

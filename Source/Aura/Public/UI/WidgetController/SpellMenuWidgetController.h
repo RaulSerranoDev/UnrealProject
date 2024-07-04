@@ -18,4 +18,8 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
+public:
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Points")
+	FOnPlayerStatChangedSignature SpellPointsChangedDelegate;
+
 };

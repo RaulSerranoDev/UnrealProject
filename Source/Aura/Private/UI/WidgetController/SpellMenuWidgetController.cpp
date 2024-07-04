@@ -5,12 +5,15 @@
 
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Player/GamePlayerState.h"
 
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
 	Super::BroadcastInitialValues();
 
 	BroadcastAbilityInfo();
+
+	SpellPointsChangedDelegate.Broadcast(GetPS()->GetSpellPoints());
 }
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
@@ -26,4 +29,11 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 				AbilityInfoDelegate.Broadcast(Info);
 			}
 		});
+
+	GetPS()->OnSpellPointsChangedDelegate.AddLambda(
+		[this](const int32& NewSpellPoints)
+		{
+			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
+		}
+	);
 }

@@ -19,7 +19,6 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	}
 
 	AttributePointsChangedDelegate.Broadcast(GetPS()->GetAttributePoints());
-	SpellPointsChangedDelegate.Broadcast(GetPS()->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -41,12 +40,6 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		[this](const int32& NewAttributePoints)
 		{
 			AttributePointsChangedDelegate.Broadcast(NewAttributePoints);
-		}
-	);
-	GetPS()->OnSpellPointsChangedDelegate.AddLambda(
-		[this](const int32& NewSpellPoints)
-		{
-			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
 		}
 	);
 }

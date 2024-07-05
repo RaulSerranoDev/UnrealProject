@@ -20,7 +20,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	Super::BindCallbacksToDependencies();
 
-	GetASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 NewLevel)
 		{
 			if (AbilityInfo)
 			{
@@ -36,4 +36,16 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			SpellPointsChangedDelegate.Broadcast(NewSpellPoints);
 		}
 	);
+}
+
+void USpellMenuWidgetController::SpendPointButtonPressed()
+{
+	if (!GetASC()) return;
+
+	GetASC()->ServerSpendSpellPoint(SelectedAbility);
+}
+
+void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
+{
+	SelectedAbility = AbilityTag;
 }

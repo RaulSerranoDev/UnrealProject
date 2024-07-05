@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UI/WidgetController/GameWidgetController.h"
+#include "GameplayTagContainer.h"
 #include "SpellMenuWidgetController.generated.h"
 
 /**
@@ -18,8 +19,17 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
+	UFUNCTION(BlueprintCallable)
+	void SpendPointButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
+	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
+
 public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Points")
 	FOnPlayerStatChangedSignature SpellPointsChangedDelegate;
+
+private:
+	FGameplayTag SelectedAbility;
 
 };

@@ -216,7 +216,14 @@ bool UGameAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 	}
 
 	const UAbilityInfo* AbilityInfo = UGameAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-	OutDescription = UGameGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	if (!AbilityInfo || !AbilityTag.IsValid())
+	{
+		OutDescription = FString();
+	}
+	else
+	{
+		OutDescription = UGameGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	}
 	OutNextLevelDescription = FString();
 	return false;
 }

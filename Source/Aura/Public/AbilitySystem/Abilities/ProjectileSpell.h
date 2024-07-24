@@ -24,10 +24,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, const FVector Offset = FVector::ZeroVector, bool bOverridePitch = false, float PitchOverride = 0.f);
 
+	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
+	int32 GetNumProjectiles(int32 Level = 1) const;
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AProjectile> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	int32 MaxNumProjectiles = 5;
+	UPROPERTY(EditDefaultsOnly)
+	FScalableFloat NumProjectiles = 1;
 
 };

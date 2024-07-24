@@ -26,7 +26,6 @@ public:
 	static FString GetLockedDescription(int32 Level);
 
 protected:
-
 	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
 	int32 GetManaCost(int32 Level = 1) const;
 

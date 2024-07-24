@@ -70,3 +70,8 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, 
 
 	Projectile->FinishSpawning(SpawnTransform);
 }
+
+int32 UProjectileSpell::GetNumProjectiles(int32 Level) const
+{
+	return NumProjectiles.GetValueAtLevel(Level);
+}

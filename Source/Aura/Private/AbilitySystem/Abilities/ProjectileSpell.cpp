@@ -10,6 +10,24 @@
 #include "Interaction/CombatInterface.h"
 #include "GameGameplayTags.h"
 
+FString UProjectileSpell::GetDescription(int32 Level)
+{
+	int32 MinDamage, MaxDamage;
+	GetDamageRange(TAG_Damage_Fire, Level, MinDamage, MaxDamage);
+
+	return FString::Printf(TEXT("<Title>FIRE BOLT</>\n\nLaunches %d bolts of fire, exploding on impact and dealing: <Damage>%d - %d</> fire damage with a chance to burn\n\n<Small>Level: </><Level>%d</>"),
+		FMath::Min(Level, MaxNumProjectiles), MinDamage, MaxDamage, Level);
+}
+
+FString UProjectileSpell::GetNextLevelDescription(int32 Level)
+{
+	int32 MinDamage, MaxDamage;
+	GetDamageRange(TAG_Damage_Fire, Level, MinDamage, MaxDamage);
+
+	return FString::Printf(TEXT("<Title>NEXT LEVEL:</>\n\nLaunches %d bolts of fire, exploding on impact and dealing: <Damage>%d - %d</> fire damage with a chance to burn\n\n<Small>Level: </><Level>%d</>"),
+		FMath::Min(Level, MaxNumProjectiles), MinDamage, MaxDamage, Level);
+}
+
 void UProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {

@@ -3,12 +3,12 @@
 
 #include "AbilitySystem/Abilities/GameGameplayAbility.h"
 
-FString UGameGameplayAbility::GetDescription(int32 Level)
+FString UGameGameplayAbility::GetDescription_Implementation(int32 Level)
 {
 	return FString::Printf(TEXT("%s, <Level>%d</>"), L"Default Ability Name - LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum", Level);
 }
 
-FString UGameGameplayAbility::GetNextLevelDescription(int32 Level)
+FString UGameGameplayAbility::GetNextLevelDescription_Implementation(int32 Level)
 {
 	return FString::Printf(TEXT("Next Level: <Level>%d</>\nCauses much more damage "), Level);
 }

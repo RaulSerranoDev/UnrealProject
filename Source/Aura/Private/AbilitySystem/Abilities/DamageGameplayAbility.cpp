@@ -22,7 +22,7 @@ FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetA
 	return DamageSpecHandle.Data->GetContext();
 }
 
-void UDamageGameplayAbility::GetDamageRange(const FGameplayTag& DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage)
+void UDamageGameplayAbility::GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage)
 {
 	OutMinDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMin.GetValueAtLevel(Level));
 	OutMaxDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMax.GetValueAtLevel(Level));

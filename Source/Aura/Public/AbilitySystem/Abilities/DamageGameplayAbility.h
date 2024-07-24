@@ -29,7 +29,8 @@ public:
 	FGameplayEffectContextHandle CauseDamage(AActor* TargetActor);
 
 protected:
-	void GetDamageRange(const FGameplayTag& DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage);
+	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
+	void GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")

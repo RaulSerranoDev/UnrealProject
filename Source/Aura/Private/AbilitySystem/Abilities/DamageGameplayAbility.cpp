@@ -24,6 +24,7 @@ FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetA
 
 void UDamageGameplayAbility::GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage)
 {
+	checkf(DamageTypes.Contains(DamageTypeTag), TEXT("GameplayAbility [%s] does not contain DamageType [%s]"), *GetNameSafe(this), *DamageTypeTag.ToString());
 	OutMinDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMin.GetValueAtLevel(Level));
 	OutMaxDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMax.GetValueAtLevel(Level));
 }

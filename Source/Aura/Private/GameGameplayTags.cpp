@@ -217,6 +217,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities,
 	"Abilities Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_None,
+	"Abilities.None",
+	"None Ability Tag"
+)
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Attack,
 	"Abilities.Attack",
 	"Attack Ability Tag"

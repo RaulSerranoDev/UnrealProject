@@ -106,5 +106,5 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 	SlotInfo.InputTag = Slot;
 	AbilityInfoDelegate.Broadcast(SlotInfo);
 
-	StopWaitingForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityTypeTag);
+	StopWaitingForEquipDelegate.Broadcast(SlotInfo.AbilityTypeTag);
 }

@@ -244,8 +244,9 @@ void UGameAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 				AbilitySpec->DynamicAbilityTags.AddTag(TAG_Abilities_Status_Equipped);
 			}
 			MarkAbilitySpecDirty(*AbilitySpec);
+
+			ClientEquipAbility(AbilityTag, TAG_Abilities_Status_Equipped, Slot, PrevSlot);
 		}
-		ClientEquipAbility(AbilityTag, TAG_Abilities_Status_Equipped, Slot, PrevSlot);
 	}
 }
 

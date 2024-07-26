@@ -38,6 +38,23 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 	);
 }
 
+void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
+{
+	if (bWaitingForEquipSelection)
+	{
+		const FGameplayTag AbilityTypeTag = AbilityInfo->FindAbilityInfoForTag(SelectedAbility).AbilityTypeTag;
+		StopWaitingForEquipDelegate.Broadcast(AbilityTypeTag);
+		bWaitingForEquipSelection = false;
+	}
+
+	SelectedAbility = AbilityTag;
+}
+
+bool USpellMenuWidgetController::GetSelectedAbilityDescriptions(FString& OutDescription, FString& OutNextLevelDescription)
+{
+	return GetASC()->GetDescriptionsByAbilityTag(SelectedAbility, OutDescription, OutNextLevelDescription);
+}
+
 void USpellMenuWidgetController::SpendPointButtonPressed()
 {
 	if (!GetASC()) return;
@@ -45,12 +62,10 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 	GetASC()->ServerSpendSpellPoint(SelectedAbility);
 }
 
-void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
+void USpellMenuWidgetController::EquipButtonPressed()
 {
-	SelectedAbility = AbilityTag;
-}
+	const FGameplayTag AbilityTypeTag = AbilityInfo->FindAbilityInfoForTag(SelectedAbility).AbilityTypeTag;
 
-bool USpellMenuWidgetController::GetSelectedAbilityDescriptions(FString& OutDescription, FString& OutNextLevelDescription)
-{
-	return GetASC()->GetDescriptionsByAbilityTag(SelectedAbility, OutDescription, OutNextLevelDescription);
+	WaitForEquipDelegate.Broadcast(AbilityTypeTag);
+	bWaitingForEquipSelection = true;
 }

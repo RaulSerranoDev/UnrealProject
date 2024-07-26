@@ -254,7 +254,7 @@ void UGameAbilitySystemComponent::ClientEquipAbility(const FGameplayTag& Ability
 	AbilityEquipped.Broadcast(AbilityTag, Status, Slot, PreviousSlot);
 }
 
-bool UGameAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription)
+bool UGameAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, const UAbilityInfo* AbilityInfo, FString& OutDescription, FString& OutNextLevelDescription)
 {
 	if (const FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
 	{
@@ -266,7 +266,6 @@ bool UGameAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 		}
 	}
 
-	const UAbilityInfo* AbilityInfo = UGameAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
 	if (!AbilityInfo || !AbilityTag.IsValid())
 	{
 		OutDescription = FString();

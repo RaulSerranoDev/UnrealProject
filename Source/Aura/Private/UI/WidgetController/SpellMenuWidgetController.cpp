@@ -55,7 +55,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 
 bool USpellMenuWidgetController::GetSelectedAbilityDescriptions(FString& OutDescription, FString& OutNextLevelDescription)
 {
-	return GetASC()->GetDescriptionsByAbilityTag(SelectedAbility, OutDescription, OutNextLevelDescription);
+	return GetASC()->GetDescriptionsByAbilityTag(SelectedAbility, AbilityInfo, OutDescription, OutNextLevelDescription);
 }
 
 void USpellMenuWidgetController::SpendPointButtonPressed()

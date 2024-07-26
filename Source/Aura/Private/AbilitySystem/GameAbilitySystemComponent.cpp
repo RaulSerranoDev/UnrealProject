@@ -234,6 +234,7 @@ void UGameAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 			// Remove this InputTag (slot) from any Ability that has it.
 			ClearAbilitiesOfSlot(Slot);
 			// Clear this ability's slot, just in case, it's a different slot
+			// Exemple : It is on LMB, we move it to RMB. We have clear RMB with ClearAbilitiesOfSlot, we need to remove the InputTag LM
 			ClearSlot(AbilitySpec);
 			// Now, assigh this ability to this slot
 			AbilitySpec->DynamicAbilityTags.AddTag(Slot);

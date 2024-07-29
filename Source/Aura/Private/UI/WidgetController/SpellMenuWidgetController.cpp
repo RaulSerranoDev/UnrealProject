@@ -107,4 +107,5 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 	AbilityInfoDelegate.Broadcast(SlotInfo);
 
 	StopWaitingForEquipDelegate.Broadcast(SlotInfo.AbilityTypeTag);
+	SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
 }

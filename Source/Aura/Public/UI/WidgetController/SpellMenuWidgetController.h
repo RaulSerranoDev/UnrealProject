@@ -8,6 +8,7 @@
 #include "SpellMenuWidgetController.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForEquipSelectionSignature, const FGameplayTag&, AbilityTypeTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpellGlobeReassignedSignature, const FGameplayTag&, AbilityTypeTag);
 
 /**
  *
@@ -47,6 +48,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Equip")
 	FWaitForEquipSelectionSignature StopWaitingForEquipDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Equip")
+	FSpellGlobeReassignedSignature SpellGlobeReassignedDelegate;
 
 private:
 	FGameplayTag SelectedAbility;

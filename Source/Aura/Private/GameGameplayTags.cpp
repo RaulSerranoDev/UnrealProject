@@ -311,6 +311,26 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Physical,
 	"Debuff for Physical Damage"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Chance,
+	"Debuff.Chance",
+	"Debuff Chance"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Damage,
+	"Debuff.Damage",
+	"Debuff Damage"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Duration,
+	"Debuff.Duration",
+	"Debuff Duration"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Frequency,
+	"Debuff.Frequency",
+	"Debuff Frequency"
+)
+
 /*
 *  Cooldown
 */

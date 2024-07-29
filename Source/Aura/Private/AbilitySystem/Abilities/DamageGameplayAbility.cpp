@@ -8,10 +8,10 @@
 FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
-	for (TTuple<FGameplayTag, FDamageRange> Pair : DamageTypes)
+	for (TTuple<FGameplayTag, FDamageEffect> Pair : DamageTypes)
 	{
-		const float ScaledMagnitudeMin = Pair.Value.DamageMin.GetValueAtLevel(GetAbilityLevel());
-		const float ScaledMagnitudeMax = Pair.Value.DamageMax.GetValueAtLevel(GetAbilityLevel());
+		const float ScaledMagnitudeMin = Pair.Value.Damage.Min.GetValueAtLevel(GetAbilityLevel());
+		const float ScaledMagnitudeMax = Pair.Value.Damage.Max.GetValueAtLevel(GetAbilityLevel());
 		const float ScaledDamage = FMath::RandRange(ScaledMagnitudeMin, ScaledMagnitudeMax);
 
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, Pair.Key, ScaledDamage);
@@ -25,6 +25,6 @@ FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetA
 void UDamageGameplayAbility::GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage)
 {
 	checkf(DamageTypes.Contains(DamageTypeTag), TEXT("GameplayAbility [%s] does not contain DamageType [%s]"), *GetNameSafe(this), *DamageTypeTag.ToString());
-	OutMinDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMin.GetValueAtLevel(Level));
-	OutMaxDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].DamageMax.GetValueAtLevel(Level));
+	OutMinDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].Damage.Min.GetValueAtLevel(Level));
+	OutMaxDamage = FMath::RoundToInt(DamageTypes[DamageTypeTag].Damage.Max.GetValueAtLevel(Level));
 }

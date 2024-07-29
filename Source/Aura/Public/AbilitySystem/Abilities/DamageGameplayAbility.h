@@ -7,13 +7,30 @@
 #include "DamageGameplayAbility.generated.h"
 
 USTRUCT(BlueprintType)
-struct FDamageRange
+struct FMinMaxScalableFloat
 {
 	GENERATED_BODY()
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
-	FScalableFloat DamageMin = FScalableFloat();
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
-	FScalableFloat DamageMax = FScalableFloat();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FScalableFloat Min = FScalableFloat(0.9f);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FScalableFloat Max = FScalableFloat(1.1f);
+};
+
+USTRUCT(BlueprintType)
+struct FDamageEffect
+{
+	GENERATED_BODY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FMinMaxScalableFloat Damage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FMinMaxScalableFloat DebuffChance;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FMinMaxScalableFloat DebuffDamage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FMinMaxScalableFloat DebuffFrequency;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FMinMaxScalableFloat DebuffDuration;
 };
 
 /**
@@ -36,7 +53,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta=(Categories="Damage"))
-	TMap<FGameplayTag, FDamageRange> DamageTypes;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta = (Categories = "Damage"))
+	TMap<FGameplayTag, FDamageEffect> DamageTypes;
 
 };

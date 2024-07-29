@@ -20,10 +20,10 @@ struct FGameAbilityInfo
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<const UMaterialInterface> BackgroundMaterial = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Cooldown"))
 	FGameplayTag CooldownTag = FGameplayTag();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Abilities.Type"))
 	FGameplayTag AbilityTypeTag = FGameplayTag();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -53,6 +53,6 @@ class AURA_API UAbilityInfo : public UDataAsset
 public:
 	FGameAbilityInfo FindAbilityInfoForTag(const FGameplayTag& AbilityTag, bool bLogNotFound = false) const;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInformation")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInformation", meta = (Categories = "Abilities"))
 	TMap<FGameplayTag, FGameAbilityInfo> AbilitiesInfo;
 };

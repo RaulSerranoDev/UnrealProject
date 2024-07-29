@@ -69,6 +69,11 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Type_None);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Fire_FireBolt);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Lightning_Electrocute);
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Burn);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Stun);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Arcane);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Physical);
+
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Cooldown_Fire_FireBolt);
 
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_CombatSocket_Weapon);
@@ -100,6 +105,7 @@ public:
 	static void InitalizeNativeGameplayTags();
 
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 
 private:
 	static FGameGameplayTags GameplayTags;

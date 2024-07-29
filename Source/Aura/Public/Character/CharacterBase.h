@@ -73,10 +73,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup|Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
-	UPROPERTY(EditAnywhere, Category = "Setup|Combat")
+	UPROPERTY(EditAnywhere, Category = "Setup|Combat", meta = (Categories = "CombatSocket"))
 	TMap<FGameplayTag, FName> WeaponTagNameSocketMap;
 
-	UPROPERTY(EditAnywhere, Category = "Setup|Combat")
+	UPROPERTY(EditAnywhere, Category = "Setup|Combat", meta = (Categories = "CombatSocket"))
 	TMap<FGameplayTag, FName> MeshTagNameSocketMap;
 
 	UPROPERTY()

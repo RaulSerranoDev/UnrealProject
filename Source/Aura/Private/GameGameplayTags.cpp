@@ -288,6 +288,30 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Lightning_Electrocute,
 )
 
 /*
+*  Debuffs
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Burn,
+	"Debuff.Burn",
+	"Debuff for Fire Damage"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Stun,
+	"Debuff.Stun",
+	"Debuff for Lightning Damage"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Arcane,
+	"Debuff.Arcane",
+	"Debuff for Arcane Damage"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Physical,
+	"Debuff.Physical",
+	"Debuff for Physical Damage"
+)
+
+/*
 *  Cooldown
 */
 
@@ -358,8 +382,19 @@ FGameGameplayTags FGameGameplayTags::GameplayTags;
 
 void FGameGameplayTags::InitalizeNativeGameplayTags()
 {
+	/*
+	*  Map of Damage Types to Resistances
+	*/
 	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Fire, TAG_Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Lightning, TAG_Attributes_Resistance_Lightning);
 	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Arcane, TAG_Attributes_Resistance_Arcane);
 	GameplayTags.DamageTypesToResistances.Add(TAG_Damage_Physical, TAG_Attributes_Resistance_Physical);
+
+	/*
+	*  Map of Damage Types to Debuffs
+	*/
+	GameplayTags.DamageTypesToDebuffs.Add(TAG_Damage_Fire, TAG_Debuff_Burn);
+	GameplayTags.DamageTypesToDebuffs.Add(TAG_Damage_Lightning, TAG_Debuff_Stun);
+	GameplayTags.DamageTypesToDebuffs.Add(TAG_Damage_Arcane, TAG_Debuff_Arcane);
+	GameplayTags.DamageTypesToDebuffs.Add(TAG_Damage_Physical, TAG_Debuff_Physical);
 }

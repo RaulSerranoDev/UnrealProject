@@ -19,7 +19,7 @@ struct FUIWidgetRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Categories = "Message"))
 	FGameplayTag MessageTag = FGameplayTag();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

@@ -7,6 +7,8 @@
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Player/GamePlayerState.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "GameGameplayTags.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -44,6 +46,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	if (GetASC())
 	{
+		GetASC()->AbilityEquipped.AddUObject(this, &ThisClass::OnAbilityEquipped);
+
 		if (GetASC()->bStartupAbilitiesGiven)
 		{
 			BroadcastAbilityInfo();
@@ -92,4 +96,19 @@ void UOverlayWidgetController::OnXPChanged(const int32& NewXP)
 
 		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}
+}
+
+void UOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const
+{
+	FGameAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = TAG_Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreviousSlot;
+	LastSlotInfo.AbilityTag = TAG_Abilities_None;
+	// Broadcast empty info if PreviousSlot is a valid Slot. Only if equipping an already-equipped spell
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FGameAbilityInfo SlotInfo = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	SlotInfo.StatusTag = Status;
+	SlotInfo.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(SlotInfo);
 }

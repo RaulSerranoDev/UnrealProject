@@ -28,6 +28,8 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 	Params.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	Params.AbilityLevel = GetAbilityLevel();
 
+	checkf(DamageTypes.Num() <= 1, TEXT("GameplayAbility [%s] does not support yet more than 1 Damage Type"), *GetNameSafe(this));
+
 	for (TTuple<FGameplayTag, FDamageEffect> Pair : DamageTypes)
 	{
 		FDamageEffectType DamageEffectType;

@@ -20,7 +20,14 @@ public:
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 
 private:
+	void DetermineDebuff(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+		const FGameplayEffectSpec& Spec,
+		FAggregatorEvaluateParameters EvaluationParameters,
+		const TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition>& InTagsToDefs) const;
+
+private:
 	const bool bBlockErrorTolerance = true;
 	const bool bCritErrorTolerance = true;
+	const bool bDebuffErrorTolerance = true;
 
 };

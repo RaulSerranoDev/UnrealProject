@@ -10,16 +10,38 @@ FGameplayEffectContextHandle UDamageGameplayAbility::CauseDamage(AActor* TargetA
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
 	for (TTuple<FGameplayTag, FDamageEffect> Pair : DamageTypes)
 	{
-		const float ScaledMagnitudeMin = Pair.Value.Damage.Min.GetValueAtLevel(GetAbilityLevel());
-		const float ScaledMagnitudeMax = Pair.Value.Damage.Max.GetValueAtLevel(GetAbilityLevel());
-		const float ScaledDamage = FMath::RandRange(ScaledMagnitudeMin, ScaledMagnitudeMax);
-
+		const float ScaledDamage = Pair.Value.Damage.GetValueInRange(GetAbilityLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, Pair.Key, ScaledDamage);
 	}
 
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 
 	return DamageSpecHandle.Data->GetContext();
+}
+
+FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor) const
+{
+	FDamageEffectParams Params;
+	Params.WorldContextObject = GetAvatarActorFromActorInfo();
+	Params.DamageEffectClass = DamageEffectClass;
+	Params.SourceASC = GetAbilitySystemComponentFromActorInfo();
+	Params.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	Params.AbilityLevel = GetAbilityLevel();
+
+	for (TTuple<FGameplayTag, FDamageEffect> Pair : DamageTypes)
+	{
+		FDamageEffectType DamageEffectType;
+
+		DamageEffectType.Damage = Pair.Value.Damage.GetValueInRange(Params.AbilityLevel);
+		DamageEffectType.DebuffChance = Pair.Value.DebuffChance.GetValueInRange(Params.AbilityLevel);
+		DamageEffectType.DebuffDamage = Pair.Value.DebuffDamage.GetValueInRange(Params.AbilityLevel);
+		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
+		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
+
+		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
+	}
+
+	return Params;
 }
 
 void UDamageGameplayAbility::GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage)

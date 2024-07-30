@@ -7,6 +7,7 @@
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemComponent.h"
 #include "DrawDebugHelpers.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 #include "UI/HUD/GameHUD.h"
 #include "Player/GamePlayerState.h"
@@ -16,6 +17,7 @@
 #include "Game/MainGameModeBase.h"
 #include "AbilityTypes.h"
 #include "Interaction/CombatInterface.h"
+#include "GameGameplayTags.h"
 
 bool UGameAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AGameHUD*& OutHUD)
 {
@@ -222,6 +224,25 @@ int32 UGameAbilitySystemLibrary::GetXPReward(const UObject* WorldContextObject, 
 		return static_cast<int32>(DefaultInfo.XPReward.GetValueAtLevel(Level));
 	}
 	return 0;
+}
+
+FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams) const
+{
+	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(DamageEffectParams.SourceASC->GetAvatarActor());
+
+	for (const TTuple<FGameplayTag, FDamageEffectType>& Pair : DamageEffectParams.DamageTypes)
+	{
+		const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceASC->MakeOutgoingSpec(DamageEffectParams.DamageEffectClass, DamageEffectParams.AbilityLevel, EffectContextHandle);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, Pair.Value.Damage);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Debuff_Chance, Pair.Value.DebuffChance);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Debuff_Damage, Pair.Value.DebuffDamage);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Debuff_Duration, Pair.Value.DebuffDuration);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, TAG_Debuff_Frequency, Pair.Value.DebuffFrequency);
+		DamageEffectParams.TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	}
+
+	return EffectContextHandle;
 }
 
 void UGameAbilitySystemLibrary::ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC)

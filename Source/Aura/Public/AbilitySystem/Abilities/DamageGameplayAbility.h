@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/GameGameplayAbility.h"
+#include "AbilityTypes.h"
 #include "DamageGameplayAbility.generated.h"
 
 USTRUCT(BlueprintType)
@@ -15,6 +16,11 @@ struct FMinMaxScalableFloat
 	FScalableFloat Min = FScalableFloat(0.9f);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FScalableFloat Max = FScalableFloat(1.1f);
+
+	float GetValueInRange(float Level) const
+	{
+		return FMath::RandRange(Min.GetValueAtLevel(Level), Max.GetValueAtLevel(Level));
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -44,6 +50,8 @@ class AURA_API UDamageGameplayAbility : public UGameGameplayAbility
 public:
 	UFUNCTION(BlueprintCallable)
 	FGameplayEffectContextHandle CauseDamage(AActor* TargetActor);
+
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
 protected:
 	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))

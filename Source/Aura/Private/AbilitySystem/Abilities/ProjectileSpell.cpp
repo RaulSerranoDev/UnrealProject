@@ -59,10 +59,7 @@ void UProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, 
 
 	for (auto& Pair : DamageTypes)
 	{
-		const float ScaledMagnitudeMin = Pair.Value.Damage.Min.GetValueAtLevel(GetAbilityLevel());
-		const float ScaledMagnitudeMax = Pair.Value.Damage.Max.GetValueAtLevel(GetAbilityLevel());
-		const float ScaledDamage = FMath::RandRange(ScaledMagnitudeMin, ScaledMagnitudeMax);
-
+		const float ScaledDamage = Pair.Value.Damage.GetValueInRange(GetAbilityLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
 	}
 

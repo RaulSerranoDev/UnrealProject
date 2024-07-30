@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Data/CharacterClassInfo.h"
+#include "AbilityTypes.h"
 #include "GameAbilitySystemLibrary.generated.h"
 
 struct FWidgetControllerParams;
@@ -71,6 +72,9 @@ public:
 	static bool IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor);
 
 	static int32 GetXPReward(const UObject* WorldContextObject, ECharacterClass CharacterClass, const int32& Level);
+
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|DamageEffects")
+	FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams) const;
 
 private:
 	static void ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC);

@@ -226,7 +226,7 @@ int32 UGameAbilitySystemLibrary::GetXPReward(const UObject* WorldContextObject, 
 	return 0;
 }
 
-FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams) const
+FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
 {
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceASC->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(DamageEffectParams.SourceASC->GetAvatarActor());

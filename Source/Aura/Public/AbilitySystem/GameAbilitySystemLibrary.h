@@ -74,7 +74,7 @@ public:
 	static int32 GetXPReward(const UObject* WorldContextObject, ECharacterClass CharacterClass, const int32& Level);
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|DamageEffects")
-	FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams) const;
+	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
 
 private:
 	static void ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC);

@@ -38,9 +38,7 @@ void AProjectile::Destroyed()
 {
 	if ((!bClientHit && !HasAuthority()) || (!bServerHit && HasAuthority()))
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		bClientHit = true;
+		OnHit();
 	}
 	Super::Destroyed();
 }
@@ -57,23 +55,19 @@ void AProjectile::BeginPlay()
 void AProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor == GetInstigator() || !DamageEffectSpecHandle.IsValid() || !DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data->GetContext().GetEffectCauser() == OtherActor) return;
-	if (UGameAbilitySystemLibrary::IsOnSameTeam(DamageEffectSpecHandle.Data->GetContext().GetEffectCauser(), OtherActor)) return;
+	if (UGameAbilitySystemLibrary::IsOnSameTeam(GetInstigator(), OtherActor)) return;
 
 	if (!bClientHit)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		bClientHit = true;
+		OnHit();
 	}
 
 	if (HasAuthority())
 	{
-		UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetInstigator());
-		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
-		if (SourceASC && TargetASC)
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			SourceASC->ApplyGameplayEffectSpecToTarget(*DamageEffectSpecHandle.Data, TargetASC);
+			DamageEffectParams.TargetASC = TargetASC;
+			UGameAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 
 		bServerHit = true;
@@ -84,4 +78,11 @@ void AProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		bClientHit = true;
 		SetHidden(true);
 	}
+}
+
+void AProjectile::OnHit()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	bClientHit = true;
 }

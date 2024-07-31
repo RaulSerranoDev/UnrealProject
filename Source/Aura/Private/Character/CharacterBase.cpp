@@ -8,6 +8,8 @@
 
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Aura/Aura.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "GameGameplayTags.h"
 
 ACharacterBase::ACharacterBase()
 {
@@ -23,6 +25,10 @@ ACharacterBase::ACharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), "WeaponHandSocket");
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
+	BurnDebuffComponent->SetupAttachment(GetRootComponent());
+	BurnDebuffComponent->DebuffTag = TAG_Debuff_Burn;
 }
 
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
@@ -100,6 +106,16 @@ void ACharacterBase::Die()
 	MulticastHandleDeath();
 }
 
+FOnASCRegistered ACharacterBase::GetOnASCRegisteredDelegate() const
+{
+	return OnASCRegistered;
+}
+
+FOnDeath& ACharacterBase::GetOnDeathDelegate()
+{
+	return OnDeath;
+}
+
 void ACharacterBase::MulticastHandleDeath_Implementation()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
@@ -119,6 +135,7 @@ void ACharacterBase::MulticastHandleDeath_Implementation()
 	Dissolve();
 
 	bDead = true;
+	OnDeath.Broadcast(this);
 }
 
 void ACharacterBase::BeginPlay()

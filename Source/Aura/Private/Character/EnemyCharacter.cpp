@@ -121,6 +121,7 @@ void AEnemyCharacter::InitAbilityActorInfo()
 		InitializeDefaultAttributes();
 		UGameAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
 }
 
 void AEnemyCharacter::InitializeDefaultAttributes() const

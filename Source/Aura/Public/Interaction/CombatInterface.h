@@ -9,6 +9,10 @@
 
 class UAnimMontage;
 class UNiagaraSystem;
+class UAbilitySystemComponent;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath, AActor*, DeadActor);
 
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -84,5 +88,8 @@ public:
 	void UpdateFacingTarget(const FVector& Target);
 
 	virtual void Die() = 0;
+
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const = 0;
+	virtual FOnDeath& GetOnDeathDelegate() = 0;	// TODO: I Have to change this
 
 };

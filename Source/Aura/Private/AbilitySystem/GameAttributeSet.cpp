@@ -96,46 +96,11 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
-		const float LocalIncomingDamage = GetIncomingDamage();
-		SetIncomingDamage(0);
-
-		if (LocalIncomingDamage > 0.f)
-		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-
-			const bool bFatal = NewHealth <= 0;
-			if (bFatal)
-			{
-				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
-				{
-					CombatInterface->Die();
-				}
-				SendXPEvent(Props);
-			}
-			else
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(TAG_Effects_HitReact);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-			}
-
-			const bool bBlocked = UGameAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
-			const bool bCritical = UGameAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
-
-			ShowFloatingText(Props, LocalIncomingDamage, bBlocked, bCritical);
-		}
+		HandleIncomingDamage(Props);
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
 	{
-		const float LocalIncomingXP = GetIncomingXP();
-		SetIncomingXP(0);
-
-		// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncosmingXP
-		if (Props.SourceCharacter->Implements<UPlayerInterface>())
-		{
-			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
-		}
+		HandleIncomingXP(Props);
 	}
 }
 
@@ -194,6 +159,44 @@ void UGameAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
+void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
+{
+	const float LocalIncomingDamage = GetIncomingDamage();
+	SetIncomingDamage(0);
+
+	if (LocalIncomingDamage > 0.f)
+	{
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+		const bool bFatal = NewHealth <= 0;
+		if (bFatal)
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			{
+				CombatInterface->Die();
+			}
+			SendXPEvent(Props);
+		}
+		else
+		{
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(TAG_Effects_HitReact);
+			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+		}
+
+		const bool bBlocked = UGameAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+		const bool bCritical = UGameAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+
+		ShowFloatingText(Props, LocalIncomingDamage, bBlocked, bCritical);
+
+		if (UGameAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+		{
+			Debuff(Props);
+		}
+	}
+}
+
 void UGameAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlocked, bool bCritical) const
 {
 	if (Props.SourceCharacter == Props.TargetCharacter) return;
@@ -218,6 +221,22 @@ void UGameAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		Payload.EventTag = TAG_Attributes_Meta_IncomingXP;
 		Payload.EventMagnitude = XPReward;
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Meta_IncomingXP, Payload);
+	}
+}
+
+void UGameAttributeSet::Debuff(const FEffectProperties& Props)
+{
+}
+
+void UGameAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
+{
+	const float LocalIncomingXP = GetIncomingXP();
+	SetIncomingXP(0);
+
+	// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncosmingXP
+	if (Props.SourceCharacter->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 	}
 }
 

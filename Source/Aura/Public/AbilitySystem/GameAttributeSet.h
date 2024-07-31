@@ -71,8 +71,6 @@ public:
 
 	void RefillVitalAttributes();
 
-	TMap<FGameplayTag, FGameplayAttribute> TagsToAttributes;
-
 	/** Attributes */
 
 	/*
@@ -247,9 +245,18 @@ public:
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+
+	void HandleIncomingDamage(const FEffectProperties& Props);
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlocked, bool bCritical) const;
 	void SendXPEvent(const FEffectProperties& Props);
+	void Debuff(const FEffectProperties& Props);
 
+	void HandleIncomingXP(const FEffectProperties& Props);
+
+public:
+	TMap<FGameplayTag, FGameplayAttribute> TagsToAttributes;
+
+private:
 	bool bTopOfHealth = false;
 	bool bTopOfMana = false;
 

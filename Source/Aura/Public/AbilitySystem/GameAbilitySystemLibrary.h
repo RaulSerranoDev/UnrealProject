@@ -89,7 +89,7 @@ public:
 	static void SetDebuffFrequency(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, float DebuffFrequency);
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
-	static void SetDamageType(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, FGameplayTag DamageType);
+	static void SetDamageType(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const FGameplayTag& DamageType);
 
 	// Function to return the magnitude tags for SetByCaller Magnitude for gameplay Effects
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")

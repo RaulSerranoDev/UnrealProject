@@ -66,40 +66,13 @@ public:
 	float GetDebuffFrequency() const { return DebuffFrequency; }
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 
-	void SetIsCriticalHit(bool bInIsCriticalHit)
-	{
-		bIsCriticalHit = bInIsCriticalHit;
-	}
-
-	void SetIsBlockedHit(bool bInIsBlockedHit)
-	{
-		bIsBlockedHit = bInIsBlockedHit;
-	}
-
-	void SetIsSuccessfulDebuff(bool bInIsSuccessfulDebuff)
-	{
-		bIsSuccessfulDebuff = bInIsSuccessfulDebuff;
-	}
-
-	void SetDebuffDamage(float InDebuffDamage)
-	{
-		DebuffDamage = InDebuffDamage;
-	}
-
-	void SetDebuffDuration(float InDebuffDuration)
-	{
-		DebuffDuration = InDebuffDuration;
-	}
-
-	void SetDebuffFrequency(float InDebuffFrequency)
-	{
-		DebuffFrequency = InDebuffFrequency;
-	}
-
-	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType)
-	{
-		DamageType = InDamageType;
-	}
+	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
+	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
+	void SetIsSuccessfulDebuff(bool bInIsSuccessfulDebuff) { bIsSuccessfulDebuff = bInIsSuccessfulDebuff; }
+	void SetDebuffDamage(float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
+	void SetDebuffDuration(float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
+	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
+	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override

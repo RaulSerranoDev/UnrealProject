@@ -217,11 +217,12 @@ void UGameAbilitySystemLibrary::SetDebuffFrequency(UPARAM(ref)FGameplayEffectCon
 	}
 }
 
-void UGameAbilitySystemLibrary::SetDamageType(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, FGameplayTag DamageType)
+void UGameAbilitySystemLibrary::SetDamageType(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FGameplayTag& DamageType)
 {
 	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
-		GameContext->SetDamageType(MakeShared<FGameplayTag>(DamageType));
+		const TSharedPtr<FGameplayTag> DamageTypePtr = MakeShared<FGameplayTag>(DamageType);
+		GameContext->SetDamageType(DamageTypePtr);
 	}
 }
 

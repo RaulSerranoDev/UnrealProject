@@ -291,6 +291,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Lightning_Electrocute,
 *  Debuffs
 */
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff,
+	"Debuff",
+	"Debuff Tag"
+)
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Burn,
 	"Debuff.Burn",
 	"Debuff for Fire Damage"

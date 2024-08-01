@@ -39,14 +39,14 @@ public:
 	virtual void AddMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
 
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
 
 	/** Combat Interface */
 
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastHandleDeath();
+	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 
 protected:
 	virtual void BeginPlay() override;

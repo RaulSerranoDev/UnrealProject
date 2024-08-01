@@ -65,12 +65,12 @@ int32 AEnemyCharacter::GetPlayerLevel_Implementation() const
 	return Level;
 }
 
-void AEnemyCharacter::Die()
+void AEnemyCharacter::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(LifeSpan);
 	if (GameAIController) GameAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
 
-	Super::Die();
+	Super::Die(DeathImpulse);
 }
 
 void AEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
@@ -83,9 +83,9 @@ AActor* AEnemyCharacter::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
-void AEnemyCharacter::MulticastHandleDeath_Implementation()
+void AEnemyCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImpulse)
 {
-	Super::MulticastHandleDeath_Implementation();
+	Super::MulticastHandleDeath_Implementation(DeathImpulse);
 
 	FDetachmentTransformRules DetachmentTransformRules = FDetachmentTransformRules::KeepWorldTransform;
 	HealthBar->DetachFromComponent(DetachmentTransformRules);

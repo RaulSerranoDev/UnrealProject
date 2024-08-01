@@ -87,7 +87,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 
-	virtual void Die() = 0;
+	virtual void Die(const FVector& DeathImpulse) = 0;
 
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const = 0;
 	virtual FOnDeath& GetOnDeathDelegate() = 0;	// TODO: I Have to change this

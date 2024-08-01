@@ -175,6 +175,12 @@ FVector UGameAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextH
 	return GameContext ? GameContext->GetDeathImpulse() : FVector::ZeroVector;
 }
 
+bool UGameAbilitySystemLibrary::ShouldHitReact(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->ShouldHitReact() : false;
+}
+
 void UGameAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bBlocked)
 {
 	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -237,6 +243,14 @@ void UGameAbilitySystemLibrary::SetDeathImpulse(UPARAM(ref)FGameplayEffectContex
 	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		GameContext->SetDeathImpulse(DeathImpulse);
+	}
+}
+
+void UGameAbilitySystemLibrary::SetShouldHitReact(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, bool ShouldHitReact)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetShouldHitReact(ShouldHitReact);
 	}
 }
 

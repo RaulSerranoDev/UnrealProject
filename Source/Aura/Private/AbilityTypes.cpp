@@ -66,9 +66,13 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 		{
 			RepBits |= 1 << 14;
 		}
+		if (bShouldHitReact)
+		{
+			RepBits |= 1 << 15;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 15);
+	Ar.SerializeBits(&RepBits, 16);
 
 	if (RepBits & (1 << 0))
 	{
@@ -120,7 +124,7 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 	}
 	if (RepBits & (1 << 9))
 	{
-		Ar << bIsCriticalHit;
+		Ar << bIsSuccessfulDebuff;
 	}
 	if (RepBits & (1 << 10))
 	{
@@ -148,6 +152,10 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 	if (RepBits & (1 << 14))
 	{
 		DeathImpulse.NetSerialize(Ar, Map, bOutSuccess);
+	}
+	if (RepBits & (1 << 15))
+	{
+		Ar << bShouldHitReact;
 	}
 
 	if (Ar.IsLoading())

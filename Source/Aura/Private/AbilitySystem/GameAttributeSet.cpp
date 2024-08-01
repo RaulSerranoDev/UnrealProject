@@ -183,7 +183,7 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			}
 			SendXPEvent(Props);
 		}
-		else
+		else if (UGameAbilitySystemLibrary::ShouldHitReact(Props.EffectContextHandle))
 		{
 			FGameplayTagContainer TagContainer;
 			TagContainer.AddTag(TAG_Effects_HitReact);
@@ -266,6 +266,7 @@ void UGameAttributeSet::Debuff(const FEffectProperties& Props)
 	FGameGameplayEffectContext* AuraContext = static_cast<FGameGameplayEffectContext*>(EffectContext.Get());
 	TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
 	AuraContext->SetDamageType(DebuffDamageType);
+	AuraContext->SetShouldHitReact(false);
 	Props.TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpec);
 }
 

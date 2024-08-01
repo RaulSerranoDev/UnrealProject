@@ -169,6 +169,12 @@ FGameplayTag UGameAbilitySystemLibrary::GetDamageType(const FGameplayEffectConte
 	return GameContext && GameContext->GetDamageType().IsValid() ? *GameContext->GetDamageType() : FGameplayTag();
 }
 
+FVector UGameAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->GetDeathImpulse() : FVector::ZeroVector;
+}
+
 void UGameAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bBlocked)
 {
 	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -223,6 +229,14 @@ void UGameAbilitySystemLibrary::SetDamageType(UPARAM(ref)FGameplayEffectContextH
 	{
 		const TSharedPtr<FGameplayTag> DamageTypePtr = MakeShared<FGameplayTag>(DamageType);
 		GameContext->SetDamageType(DamageTypePtr);
+	}
+}
+
+void UGameAbilitySystemLibrary::SetDeathImpulse(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& DeathImpulse)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetDeathImpulse(DeathImpulse);
 	}
 }
 
@@ -301,6 +315,7 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 {
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceASC->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(DamageEffectParams.SourceASC->GetAvatarActor());
+	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
 
 	for (const TTuple<FGameplayTag, FDamageEffectType>& Pair : DamageEffectParams.DamageTypes)
 	{

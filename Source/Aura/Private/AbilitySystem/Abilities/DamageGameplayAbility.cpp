@@ -27,6 +27,7 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 	Params.SourceASC = GetAbilitySystemComponentFromActorInfo();
 	Params.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	Params.AbilityLevel = GetAbilityLevel();
+	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 
 	checkf(DamageTypes.Num() <= 1, TEXT("GameplayAbility [%s] does not support yet more than 1 Damage Type"), *GetNameSafe(this));
 
@@ -39,7 +40,6 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		DamageEffectType.DebuffDamage = Pair.Value.DebuffDamage.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
-		DamageEffectType.DeathImpulseMagnitude = Pair.Value.DeathImpulseMagnitude;
 		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
 	}
 

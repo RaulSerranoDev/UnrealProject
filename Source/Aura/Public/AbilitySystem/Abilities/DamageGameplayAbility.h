@@ -37,8 +37,6 @@ struct FDamageEffect
 	FMinMaxScalableFloat DebuffFrequency;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FMinMaxScalableFloat DebuffDuration;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float DeathImpulseMagnitude = 60.f;
 };
 
 /**
@@ -65,5 +63,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta = (Categories = "Damage"))
 	TMap<FGameplayTag, FDamageEffect> DamageTypes;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float DeathImpulseMagnitude = 60.f;
 
 };

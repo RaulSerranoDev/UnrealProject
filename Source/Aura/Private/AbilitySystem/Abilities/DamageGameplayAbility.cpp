@@ -39,7 +39,7 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		DamageEffectType.DebuffDamage = Pair.Value.DebuffDamage.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
-
+		DamageEffectType.DeathImpulseMagnitude = Pair.Value.DeathImpulseMagnitude;
 		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
 	}
 

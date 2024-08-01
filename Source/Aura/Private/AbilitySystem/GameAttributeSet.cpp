@@ -176,6 +176,10 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		const bool bFatal = NewHealth <= 0;
 		if (bFatal)
 		{
+			if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+			{
+				ASC->RemoveActiveEffectsWithGrantedTags(FGameplayTagContainer(TAG_Debuff));
+			}
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
 			{
 				const FVector DeathImpulse = UGameAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);

@@ -51,6 +51,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FGameplayEffectContextHandle CauseDamage(AActor* TargetActor);
 
+	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
 protected:
@@ -65,6 +66,12 @@ protected:
 	TMap<FGameplayTag, FDamageEffect> DamageTypes;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
-	float DeathImpulseMagnitude = 60.f;
+	float DeathImpulseMagnitude = 500.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta = (ClampMin = 0, ClampMax = 100))
+	float KnockbackChance = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float KnockbackForceMagnitude = 500.f;
 
 };

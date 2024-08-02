@@ -40,6 +40,7 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
 
 	virtual void Die(const FVector& DeathImpulse) override;
+
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
 

@@ -175,6 +175,12 @@ FVector UGameAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextH
 	return GameContext ? GameContext->GetDeathImpulse() : FVector::ZeroVector;
 }
 
+FVector UGameAbilitySystemLibrary::GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->GetKnockbackForce() : FVector::ZeroVector;
+}
+
 bool UGameAbilitySystemLibrary::ShouldHitReact(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
@@ -254,6 +260,14 @@ void UGameAbilitySystemLibrary::SetShouldHitReact(UPARAM(ref)FGameplayEffectCont
 	}
 }
 
+void UGameAbilitySystemLibrary::SetKnockbackForce(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& KnockbackForce)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetKnockbackForce(KnockbackForce);
+	}
+}
+
 TArray<FGameplayTag> UGameAbilitySystemLibrary::CallerMagnitudeTags(TSubclassOf<UGameplayEffect> GameplayEffect)
 {
 	UGameplayEffect* GE = GameplayEffect.GetDefaultObject();
@@ -330,6 +344,7 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceASC->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(DamageEffectParams.SourceASC->GetAvatarActor());
 	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
+	SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
 
 	for (const TTuple<FGameplayTag, FDamageEffectType>& Pair : DamageEffectParams.DamageTypes)
 	{

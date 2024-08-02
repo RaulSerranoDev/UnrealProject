@@ -114,11 +114,8 @@ bool AOcclusionAwarePlayerController::HideOccludedActor(const AActor* Actor)
 
 		if (DebugLineTraces) UE_LOG(LogTemp, Warning, TEXT("Actor %s exists, but was not occluded. Occluding it now."), *Actor->GetName());
 	}
-	else
+	else if (UStaticMeshComponent* StaticMesh = Cast<UStaticMeshComponent>(Actor->GetComponentByClass(UStaticMeshComponent::StaticClass())))
 	{
-		UStaticMeshComponent* StaticMesh = Cast<UStaticMeshComponent>(
-			Actor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-
 		FCameraOccludedActor OccludedActor;
 		OccludedActor.Actor = Actor;
 		OccludedActor.StaticMesh = StaticMesh;

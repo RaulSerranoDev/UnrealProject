@@ -28,6 +28,8 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 	Params.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	Params.AbilityLevel = GetAbilityLevel();
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
+	Params.KnockbackChance = KnockbackChance;
+	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
 
 	checkf(DamageTypes.Num() <= 1, TEXT("GameplayAbility [%s] does not support yet more than 1 Damage Type"), *GetNameSafe(this));
 
@@ -41,6 +43,15 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
 		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
+	}
+
+	if (IsValid(TargetActor))
+	{
+		FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
+		Rotation.Pitch = 45.f;
+		const FVector ToTarget = Rotation.Vector();
+		Params.DeathImpulse = ToTarget * DeathImpulseMagnitude;
+		Params.KnockbackForce = ToTarget * KnockbackForceMagnitude;
 	}
 
 	return Params;

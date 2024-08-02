@@ -76,6 +76,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")
 	static bool ShouldHitReact(const FGameplayEffectContextHandle& EffectContextHandle);
 
+	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")
+	static FVector GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle);
+
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
 	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bBlocked);
 
@@ -102,6 +105,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
 	static void SetShouldHitReact(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool ShouldHitReact);
+
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
+	static void SetKnockbackForce(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const FVector& KnockbackForce);
 
 	// Function to return the magnitude tags for SetByCaller Magnitude for gameplay Effects
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")

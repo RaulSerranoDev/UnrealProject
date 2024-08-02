@@ -51,7 +51,10 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		Rotation.Pitch = 45.f;
 		const FVector ToTarget = Rotation.Vector();
 		Params.DeathImpulse = ToTarget * DeathImpulseMagnitude;
-		Params.KnockbackForce = ToTarget * KnockbackForceMagnitude;
+		if (Params.KnockbackChance > FMath::RandRange(1, 100))
+		{
+			Params.KnockbackForce = ToTarget * KnockbackForceMagnitude;
+		}
 	}
 
 	return Params;

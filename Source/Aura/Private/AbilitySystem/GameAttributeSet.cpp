@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "GameGameplayTags.h"
 #include "Interaction/CombatInterface.h"
@@ -196,6 +197,7 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			const FVector KnockbackForce = UGameAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
 			if (!KnockbackForce.IsNearlyZero(1.f))
 			{
+				Props.TargetCharacter->GetCharacterMovement()->StopMovementImmediately();
 				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
 			}
 		}

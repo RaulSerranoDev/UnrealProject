@@ -9,6 +9,7 @@
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "GameFramework/Character.h"
+#include "NiagaraFunctionLibrary.h"
 
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
@@ -154,6 +155,7 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				bAutoRunning = true;
 			}
 		}
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 	}
 
 	FollowTime = 0.f;

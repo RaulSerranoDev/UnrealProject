@@ -87,6 +87,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetInShockLoop(bool bInLoop);
+
 	virtual void Die(const FVector& DeathImpulse) = 0;
 
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const = 0;

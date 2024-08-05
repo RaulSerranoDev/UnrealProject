@@ -128,9 +128,16 @@ void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
 {
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB)) return;
-	bTargeting = CurrentActor ? true : false;
-	bAutoRunning = false;
+	if (InputTag.MatchesTagExact(TAG_InputTag_LMB))
+	{
+		bTargeting = CurrentActor ? true : false;
+		bAutoRunning = false;
+	}
+
+	if (GetASC())
+	{
+		GetASC()->AbilityInputTagPressed(InputTag);
+	}
 }
 
 void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)

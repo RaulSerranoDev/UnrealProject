@@ -9,7 +9,7 @@
 
 #include "Actor/Projectile.h"
 #include "Interaction/CombatInterface.h"
-#include "GameGameplayTags.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 void UProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -74,37 +74,37 @@ void UProjectileSpell::SpawnProjectiles(const FVector& ProjectileTargetLocation,
 	}
 
 	const FVector Forward = Rotation.Vector();
-	const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.f, FVector::UpVector);
-	const FVector RightOfSpread = Forward.RotateAngleAxis(ProjectileSpread / 2.f, FVector::UpVector);
-
 	if (bShowDebug)
 	{
+		const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.f, FVector::UpVector);
+		const FVector RightOfSpread = Forward.RotateAngleAxis(ProjectileSpread / 2.f, FVector::UpVector);
 		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Forward * 100.f, 5, FLinearColor::White, 120, 1);
 		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + LeftOfSpread * 100.f, 5, FLinearColor::Gray, 120, 1);
 		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + RightOfSpread * 100.f, 5, FLinearColor::Gray, 120, 1);
 	}
 
-	const int32 NumProjectilesToSpawn = GetNumProjectiles(GetAbilityLevel());
-	if (NumProjectilesToSpawn > 1)
+	TArray<FRotator> Rotations = UGameAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, GetNumProjectiles(GetAbilityLevel()));
+	for (FRotator& Rotator : Rotations)
 	{
-		const float DeltaSpread = ProjectileSpread / NumProjectilesToSpawn;
-
-		for (int32 i = 0; i < NumProjectilesToSpawn; i++)
-		{
-			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i + DeltaSpread / 2.f, FVector::UpVector);
-
-			if (bShowDebug)
-			{
-				UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Direction * 75.f, 5, FLinearColor::Red, 120, 1);
-			}
-		}
-	}
-	else
-	{
-		// Single Projectile
 		if (bShowDebug)
 		{
-			UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Forward * 75.f, 5, FLinearColor::Red, 120, 1);
+			FVector Start = SocketLocation + FVector(0, 0, 10);
+			UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, Start + Rotator.Vector() * 75.f, 5, FLinearColor::Blue, 120, 1);
 		}
+
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(Rotator.Quaternion());
+
+		AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(
+			ProjectileClass,
+			SpawnTransform,
+			GetOwningActorFromActorInfo(),
+			Pawn,
+			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+
+		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

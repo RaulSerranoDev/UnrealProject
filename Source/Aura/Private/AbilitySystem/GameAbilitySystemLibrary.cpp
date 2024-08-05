@@ -360,6 +360,58 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 	return EffectContextHandle;
 }
 
+TArray<FRotator> UGameAbilitySystemLibrary::EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumRotators)
+{
+	if (NumRotators <= 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NumRotators <= 0"));
+		return TArray<FRotator>();
+	}
+
+	TArray<FRotator> Rotators;
+	if (NumRotators == 1)
+	{
+		Rotators.Add(Forward.Rotation());
+		return Rotators;
+	}
+
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-Spread / 2.f, Axis);
+	const float DeltaSpread = Spread / NumRotators;
+	for (int32 i = 0; i < NumRotators; i++)
+	{
+		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i + DeltaSpread / 2.f, FVector::UpVector);
+		Rotators.Add(Direction.Rotation());
+	}
+
+	return Rotators;
+}
+
+TArray<FVector> UGameAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumVectors)
+{
+	if (NumVectors <= 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NumRotators <= 0"));
+		return TArray<FVector>();
+	}
+
+	TArray<FVector> Vectors;
+	if (NumVectors == 1)
+	{
+		Vectors.Add(Forward);
+		return Vectors;
+	}
+
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-Spread / 2.f, Axis);
+	const float DeltaSpread = Spread / NumVectors;
+	for (int32 i = 0; i < NumVectors; i++)
+	{
+		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i + DeltaSpread / 2.f, FVector::UpVector);
+		Vectors.Add(Direction);
+	}
+
+	return Vectors;
+}
+
 void UGameAbilitySystemLibrary::ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC)
 {
 	const FGameplayEffectSpecHandle AttributesSpecHandle = ASC->MakeOutgoingSpec(GEClass, Level, ContextHandle);

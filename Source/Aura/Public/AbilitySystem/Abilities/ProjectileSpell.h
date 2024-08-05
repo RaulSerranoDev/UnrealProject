@@ -31,13 +31,22 @@ protected:
 	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, const FVector Offset = FVector::ZeroVector, bool bOverridePitch = false, float PitchOverride = 0.f, AActor* HomingTarget = nullptr, bool bShowDebug = false);
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	TSubclassOf<AProjectile> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FScalableFloat NumProjectiles = 1;
 
-	UPROPERTY(EditDefaultsOnly, Category = "FireBolt")
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float ProjectileSpread = 90.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float HomingAccelerationMin = 1600.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float HomingAccelerationMax = 3200.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	bool bLaunchHomingProjectiles = false;
 
 };

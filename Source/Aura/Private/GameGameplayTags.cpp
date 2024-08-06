@@ -421,9 +421,9 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputReleased,
 	"Block Input Released callback under the cursor"
 )
 
-UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputNiagara,
-	"Player.Block.InputNiagara",
-	"Block Input Niagara under the cursor"
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputReleasedMovement,
+	"Player.Block.InputReleasedMovement",
+	"Block Input Release Movement under the cursor"
 )
 
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_CursorTrace,

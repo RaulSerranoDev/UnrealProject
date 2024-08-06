@@ -165,6 +165,8 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputReleasedMovement)) return;
+
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown) return;
 
 	const APawn* ControlledPawn = GetPawn();
@@ -183,10 +185,7 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				bAutoRunning = true;
 			}
 		}
-		if (GetASC() && !GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputNiagara))
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
-		}
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 	}
 
 	FollowTime = 0.f;

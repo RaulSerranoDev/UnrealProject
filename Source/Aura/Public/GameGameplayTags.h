@@ -95,6 +95,12 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Montage_Attack_4);
 
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Effects_HitReact);
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputPressed);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputHeld);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputReleased);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputNiagara);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_CursorTrace);
+
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"

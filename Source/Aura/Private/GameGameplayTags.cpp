@@ -402,6 +402,34 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Effects_HitReact,
 	"Tag granted when Hit Reacting"
 )
 
+/*
+*  Player Tags
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputPressed,
+	"Player.Block.InputPressed",
+	"Block Input Pressed callback under the cursor"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputHeld,
+	"Player.Block.InputHeld",
+	"Block Input Held callback the cursor"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputReleased,
+	"Player.Block.InputReleased",
+	"Block Input Released callback under the cursor"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_InputNiagara,
+	"Player.Block.InputNiagara",
+	"Block Input Niagara under the cursor"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_CursorTrace,
+	"Player.Block.CursorTrace",
+	"Block tracing under the cursor"
+)
 
 FGameGameplayTags FGameGameplayTags::GameplayTags;
 

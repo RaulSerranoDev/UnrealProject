@@ -78,6 +78,21 @@ void AGamePlayerController::SetupInputComponent()
 
 void AGamePlayerController::CursorTrace()
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_CursorTrace))
+	{
+		if (LastActor)
+		{
+			LastActor->UnHighlightActor();
+			LastActor = nullptr;
+		}
+		if (CurrentActor)
+		{
+			CurrentActor->UnHighlightActor();
+			CurrentActor = nullptr;
+		}
+		return;
+	}
+
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
@@ -110,6 +125,8 @@ void AGamePlayerController::AutoRun()
 
 void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputPressed)) return;
+
 	APawn* ControlledPawn = GetPawn<APawn>();
 	if (!ControlledPawn)
 		return;
@@ -128,6 +145,8 @@ void AGamePlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Value, FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputPressed)) return;
+
 	if (InputTag.MatchesTagExact(TAG_InputTag_LMB))
 	{
 		bTargeting = CurrentActor ? true : false;
@@ -142,6 +161,8 @@ void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Valu
 
 void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputReleased)) return;
+
 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown) return;
@@ -162,7 +183,10 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				bAutoRunning = true;
 			}
 		}
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		if (GetASC() && !GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputNiagara))
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		}
 	}
 
 	FollowTime = 0.f;
@@ -171,6 +195,8 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputHeld)) return;
+
 	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown)
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);

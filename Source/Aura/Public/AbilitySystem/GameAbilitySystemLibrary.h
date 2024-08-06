@@ -116,6 +116,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayMechanics", meta = (WorldContext = "WorldContextObject"))
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin, FName FilterTag = NAME_None, bool bShowDebugSphere = false);
 
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayMechanics")
+	static void GetClosestTargets(const FVector& Origin, const int32& MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets);
+
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
 	static bool IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor);
 

@@ -6,6 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 void UBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
@@ -59,4 +60,23 @@ void UBeamSpell::TraceFirstTarget()
 			}
 		}
 	}
+}
+
+void UBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
+{
+	TArray<AActor*> OverlappingActors;
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
+	ActorsToIgnore.Add(MouseHitActor);
+	UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
+		GetAvatarActorFromActorInfo(),
+		OverlappingActors,
+		ActorsToIgnore,
+		850.f,
+		MouseHitActor->GetActorLocation());
+
+	//int32 NumAdditionalTargets = NumShockTargets.GetValueAtLevel(GetAbilityLevel()) - 1;
+	int32 NumAdditionalTargets = 5;
+
+	UGameAbilitySystemLibrary::GetClosestTargets(MouseHitActor->GetActorLocation(), NumAdditionalTargets, OverlappingActors, OutAdditionalTargets);
 }

@@ -318,6 +318,24 @@ void UGameAbilitySystemLibrary::GetLivePlayersWithinRadius(
 	}
 }
 
+void UGameAbilitySystemLibrary::GetClosestTargets(const FVector& Origin, const int32& MaxTargets,
+	const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets)
+{
+	if (Actors.IsEmpty()) return;
+	TArray<AActor*> ActorsCopy = Actors;
+	Algo::Sort(ActorsCopy, [Origin](const AActor* A, const AActor* B)
+		{
+			float DistanceA = FVector::DistSquared(A->GetActorLocation(), Origin);
+			float DistanceB = FVector::DistSquared(B->GetActorLocation(), Origin);
+			return DistanceA < DistanceB;
+		});
+	int32 Size = FMath::Min(MaxTargets, ActorsCopy.Num());
+	for (int i = 0; i < Size; i++)
+	{
+		OutClosestTargets.Add(ActorsCopy[i]);
+	}
+}
+
 bool UGameAbilitySystemLibrary::IsOnSameTeam(const AActor* FirstActor, const AActor* SecondActor)
 {
 	if (!FirstActor || !SecondActor)

@@ -24,7 +24,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TraceFirstTarget();
 
+	UFUNCTION(BlueprintCallable)
+	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
+
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Beam")
+	FScalableFloat NumShockTargets = 1;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	FVector MouseHitLocation;
 

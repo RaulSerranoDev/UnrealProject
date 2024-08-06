@@ -38,6 +38,7 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void AddMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() const override;
 
 	virtual void Die(const FVector& DeathImpulse) override;
 

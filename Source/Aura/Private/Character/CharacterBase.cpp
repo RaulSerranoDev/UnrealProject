@@ -99,6 +99,11 @@ ECharacterClass ACharacterBase::GetCharacterClass_Implementation() const
 	return CharacterClass;
 }
 
+USkeletalMeshComponent* ACharacterBase::GetWeapon_Implementation() const
+{
+	return Weapon;
+}
+
 void ACharacterBase::Die(const FVector& DeathImpulse)
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));

@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
+	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
+	float GetDamage(FGameplayTag DamageTypeTag) const;
+
 protected:
 	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
 	void GetDamageRangeAtLevel(FGameplayTag DamageTypeTag, const int32& Level, int32& OutMinDamage, int32& OutMaxDamage);

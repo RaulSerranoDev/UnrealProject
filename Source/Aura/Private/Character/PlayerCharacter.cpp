@@ -11,6 +11,7 @@
 #include "NiagaraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "UI/HUD/GameHUD.h"
+#include "GameGameplayTags.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -111,6 +112,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(GamePlayerState, this);
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AbilitySystemComponent->RegisterGameplayTagEvent(TAG_Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ThisClass::StunTagChanged);
 
 	if (AGamePlayerController* GamePlayerController = Cast<AGamePlayerController>(GetController()))
 	{
@@ -131,6 +133,26 @@ void APlayerCharacter::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
+
+void APlayerCharacter::OnRep_Stunned()
+{
+	if (UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		FGameplayTagContainer BlockedTags = FGameplayTagContainer();
+		BlockedTags.AddTag(TAG_Player_Block_CursorTrace);
+		BlockedTags.AddTag(TAG_Player_Block_InputHeld);
+		BlockedTags.AddTag(TAG_Player_Block_InputPressed);
+		BlockedTags.AddTag(TAG_Player_Block_InputReleased);
+		if (bIsStunned)
+		{
+			ASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			ASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
 }
 
 void APlayerCharacter::MulticastLevelUpParticles_Implementation() const

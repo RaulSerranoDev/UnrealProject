@@ -46,6 +46,8 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
 
+	virtual void OnRep_Stunned() override;
+
 private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;

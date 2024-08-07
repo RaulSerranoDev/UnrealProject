@@ -23,6 +23,7 @@ class AURA_API ACharacterBase : public ACharacter, public IAbilitySystemInterfac
 
 public:
 	ACharacterBase();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -68,6 +69,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
 
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+
 private:
 	bool GetSocketLocationOnMesh(const FGameplayTag& MontageTag, const TMap<FGameplayTag, FName>& SocketMeshMap, const USkeletalMeshComponent* SocketMesh, FVector& Location) const;
 
@@ -110,8 +116,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup|Combat")
 	TObjectPtr<USoundBase> DeathSound;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup|Combat")
+	float BaseWalkSpeed = 600.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup|Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Setup|Abilities")

@@ -33,6 +33,8 @@ AEnemyCharacter::AEnemyCharacter()
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+
+	BaseWalkSpeed = 250.f;
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)
@@ -115,6 +117,7 @@ void AEnemyCharacter::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UGameAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AbilitySystemComponent->RegisterGameplayTagEvent(TAG_Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ThisClass::StunTagChanged);
 
 	if (HasAuthority())
 	{
@@ -127,6 +130,15 @@ void AEnemyCharacter::InitAbilityActorInfo()
 void AEnemyCharacter::InitializeDefaultAttributes() const
 {
 	UGameAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
+}
+
+void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+
+	if (!HasAuthority() || !GameAIController || !GameAIController->GetBlackboardComponent()) return;
+
+	GameAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), bIsStunned);
 }
 
 void AEnemyCharacter::InitHitReact()

@@ -96,6 +96,6 @@ public:
 	virtual void Die(const FVector& DeathImpulse) = 0;
 
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const = 0;
-	virtual FOnDeath& GetOnDeathDelegate() = 0;	// TODO: I Have to change this
+	virtual FOnDeath& GetOnDeathDelegate() = 0;
 
 };

@@ -27,6 +27,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrimaryTargetDied(AActor* DeadActor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AdditionalTargetDied(AActor* DeadActor);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveOnDeathNotify(AActor* Actor);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Beam")
 	FScalableFloat NumShockTargets = 1;

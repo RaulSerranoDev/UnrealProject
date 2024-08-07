@@ -33,32 +33,35 @@ void UBeamSpell::StoreOwnerVariables()
 void UBeamSpell::TraceFirstTarget()
 {
 	check(OwnerCharacter);
-	if (OwnerCharacter->Implements<UCombatInterface>())
-	{
-		if (USkeletalMeshComponent* Weapon = ICombatInterface::Execute_GetWeapon(OwnerCharacter))
-		{
-			const FVector SocketLocation = Weapon->GetSocketLocation("WeaponSocket");
-			TArray<AActor*> ActorsToIgnore;
-			ActorsToIgnore.Add(OwnerCharacter);
-			FHitResult HitResult;
-			UKismetSystemLibrary::SphereTraceSingle(
-				OwnerCharacter,
-				SocketLocation,
-				MouseHitLocation,
-				10.f,
-				TraceTypeQuery_MAX,
-				false,
-				ActorsToIgnore,
-				EDrawDebugTrace::None,
-				HitResult,
-				true);
+	if (!OwnerCharacter->Implements<UCombatInterface>()) return;
 
-			if (HitResult.bBlockingHit)
-			{
-				MouseHitLocation = HitResult.ImpactPoint;
-				MouseHitActor = HitResult.GetActor();
-			}
+	if (USkeletalMeshComponent* Weapon = ICombatInterface::Execute_GetWeapon(OwnerCharacter))
+	{
+		const FVector SocketLocation = Weapon->GetSocketLocation("WeaponSocket");
+		TArray<AActor*> ActorsToIgnore;
+		ActorsToIgnore.Add(OwnerCharacter);
+		FHitResult HitResult;
+		UKismetSystemLibrary::SphereTraceSingle(
+			OwnerCharacter,
+			SocketLocation,
+			MouseHitLocation,
+			10.f,
+			TraceTypeQuery_MAX,
+			false,
+			ActorsToIgnore,
+			EDrawDebugTrace::None,
+			HitResult,
+			true);
+
+		if (HitResult.bBlockingHit)
+		{
+			MouseHitLocation = HitResult.ImpactPoint;
+			MouseHitActor = HitResult.GetActor();
 		}
+	}
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(MouseHitActor))
+	{
+		CombatInterface->GetOnDeathDelegate().AddUniqueDynamic(this, &ThisClass::PrimaryTargetDied);
 	}
 }
 
@@ -75,8 +78,23 @@ void UBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
 		850.f,
 		MouseHitActor->GetActorLocation());
 
-	//int32 NumAdditionalTargets = NumShockTargets.GetValueAtLevel(GetAbilityLevel()) - 1;
-	int32 NumAdditionalTargets = 5;
+	int32 NumAdditionalTargets = NumShockTargets.GetValueAtLevel(GetAbilityLevel()) - 1;
 
 	UGameAbilitySystemLibrary::GetClosestTargets(MouseHitActor->GetActorLocation(), NumAdditionalTargets, OverlappingActors, OutAdditionalTargets);
+
+	for (AActor* Target : OutAdditionalTargets)
+	{
+		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Target))
+		{
+			CombatInterface->GetOnDeathDelegate().AddUniqueDynamic(this, &ThisClass::AdditionalTargetDied);
+		}
+	}
+}
+
+void UBeamSpell::RemoveOnDeathNotify(AActor* Actor)
+{
+	if (const auto CombatInterface = Cast<ICombatInterface>(Actor))
+	{
+		CombatInterface->GetOnDeathDelegate().RemoveAll(this);
+	}
 }

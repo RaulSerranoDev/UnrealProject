@@ -43,7 +43,7 @@ public:
 
 	virtual void Die(const FVector& DeathImpulse) override;
 
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const override;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
 
 	/** Combat Interface */
@@ -73,6 +73,9 @@ protected:
 
 	UFUNCTION()
 	virtual void OnRep_Stunned();
+
+	UFUNCTION()
+	virtual void OnRep_Burned();
 
 private:
 	bool GetSocketLocationOnMesh(const FGameplayTag& MontageTag, const TMap<FGameplayTag, FName>& SocketMeshMap, const USkeletalMeshComponent* SocketMesh, FVector& Location) const;
@@ -125,6 +128,15 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 
+	UPROPERTY(ReplicatedUsing = OnRep_Burned, BlueprintReadOnly)
+	bool bIsBurned = false;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Setup|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
@@ -134,9 +146,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 protected:
 	FOnASCRegistered OnASCRegistered;

@@ -4,6 +4,7 @@
 #include "Character/PlayerCharacter.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Player/GamePlayerState.h"
@@ -147,11 +148,25 @@ void APlayerCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			ASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Activate();
 		}
 		else
 		{
 			ASC->RemoveLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Deactivate();
 		}
+	}
+}
+
+void APlayerCharacter::OnRep_Burned()
+{
+	if (bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
 	}
 }
 

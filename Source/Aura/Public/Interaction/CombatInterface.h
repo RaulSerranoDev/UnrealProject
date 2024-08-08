@@ -95,7 +95,7 @@ public:
 
 	virtual void Die(const FVector& DeathImpulse) = 0;
 
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() const = 0;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 	virtual FOnDeath& GetOnDeathDelegate() = 0;
 
 };

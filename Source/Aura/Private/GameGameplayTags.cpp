@@ -288,6 +288,25 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Lightning_Electrocute,
 )
 
 /*
+*  Passive Spells
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Passive_HaloOfProtection,
+	"Abilities.Passive.HaloOfProtection",
+	"HaloOfProtection"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Passive_LifeSiphon,
+	"Abilities.Passive.LifeSiphon",
+	"LifeSiphon"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Passive_ManaSiphon,
+	"Abilities.Passive.ManaSiphon",
+	"ManaSiphon"
+)
+
+/*
 *  Debuffs
 */
 

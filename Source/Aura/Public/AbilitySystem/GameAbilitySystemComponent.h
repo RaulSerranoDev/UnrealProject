@@ -74,7 +74,6 @@ public:
 
 	static void ClearSlot(FGameplayAbilitySpec* Spec);
 	void ClearAbilitiesOfSlot(const FGameplayTag& Slot);
-	static bool AbilityHasSlot(FGameplayAbilitySpec* Spec, const FGameplayTag& Slot);
 
 protected:
 	virtual void OnRep_ActivateAbilities() override;

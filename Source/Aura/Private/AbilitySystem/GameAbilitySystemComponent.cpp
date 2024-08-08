@@ -254,7 +254,7 @@ void UGameAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 	{
 		if (!TagAbility.Key.IsValid()) continue;
 		const FGameAbilityInfo& Info = TagAbility.Value;
-		if (Level < Info.LevelRequirement) continue;
+		if (Level != Info.LevelRequirement) continue;
 
 		if (!GetSpecFromAbilityTag(TagAbility.Key))
 		{

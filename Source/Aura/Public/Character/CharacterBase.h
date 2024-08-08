@@ -40,6 +40,8 @@ public:
 	virtual void AddMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() const override;
+	virtual bool IsBeingShocked_Implementation() const override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 
 	virtual void Die(const FVector& DeathImpulse) override;
 
@@ -130,6 +132,9 @@ protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Burned, BlueprintReadOnly)
 	bool bIsBurned = false;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;

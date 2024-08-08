@@ -188,11 +188,15 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			}
 			SendXPEvent(Props);
 		}
-		else if (UGameAbilitySystemLibrary::ShouldHitReact(Props.EffectContextHandle))
+		else
 		{
-			FGameplayTagContainer TagContainer;
-			TagContainer.AddTag(TAG_Effects_HitReact);
-			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			if (UGameAbilitySystemLibrary::ShouldHitReact(Props.EffectContextHandle)
+				&& (Props.TargetCharacter->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsBeingShocked(Props.TargetCharacter)))
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(TAG_Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 
 			const FVector KnockbackForce = UGameAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
 			if (!KnockbackForce.IsNearlyZero(1.f))

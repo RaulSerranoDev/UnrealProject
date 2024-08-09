@@ -42,6 +42,14 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		DamageEffectType.DebuffDamage = Pair.Value.DebuffDamage.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
+		if (Pair.Value.bIsRadialDamage)
+		{
+			DamageEffectType.bIsRadialDamage = Pair.Value.bIsRadialDamage;
+			DamageEffectType.RadialDamageInnerRadius = Pair.Value.RadialDamageInnerRadius;
+			DamageEffectType.RadialDamageOuterRadius = Pair.Value.RadialDamageOuterRadius;
+			DamageEffectType.RadialDamageOrigin = Pair.Value.RadialDamageOrigin;
+			DamageEffectType.RadialDamageMin = Pair.Value.RadialDamageMin;
+		}
 		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
 	}
 

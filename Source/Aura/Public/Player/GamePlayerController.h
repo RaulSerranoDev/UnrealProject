@@ -17,6 +17,7 @@ class UGameAbilitySystemComponent;
 class USplineComponent;
 class UDamageTextComponent;
 class UNiagaraSystem;
+class AMagicCircle;
 
 /**
  *
@@ -36,6 +37,12 @@ public:
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlocked, bool bCritical);
 
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle();
+
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -53,6 +60,8 @@ private:
 	void AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag);
 
 	UGameAbilitySystemComponent* GetASC();
+
+	void UpdateMagicCircleLocation();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
@@ -78,6 +87,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
 
 	TObjectPtr<UGameAbilitySystemComponent> GameAbilitySystemComponent;
 

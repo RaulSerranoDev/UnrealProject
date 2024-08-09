@@ -18,6 +18,7 @@
 #include "Interaction/SelectableInterface.h"
 #include "Aura/Aura.h"
 #include "UI/Widget/DamageTextComponent.h"
+#include "Actor/MagicCircle.h"
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -32,6 +33,7 @@ void AGamePlayerController::PlayerTick(float DeltaTime)
 
 	CursorTrace();
 	AutoRun();
+	UpdateMagicCircleLocation();
 }
 
 void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlocked, bool bCritical)
@@ -43,6 +45,20 @@ void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	DamageText->SetDamageText(DamageAmount, bBlocked, bCritical);
+}
+
+void AGamePlayerController::ShowMagicCircle()
+{
+	if (IsValid(MagicCircle)) return;
+
+	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, CursorHit.ImpactPoint, FRotator::ZeroRotator);
+}
+
+void AGamePlayerController::HideMagicCircle()
+{
+	if (!IsValid(MagicCircle)) return;
+
+	MagicCircle->Destroy();
 }
 
 void AGamePlayerController::BeginPlay()
@@ -222,4 +238,11 @@ UGameAbilitySystemComponent* AGamePlayerController::GetASC()
 		GameAbilitySystemComponent = Cast<UGameAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return GameAbilitySystemComponent;
+}
+
+void AGamePlayerController::UpdateMagicCircleLocation()
+{
+	if (!IsValid(MagicCircle)) return;
+
+	MagicCircle->SetActorLocation(CursorHit.ImpactPoint);
 }

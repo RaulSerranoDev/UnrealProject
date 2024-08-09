@@ -277,6 +277,10 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Type_None,
 	"None Type"
 )
 
+/*
+* Offensive Spells
+*/
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
 	"Abilities.Fire.FireBolt",
 	"FireBolt Ability Tag"
@@ -285,6 +289,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Fire_FireBolt,
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Lightning_Electrocute,
 	"Abilities.Lightning.Electrocute",
 	"Electrocute Ability Tag"
+)
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Arcane_ArcaneShards,
+	"Abilities.Arcane.ArcaneShards",
+	"ArcaneShards Ability Tag"
 )
 
 /*

@@ -50,6 +50,7 @@ void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 
 void AGamePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
+	bShowMouseCursor = false;
 	if (IsValid(MagicCircle)) return;
 
 	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, CursorHit.ImpactPoint, FRotator::ZeroRotator);
@@ -61,6 +62,7 @@ void AGamePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 
 void AGamePlayerController::HideMagicCircle()
 {
+	bShowMouseCursor = true;
 	if (!IsValid(MagicCircle)) return;
 
 	MagicCircle->Destroy();

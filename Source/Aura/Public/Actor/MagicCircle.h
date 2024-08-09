@@ -20,7 +20,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-protected:
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UDecalComponent> MagicCircleDecal;
 

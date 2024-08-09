@@ -10,6 +10,7 @@
 #include "NavigationPath.h"
 #include "GameFramework/Character.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/DecalComponent.h"
 
 #include "Input/GameInputComponent.h"
 #include "Interaction/HighlightInterface.h"
@@ -47,11 +48,15 @@ void AGamePlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 	DamageText->SetDamageText(DamageAmount, bBlocked, bCritical);
 }
 
-void AGamePlayerController::ShowMagicCircle()
+void AGamePlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
 	if (IsValid(MagicCircle)) return;
 
 	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass, CursorHit.ImpactPoint, FRotator::ZeroRotator);
+	if (DecalMaterial)
+	{
+		MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
+	}
 }
 
 void AGamePlayerController::HideMagicCircle()

@@ -97,6 +97,22 @@ void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 	GamePlayerState->AddToSpellPoints(InSpellPoints);
 }
 
+void APlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (AGamePlayerController* GamePlayerController = Cast<AGamePlayerController>(GetController()))
+	{
+		GamePlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+
+void APlayerCharacter::HideMagicCircle_Implementation()
+{
+	if (AGamePlayerController* GamePlayerController = Cast<AGamePlayerController>(GetController()))
+	{
+		GamePlayerController->HideMagicCircle();
+	}
+}
+
 int32 APlayerCharacter::GetPlayerLevel_Implementation() const
 {
 	const AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();

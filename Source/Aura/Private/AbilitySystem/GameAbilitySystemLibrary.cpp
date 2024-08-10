@@ -434,11 +434,14 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
 	SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
 
-	SetIsRadialDamage(EffectContextHandle, DamageEffectParams.bIsRadialDamage);
-	SetRadialDamageInnerRadius(EffectContextHandle, DamageEffectParams.RadialDamageInnerRadius);
-	SetRadialDamageOuterRadius(EffectContextHandle, DamageEffectParams.RadialDamageOuterRadius);
-	SetRadialDamageOrigin(EffectContextHandle, DamageEffectParams.RadialDamageOrigin);
-	SetRadialDamageMinPercentage(EffectContextHandle, DamageEffectParams.RadialDamageMinPercentage);
+	if (DamageEffectParams.bIsRadialDamage)
+	{
+		SetIsRadialDamage(EffectContextHandle, DamageEffectParams.bIsRadialDamage);
+		SetRadialDamageInnerRadius(EffectContextHandle, DamageEffectParams.RadialDamageInnerRadius);
+		SetRadialDamageOuterRadius(EffectContextHandle, DamageEffectParams.RadialDamageOuterRadius);
+		SetRadialDamageOrigin(EffectContextHandle, DamageEffectParams.RadialDamageOrigin);
+		SetRadialDamageMinPercentage(EffectContextHandle, DamageEffectParams.RadialDamageMinPercentage);
+	}
 
 	for (const TTuple<FGameplayTag, FDamageEffectType>& Pair : DamageEffectParams.DamageTypes)
 	{

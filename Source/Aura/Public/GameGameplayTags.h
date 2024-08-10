@@ -67,6 +67,7 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Type_Passive);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Type_None);
 
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Fire_FireBolt);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Fire_FireBlast);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Lightning_Electrocute);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Abilities_Arcane_ArcaneShards);
 

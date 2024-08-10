@@ -37,6 +37,10 @@ public:
 	void RemoveOnDeathNotify(AActor* Actor);
 
 protected:
+	UFUNCTION(BlueprintPure, meta = (HidePin = "Target"))
+	int32 GetNumShockAdditionalTargets(int32 Level = 1) const;
+
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Beam")
 	FScalableFloat NumShockTargets = 1;
 

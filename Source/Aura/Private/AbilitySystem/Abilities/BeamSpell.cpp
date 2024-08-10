@@ -98,3 +98,8 @@ void UBeamSpell::RemoveOnDeathNotify(AActor* Actor)
 		CombatInterface->GetOnDeathDelegate().RemoveAll(this);
 	}
 }
+
+int32 UBeamSpell::GetNumShockAdditionalTargets(int32 Level) const
+{
+	return NumShockTargets.GetValueAtLevel(Level) - 1;
+}

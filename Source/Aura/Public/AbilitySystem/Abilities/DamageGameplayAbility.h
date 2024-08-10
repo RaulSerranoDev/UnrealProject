@@ -37,16 +37,6 @@ struct FDamageEffect
 	FMinMaxScalableFloat DebuffFrequency;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FMinMaxScalableFloat DebuffDuration;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	bool bIsRadialDamage = false;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float RadialDamageInnerRadius = 0.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float RadialDamageOuterRadius = 0.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FVector RadialDamageOrigin = FVector::ZeroVector;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float RadialDamageMin = 0.f;
 };
 
 /**
@@ -86,5 +76,20 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	float KnockbackForceMagnitude = 500.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	bool bIsRadialDamage = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	FVector RadialDamageOrigin = FVector::ZeroVector;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta = (ClampMin = 0, ClampMax = 100))
+	float RadialDamageMinPercentage = 0.f;
 
 };

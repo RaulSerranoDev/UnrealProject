@@ -90,7 +90,7 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 			{
 				RepBits |= 1 << 20;
 			}
-			if (RadialDamageMin > 0.f)
+			if (RadialDamageMinPercentage > 0.f)
 			{
 				RepBits |= 1 << 21;
 			}
@@ -204,7 +204,7 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 		}
 		if (RepBits & (1 << 21))
 		{
-			Ar << RadialDamageMin;
+			Ar << RadialDamageMinPercentage;
 		}
 	}
 

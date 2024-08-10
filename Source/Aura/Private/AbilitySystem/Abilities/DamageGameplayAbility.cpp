@@ -31,6 +31,15 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 	Params.KnockbackChance = KnockbackChance;
 	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
 
+	if (bIsRadialDamage)
+	{
+		Params.bIsRadialDamage = bIsRadialDamage;
+		Params.RadialDamageInnerRadius = RadialDamageInnerRadius;
+		Params.RadialDamageOuterRadius = RadialDamageOuterRadius;
+		Params.RadialDamageOrigin = RadialDamageOrigin;
+		Params.RadialDamageMinPercentage = RadialDamageMinPercentage;
+	}
+
 	checkf(DamageTypes.Num() <= 1, TEXT("GameplayAbility [%s] does not support yet more than 1 Damage Type"), *GetNameSafe(this));
 
 	for (TTuple<FGameplayTag, FDamageEffect> Pair : DamageTypes)
@@ -42,14 +51,7 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 		DamageEffectType.DebuffDamage = Pair.Value.DebuffDamage.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffDuration = Pair.Value.DebuffDuration.GetValueInRange(Params.AbilityLevel);
 		DamageEffectType.DebuffFrequency = Pair.Value.DebuffFrequency.GetValueInRange(Params.AbilityLevel);
-		if (Pair.Value.bIsRadialDamage)
-		{
-			DamageEffectType.bIsRadialDamage = Pair.Value.bIsRadialDamage;
-			DamageEffectType.RadialDamageInnerRadius = Pair.Value.RadialDamageInnerRadius;
-			DamageEffectType.RadialDamageOuterRadius = Pair.Value.RadialDamageOuterRadius;
-			DamageEffectType.RadialDamageOrigin = Pair.Value.RadialDamageOrigin;
-			DamageEffectType.RadialDamageMin = Pair.Value.RadialDamageMin;
-		}
+
 		Params.DamageTypes.Add(Pair.Key, DamageEffectType);
 	}
 

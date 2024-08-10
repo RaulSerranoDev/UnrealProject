@@ -24,21 +24,6 @@ struct FDamageEffectType
 
 	UPROPERTY(BlueprintReadWrite)
 	float DebuffFrequency = 0.f;
-
-	UPROPERTY(BlueprintReadWrite)
-	bool bIsRadialDamage = false;
-
-	UPROPERTY(BlueprintReadWrite)
-	float RadialDamageInnerRadius = 0.f;
-
-	UPROPERTY(BlueprintReadWrite)
-	float RadialDamageOuterRadius = 0.f;
-
-	UPROPERTY(BlueprintReadWrite)
-	FVector RadialDamageOrigin = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadWrite)
-	float RadialDamageMin = 0.f;
 };
 
 USTRUCT(BlueprintType)
@@ -80,6 +65,21 @@ struct FDamageEffectParams
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector KnockbackForce = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadialDamage = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadialDamageOrigin = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageMinPercentage = 0.f;
 };
 
 USTRUCT(BlueprintType)
@@ -102,7 +102,7 @@ public:
 	float GetRadialDamageInnerRadius() const { return RadialDamageInnerRadius; }
 	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; }
 	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; }
-	float GetRadialDamageMin() const { return RadialDamageMin; }
+	float GetRadialDamageMinPercentage() const { return RadialDamageMinPercentage; }
 
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
@@ -118,7 +118,7 @@ public:
 	void SetRadialDamageInnerRadius(float InRadialDamageInnerRadius) { RadialDamageInnerRadius = InRadialDamageInnerRadius; }
 	void SetRadialDamageOuterRadius(float InRadialDamageOuterRadius) { RadialDamageOuterRadius = InRadialDamageOuterRadius; }
 	void SetRadialDamageOrigin(const FVector& InRadialDamageOrigin) { RadialDamageOrigin = InRadialDamageOrigin; }
-	void SetRadialDamageMin(float InRadialDamageMin) { RadialDamageMin = InRadialDamageMin; }
+	void SetRadialDamageMinPercentage(float InRadialDamageMinPercentage) { RadialDamageMinPercentage = InRadialDamageMinPercentage; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -185,7 +185,7 @@ protected:
 	FVector RadialDamageOrigin = FVector::ZeroVector;
 
 	UPROPERTY()
-	float RadialDamageMin = 0.f;
+	float RadialDamageMinPercentage = 0.f;
 };
 
 template<>

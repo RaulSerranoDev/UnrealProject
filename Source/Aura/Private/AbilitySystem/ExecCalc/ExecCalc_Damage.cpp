@@ -130,7 +130,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		DamageTypeValue *= (100.f - Resistance) / 100.f;
 
-		//if (UGameAbilitySystemLibrary::IsRadia)
+		if (UGameAbilitySystemLibrary::IsRadialDamage(EffectContextHandle))
+		{
+			DamageTypeValue = UGameAbilitySystemLibrary::GetRadialDamageWithFalloff(
+				TargetAvatar,
+				DamageTypeValue,
+				DamageTypeValue * (UGameAbilitySystemLibrary::GetRadialDamageMinPercentage(EffectContextHandle) / 100.f),
+				UGameAbilitySystemLibrary::GetRadialDamageOrigin(EffectContextHandle),
+				UGameAbilitySystemLibrary::GetRadialDamageInnerRadius(EffectContextHandle),
+				UGameAbilitySystemLibrary::GetRadialDamageOuterRadius(EffectContextHandle),
+				1.f);
+		}
 
 		Damage += DamageTypeValue;
 	}

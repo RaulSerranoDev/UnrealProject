@@ -509,6 +509,20 @@ TArray<FVector> UGameAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& F
 	return Vectors;
 }
 
+float UGameAbilitySystemLibrary::GetRadialDamageWithFalloff(const AActor* TargetActor, float BaseDamage, float MinimumDamage, const FVector& Origin, float DamageInnerRadius, float DamageOuterRadius, float DamageFalloff)
+{
+	if (!TargetActor) return 0.f;
+
+	FRadialDamageParams RadialDamageParams;
+	RadialDamageParams.BaseDamage = BaseDamage;
+	RadialDamageParams.DamageFalloff = DamageFalloff;
+	RadialDamageParams.InnerRadius = DamageInnerRadius;
+	RadialDamageParams.OuterRadius = DamageOuterRadius;
+	RadialDamageParams.MinimumDamage = MinimumDamage;
+	float DamageScale = RadialDamageParams.GetDamageScale((Origin - TargetActor->GetActorLocation()).Length());
+	return BaseDamage * DamageScale;
+}
+
 void UGameAbilitySystemLibrary::ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC)
 {
 	const FGameplayEffectSpecHandle AttributesSpecHandle = ASC->MakeOutgoingSpec(GEClass, Level, ContextHandle);

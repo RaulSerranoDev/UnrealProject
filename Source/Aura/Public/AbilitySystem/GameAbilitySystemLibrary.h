@@ -184,6 +184,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumVectors);
 
+	static float GetRadialDamageWithFalloff(const AActor* TargetActor, float BaseDamage, float MinimumDamage, const FVector& Origin, float DamageInnerRadius, float DamageOuterRadius, float DamageFalloff);
+
 private:
 	static void ApplyGameplayEffectHelper(TSubclassOf<UGameplayEffect> GEClass, int Level, FGameplayEffectContextHandle ContextHandle, UAbilitySystemComponent* ASC);
 

@@ -4,6 +4,9 @@
 #include "Actor/FireBallProjectile.h"
 
 #include "Kismet/KismetMathLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 AFireBallProjectile::AFireBallProjectile()
 {
@@ -28,6 +31,20 @@ void AFireBallProjectile::BeginPlay()
 
 void AFireBallProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!IsValidOverlap(OtherActor) || IgnoreList.Contains(OtherActor)) return;
+
+	if (HasAuthority())
+	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
+			DamageEffectParams.DeathImpulse = DeathImpulse;
+			DamageEffectParams.TargetASC = TargetASC;
+			UGameAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
+		}
+
+		IgnoreList.Add(OtherActor);
+	}
 }
 
 void AFireBallProjectile::SetupTimer()
@@ -54,9 +71,10 @@ void AFireBallProjectile::OutgoingUpdate(float Value)
 	SetActorLocation(LerpLocation);
 }
 
-void AFireBallProjectile::OutgoingFinished() const
+void AFireBallProjectile::OutgoingFinished()
 {
 	ReturningTimeline->Play();
+	IgnoreList.Empty();
 }
 
 void AFireBallProjectile::ReturnUpdate(float Value)

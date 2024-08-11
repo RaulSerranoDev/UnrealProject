@@ -32,7 +32,7 @@ private:
 	void OutgoingUpdate(float Value);
 
 	UFUNCTION()
-	void OutgoingFinished() const;
+	void OutgoingFinished();
 
 	UFUNCTION()
 	void ReturnUpdate(float Value);
@@ -66,5 +66,7 @@ private:
 
 	FVector StartLocation = FVector::ZeroVector;
 	FVector EndLocation = FVector::ZeroVector;
+
+	TArray<AActor*> IgnoreList;
 
 };

@@ -56,7 +56,7 @@ void AProjectile::BeginPlay()
 void AProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (UGameAbilitySystemLibrary::IsOnSameTeam(GetInstigator(), OtherActor)) return;
+	if (!IsValidOverlap(OtherActor)) return;
 
 	if (!bClientHit)
 	{
@@ -96,4 +96,9 @@ void AProjectile::OnHit()
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	bClientHit = true;
+}
+
+bool AProjectile::IsValidOverlap(AActor* OtherActor)
+{
+	return !UGameAbilitySystemLibrary::IsOnSameTeam(GetInstigator(), OtherActor);
 }

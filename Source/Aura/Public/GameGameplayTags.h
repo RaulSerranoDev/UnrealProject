@@ -107,6 +107,7 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputReleased);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_InputReleasedMovement);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Player_Block_CursorTrace);
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GameplayCue_FireBlast);
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"

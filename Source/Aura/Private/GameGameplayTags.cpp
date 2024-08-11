@@ -464,6 +464,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Player_Block_CursorTrace,
 	"Block tracing under the cursor"
 )
 
+/*
+*  Gameplay Cues
+*/
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_GameplayCue_FireBlast,
+	"GameplayCue.FireBlast",
+	"FireBlast GameplayCue Tag"
+)
+
 FGameGameplayTags FGameGameplayTags::GameplayTags;
 
 void FGameGameplayTags::InitalizeNativeGameplayTags()

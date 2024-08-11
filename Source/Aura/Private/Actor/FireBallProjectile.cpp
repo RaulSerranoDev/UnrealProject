@@ -5,8 +5,10 @@
 
 #include "Kismet/KismetMathLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayCueManager.h"
 
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
+#include "GameGameplayTags.h"
 
 AFireBallProjectile::AFireBallProjectile()
 {
@@ -45,6 +47,17 @@ void AFireBallProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedCompone
 
 		IgnoreList.Add(OtherActor);
 	}
+}
+
+void AFireBallProjectile::OnHit()
+{
+	if (GetOwner())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = GetActorLocation();
+		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(GetOwner(), TAG_GameplayCue_FireBlast, CueParams);
+	}
+	bClientHit = true;
 }
 
 void AFireBallProjectile::SetupTimer()

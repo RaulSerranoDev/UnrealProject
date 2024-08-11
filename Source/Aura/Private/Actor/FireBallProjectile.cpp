@@ -87,12 +87,14 @@ void AFireBallProjectile::ReturnUpdate(float Value)
 		if (DistanceToReturn < ExplodingDistance)
 		{
 			OnHit();
+			OnHitEvent();
 			Destroy();
 		}
 	}
 	else
 	{
 		OnHit();
+		OnHitEvent();
 		Destroy();
 	}
 }

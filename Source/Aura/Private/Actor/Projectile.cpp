@@ -100,5 +100,5 @@ void AProjectile::OnHit()
 
 bool AProjectile::IsValidOverlap(AActor* OtherActor)
 {
-	return !UGameAbilitySystemLibrary::IsOnSameTeam(GetInstigator(), OtherActor);
+	return DamageEffectParams.SourceASC != nullptr && !UGameAbilitySystemLibrary::IsOnSameTeam(GetInstigator(), OtherActor);
 }

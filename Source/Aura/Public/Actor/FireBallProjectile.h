@@ -25,6 +25,10 @@ protected:
 
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHitEvent();
+
 private:
 	void SetupTimer();
 
@@ -44,6 +48,9 @@ private:
 
 public:
 	TObjectPtr<AActor> ReturnToActor;
+
+	UPROPERTY(BlueprintReadWrite)
+	FDamageEffectParams ExplosionDamageParams;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Timelines")

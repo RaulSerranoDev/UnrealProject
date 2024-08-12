@@ -8,9 +8,12 @@
 
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "Game/LoadScreenSaveGame.h"
+#include "Game/MainGameInstance.h"
 
 AActor* AMainGameModeBase::ChoosePlayerStart_Implementation(AController* Plaver)
 {
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
 	if (Actors.Num() > 0)
@@ -20,7 +23,7 @@ AActor* AMainGameModeBase::ChoosePlayerStart_Implementation(AController* Plaver)
 		{
 			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
 			{
-				if (PlayerStart->PlayerStartTag == FName("TheTag"))
+				if (PlayerStart->PlayerStartTag == GameInstance->PlayerStartTag)
 				{
 					return PlayerStart;
 				}

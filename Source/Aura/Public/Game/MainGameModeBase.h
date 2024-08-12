@@ -45,4 +45,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
+	FName DefaultPlayerStartTag;
+
 };

@@ -7,6 +7,7 @@
 
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "Game/MainGameModeBase.h"
+#include "Game/MainGameInstance.h"
 
 void UMVVM_LoadScreen::InitializeLoadSlots()
 {
@@ -48,6 +49,11 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredNa
 
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitSlot();
+
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GameMode->GetGameInstance());
+	GameInstance->LoadSlotName = LoadSlots[Slot]->GetLoadSlotName();
+	GameInstance->LoadSlotIndex = LoadSlots[Slot]->SlotIndex;
+	GameInstance->PlayerStartTag = GameMode->DefaultPlayerStartTag;
 }
 
 void UMVVM_LoadScreen::NewGameButtonPressed(int32 Slot)

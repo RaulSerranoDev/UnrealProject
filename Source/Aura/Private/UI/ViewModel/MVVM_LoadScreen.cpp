@@ -46,6 +46,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredNa
 	LoadSlots[Slot]->SetMapName(GameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
 	LoadSlots[Slot]->SlotStatus = Taken;
+	LoadSlots[Slot]->PlayerStartTag = GameMode->DefaultPlayerStartTag;
 
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitSlot();
@@ -87,10 +88,10 @@ void UMVVM_LoadScreen::DeleteButtonPressed()
 void UMVVM_LoadScreen::PlayButtonPressed()
 {
 	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
-	//UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GameMode->GetGameInstance());
-	//GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
-	//GameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
-	//GameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GameMode->GetGameInstance());
+	GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	GameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+	GameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
 
 	if (IsValid(SelectedSlot))
 	{
@@ -114,6 +115,7 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitSlot();
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
+		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
 	}
 }
 

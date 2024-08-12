@@ -47,7 +47,7 @@ void AMainGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	LoadScreenSaveGame->SaveSlotStatus = Taken;
 	LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
 	//LoadScreenSaveGame->MapAssetName = LoadSlot->MapAssetName;
-	//LoadScreenSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
+	LoadScreenSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }

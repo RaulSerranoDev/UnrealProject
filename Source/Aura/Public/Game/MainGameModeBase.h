@@ -21,6 +21,9 @@ class AURA_API AMainGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Plaver) override;
+
+public:
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 	static bool DeleteSlot(FString LoadSlotName, int32 SlotIndex);

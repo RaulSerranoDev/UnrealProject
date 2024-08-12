@@ -4,9 +4,32 @@
 #include "Game/MainGameModeBase.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerStart.h"
 
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "Game/LoadScreenSaveGame.h"
+
+AActor* AMainGameModeBase::ChoosePlayerStart_Implementation(AController* Plaver)
+{
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
+	if (Actors.Num() > 0)
+	{
+		AActor* SelectedActor = Actors[0];
+		for (AActor* Actor : Actors)
+		{
+			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			{
+				if (PlayerStart->PlayerStartTag == FName("TheTag"))
+				{
+					return PlayerStart;
+				}
+			}
+		}
+		return SelectedActor;
+	}
+	return nullptr;
+}
 
 void AMainGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {

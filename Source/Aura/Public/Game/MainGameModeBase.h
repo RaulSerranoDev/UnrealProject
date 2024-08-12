@@ -36,4 +36,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
+	FString DefaultMapName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
+	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
 };

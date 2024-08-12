@@ -23,8 +23,8 @@ class AURA_API AMainGameModeBase : public AGameModeBase
 public:
 	static void DeleteSlot(FString LoadSlotName, int32 SlotIndex);
 	void TravelToMap(UMVVM_LoadSlot* Slot);
-	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")

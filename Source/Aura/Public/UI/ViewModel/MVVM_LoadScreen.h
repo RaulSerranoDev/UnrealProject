@@ -31,10 +31,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectSlotButtonPressed(int32 Slot);
 
+	void LoadData();
+
 private:
 	void DeleteButtonPressed();
 	void PlayButtonPressed();
-	void LoadData();
 
 public:
 	UPROPERTY(EditDefaultsOnly)

@@ -41,6 +41,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredNa
 	}
 
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	LoadSlots[Slot]->SlotStatus = Taken;
 
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitSlot();
@@ -60,6 +61,24 @@ void UMVVM_LoadScreen::SelectSlotButtonPressed(int32 Slot)
 		{
 
 		}
+	}
+}
+
+void UMVVM_LoadScreen::LoadData()
+{
+	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(GameMode)) return;
+
+	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		ULoadScreenSaveGame* SaveObject = GameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
+
+		const FString PlayerName = SaveObject->PlayerName;
+		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
+
+		LoadSlot.Value->SlotStatus = SaveSlotStatus;
+		LoadSlot.Value->SetPlayerName(PlayerName);
+		LoadSlot.Value->InitSlot();
 	}
 }
 
@@ -85,23 +104,5 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 	if (IsValid(SelectedSlot))
 	{
 		GameMode->TravelToMap(SelectedSlot);
-	}
-}
-
-void UMVVM_LoadScreen::LoadData()
-{
-	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
-	if (!IsValid(GameMode)) return;
-
-	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
-	{
-		//ULoadScreenSaveGame* SaveObject = GameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
-
-		//const FString PlayerName = SaveObject->PlayerName;
-		//TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
-
-		//LoadSlot.Value->SlotStatus = SaveSlotStatus;
-		//LoadSlot.Value->SetPlayerName(PlayerName);
-		LoadSlot.Value->InitSlot();
 	}
 }

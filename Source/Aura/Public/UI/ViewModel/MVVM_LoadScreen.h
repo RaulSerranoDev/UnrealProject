@@ -41,6 +41,9 @@ public:
 
 	void LoadData();
 
+	int32 GetNumLoadSlots() const { return NumLoadSlots; }
+	void SetNumLoadSlots(int32 InNumLoadSlots);
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FSlotSelected SlotSelected;
@@ -48,6 +51,10 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UMVVM_LoadSlot> LoadSlotViewModelClass;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	int32 NumLoadSlots;
 
 private:
 	UPROPERTY();

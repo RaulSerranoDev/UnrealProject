@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "UI/ViewModel/MVVM_LoadSlot.h"
+#include "Game/LoadScreenSaveGame.h"
 
 void AMainGameModeBase::DeleteSlot(FString LoadSlotName, int32 SlotIndex)
 {
@@ -32,12 +33,12 @@ void AMainGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	}
 
 	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(LoadScreenSaveGameClass);
-	//ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>(SaveGameObject);
-	//LoadScreenSaveGame->PlayerName = LoadSlot->GetPlayerName();
+	ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>(SaveGameObject);
+	LoadScreenSaveGame->PlayerName = LoadSlot->GetPlayerName();
 	//LoadScreenSaveGame->SaveSlotStatus = Taken;
 	//LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
 	//LoadScreenSaveGame->MapAssetName = LoadSlot->MapAssetName;
 	//LoadScreenSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
-	//UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
+	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }

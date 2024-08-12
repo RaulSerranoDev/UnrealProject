@@ -24,8 +24,6 @@ public:
 	static void DeleteSlot(FString LoadSlotName, int32 SlotIndex);
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
-
-private:
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 
 public:
@@ -35,7 +33,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 
-private:
 	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
 

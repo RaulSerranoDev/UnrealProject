@@ -51,6 +51,7 @@ public:
 	FString MapAssetName;
 
 private:
+	/* Fields Notifies */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	FString PlayerName;
 

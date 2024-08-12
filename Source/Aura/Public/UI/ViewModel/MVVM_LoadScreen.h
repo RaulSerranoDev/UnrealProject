@@ -33,11 +33,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectSlotButtonPressed(int32 Slot);
 
-	void LoadData();
-
-private:
+	UFUNCTION(BlueprintCallable)
 	void DeleteButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
 	void PlayButtonPressed();
+
+	void LoadData();
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -60,7 +62,7 @@ private:
 	UPROPERTY();
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
 
-private:
-	UMVVM_LoadSlot* SelectedSlot;	// TODO: Don't know if is TObjectPtr
+	UPROPERTY();
+	UMVVM_LoadSlot* SelectedSlot;
 
 };

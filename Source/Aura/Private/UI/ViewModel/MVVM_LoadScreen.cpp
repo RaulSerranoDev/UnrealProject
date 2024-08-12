@@ -55,9 +55,37 @@ void UMVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
 void UMVVM_LoadScreen::SelectSlotButtonPressed(int32 Slot)
 {
 	SlotSelected.Broadcast();
+
 	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
 		LoadSlot.Value->EnableSelectSlotButton.Broadcast(LoadSlot.Key != Slot);
+	}
+
+	SelectedSlot = LoadSlots[Slot];
+}
+
+void UMVVM_LoadScreen::DeleteButtonPressed()
+{
+	if (IsValid(SelectedSlot))
+	{
+		AMainGameModeBase::DeleteSlot(SelectedSlot->GetLoadSlotName(), SelectedSlot->SlotIndex);
+		SelectedSlot->SlotStatus = Vacant;
+		SelectedSlot->InitSlot();
+		SelectedSlot->EnableSelectSlotButton.Broadcast(true);
+	}
+}
+
+void UMVVM_LoadScreen::PlayButtonPressed()
+{
+	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
+	//UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GameMode->GetGameInstance());
+	//GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	//GameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+	//GameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
+
+	if (IsValid(SelectedSlot))
+	{
+		GameMode->TravelToMap(SelectedSlot);
 	}
 }
 
@@ -76,30 +104,5 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitSlot();
-	}
-}
-
-void UMVVM_LoadScreen::DeleteButtonPressed()
-{
-	if (IsValid(SelectedSlot))
-	{
-		AMainGameModeBase::DeleteSlot(SelectedSlot->GetLoadSlotName(), SelectedSlot->SlotIndex);
-		//SelectedSlot->SlotStatus = Vacant;
-		SelectedSlot->InitSlot();
-		SelectedSlot->EnableSelectSlotButton.Broadcast(true);
-	}
-}
-
-void UMVVM_LoadScreen::PlayButtonPressed()
-{
-	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
-	//UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GameMode->GetGameInstance());
-	//GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
-	//GameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
-	//GameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
-
-	if (IsValid(SelectedSlot))
-	{
-		GameMode->TravelToMap(SelectedSlot);
 	}
 }

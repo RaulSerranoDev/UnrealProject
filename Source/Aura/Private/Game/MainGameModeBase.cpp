@@ -8,10 +8,6 @@
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "Game/LoadScreenSaveGame.h"
 
-void AMainGameModeBase::DeleteSlot(FString LoadSlotName, int32 SlotIndex)
-{
-}
-
 void AMainGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 {
 	const FString SlotName = Slot->GetLoadSlotName();
@@ -52,4 +48,14 @@ ULoadScreenSaveGame* AMainGameModeBase::GetSaveSlotData(const FString& SlotName,
 	}
 
 	return Cast<ULoadScreenSaveGame>(SaveGameObject);
+}
+
+bool AMainGameModeBase::DeleteSlot(FString LoadSlotName, int32 SlotIndex)
+{
+	if (UGameplayStatics::DoesSaveGameExist(LoadSlotName, SlotIndex))
+	{
+		UGameplayStatics::DeleteGameInSlot(LoadSlotName, SlotIndex);
+		return true;
+	}
+	return false;
 }

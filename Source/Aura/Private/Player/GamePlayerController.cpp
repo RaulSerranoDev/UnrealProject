@@ -205,6 +205,15 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	const APawn* ControlledPawn = GetPawn();
 	if (FollowTime < ShortPressThreshold && ControlledPawn)
 	{
+		if (IsValid(CurrentActor) && CurrentActor->Implements<UHighlightInterface>())
+		{
+			IHighlightInterface::Execute_SetMoveToLocation(CurrentActor, CachedDestination);
+		}
+		else
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		}
+
 		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 		{
 			Spline->ClearSplinePoints();
@@ -218,7 +227,6 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				bAutoRunning = true;
 			}
 		}
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 	}
 
 	FollowTime = 0.f;

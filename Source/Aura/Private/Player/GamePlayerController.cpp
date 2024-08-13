@@ -20,6 +20,7 @@
 #include "Aura/Aura.h"
 #include "UI/Widget/DamageTextComponent.h"
 #include "Actor/MagicCircle.h"
+#include "Interaction/EnemyInterface.h"
 
 AGamePlayerController::AGamePlayerController()
 {
@@ -103,16 +104,10 @@ void AGamePlayerController::CursorTrace()
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_CursorTrace))
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighlightActor();
-			LastActor = nullptr;
-		}
-		if (CurrentActor)
-		{
-			CurrentActor->UnHighlightActor();
-			CurrentActor = nullptr;
-		}
+		UnHighlightActor(LastActor);
+		UnHighlightActor(CurrentActor);
+		LastActor = nullptr;
+		CurrentActor = nullptr;
 		return;
 	}
 
@@ -121,12 +116,19 @@ void AGamePlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = CurrentActor;
-	CurrentActor = CursorHit.GetActor();
+	if (IsValid(CursorHit.GetActor()) && CursorHit.GetActor()->Implements<UHighlightInterface>())
+	{
+		CurrentActor = CursorHit.GetActor();
+	}
+	else
+	{
+		CurrentActor = nullptr;
+	}
 
 	if (LastActor == CurrentActor) return;
 
-	if (LastActor) LastActor->UnHighlightActor();
-	if (CurrentActor) CurrentActor->HighlightActor();
+	UnHighlightActor(LastActor);
+	HighlightActor(CurrentActor);
 }
 
 void AGamePlayerController::AutoRun()
@@ -173,8 +175,15 @@ void AGamePlayerController::AbilityInputTagPressed(const FInputActionValue& Valu
 
 	if (InputTag.MatchesTagExact(TAG_InputTag_LMB))
 	{
-		bTargeting = CurrentActor ? true : false;
-		bAutoRunning = false;
+		if (IsValid(CurrentActor))
+		{
+			TargetingStatus = CurrentActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+			bAutoRunning = false;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
 	}
 
 	if (GetASC())
@@ -191,7 +200,7 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputReleasedMovement)) return;
 
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown) return;
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown) return;
 
 	const APawn* ControlledPawn = GetPawn();
 	if (FollowTime < ShortPressThreshold && ControlledPawn)
@@ -213,14 +222,14 @@ void AGamePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 
 	FollowTime = 0.f;
-	bTargeting = false;
+	TargetingStatus = ETargetingStatus::NotTargeting;
 }
 
 void AGamePlayerController::AbilityInputTagHeld(const FInputActionInstance& Instance, FGameplayTag InputTag)
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(TAG_Player_Block_InputHeld)) return;
 
-	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || bTargeting || bShiftKeyDown)
+	if (!InputTag.MatchesTagExact(TAG_InputTag_LMB) || TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
@@ -253,4 +262,20 @@ void AGamePlayerController::UpdateMagicCircleLocation()
 	if (!IsValid(MagicCircle)) return;
 
 	MagicCircle->SetActorLocation(CursorHit.ImpactPoint);
+}
+
+void AGamePlayerController::HighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_HighlightActor(InActor);
+	}
+}
+
+void AGamePlayerController::UnHighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_UnHighlightActor(InActor);
+	}
 }

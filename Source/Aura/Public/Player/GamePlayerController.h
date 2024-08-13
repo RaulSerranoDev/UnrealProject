@@ -19,6 +19,13 @@ class UDamageTextComponent;
 class UNiagaraSystem;
 class AMagicCircle;
 
+enum class ETargetingStatus : uint8
+{
+	TargetingEnemy,
+	TargetingNonEnemy,
+	NotTargeting
+};
+
 /**
  *
  */
@@ -63,6 +70,9 @@ private:
 
 	void UpdateMagicCircleLocation();
 
+	static void HighlightActor(AActor* InActor);
+	static void UnHighlightActor(AActor* InActor);
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> GameContext;
@@ -96,15 +106,15 @@ private:
 
 	TObjectPtr<UGameAbilitySystemComponent> GameAbilitySystemComponent;
 
-	TScriptInterface<IHighlightInterface> LastActor;
-	TScriptInterface<IHighlightInterface> CurrentActor;
+	TObjectPtr<AActor> LastActor;
+	TObjectPtr<AActor> CurrentActor;
 	FHitResult CursorHit;
 
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;
 	float ShortPressThreshold = 0.5f;
 	bool bAutoRunning = false;
-	bool bTargeting = false;
+	ETargetingStatus TargetingStatus = ETargetingStatus::NotTargeting;
 
 	bool bShiftKeyDown = false;
 };

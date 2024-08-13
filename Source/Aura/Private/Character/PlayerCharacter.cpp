@@ -18,6 +18,7 @@
 #include "Game/LoadScreenSaveGame.h"
 #include "AbilitySystem/GameAttributeSet.h"
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -141,6 +142,29 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	SaveData->Vigor = UGameAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 
 	SaveData->bFirstTimeLoadIn = false;
+
+	if (!HasAuthority()) return;
+
+	UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent);
+	FForEachAbility SaveAbilityDelegate;
+	SaveAbilityDelegate.BindLambda([this, ASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			const FGameplayTag AbilityTag = ASC->GetAbilityTagFromSpec(AbilitySpec);
+			UAbilityInfo* AbilityInfo = UGameAbilitySystemLibrary::GetAbilityInfo(this);
+			FGameAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+
+			FSavedAbility SavedAbility;
+			SavedAbility.GameplayAbility = Info.Ability;
+			SavedAbility.AbilityLevel = AbilitySpec.Level;
+			SavedAbility.AbilitySlot = ASC->GetSlotFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityStatus = ASC->GetStatusFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityTag = AbilityTag;
+			SavedAbility.AbilityTypeTag = Info.AbilityTypeTag;
+
+			SaveData->SavedAbilities.Add(SavedAbility);
+		});
+	ASC->ForEachAbility(SaveAbilityDelegate);
+
 	GameMode->SaveInGameProgressData(SaveData);
 }
 

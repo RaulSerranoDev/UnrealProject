@@ -30,8 +30,9 @@ public:
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 	ULoadScreenSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
-	void SaveWorldState(UWorld* World) const;
+	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName = FString("")) const;
 	void LoadWorldState(UWorld* World) const;
+	FString GetMapNameFromMapAssetName(const FString& MapAssetName) const;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")

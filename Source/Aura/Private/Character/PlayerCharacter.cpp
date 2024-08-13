@@ -16,6 +16,7 @@
 #include "GameGameplayTags.h"
 #include "Game/MainGameModeBase.h"
 #include "Game/LoadScreenSaveGame.h"
+#include "AbilitySystem/GameAttributeSet.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -125,6 +126,18 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	if (SaveData == nullptr) return;
 
 	SaveData->PlayerStartTag = CheckpointTag;
+
+	if (AGamePlayerState* PlayerState = Cast<AGamePlayerState>(GetPlayerState()))
+	{
+		SaveData->PlayerLevel = PlayerState->GetPlayerLevel();
+		SaveData->XP = PlayerState->GetXP();
+		SaveData->AttributePoints = PlayerState->GetAttributePoints();
+		SaveData->SpellPoints = PlayerState->GetSpellPoints();
+	}
+	SaveData->Strength = UGameAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Intelligence = UGameAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Resilience = UGameAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Vigor = UGameAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 
 	GameMode->SaveInGameProgressData(SaveData);
 }

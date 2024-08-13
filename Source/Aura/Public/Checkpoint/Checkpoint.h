@@ -19,6 +19,11 @@ class AURA_API ACheckpoint : public APlayerStart, public ISaveInterface
 public:
 	ACheckpoint(const FObjectInitializer& ObjectInitializer);
 
+	/* Save Interface */
+	virtual bool ShouldLoadTransform_Implementation() override { return false; };
+	virtual void LoadActor_Implementation() override;
+	/* end Save Interface */
+
 protected:
 	virtual void BeginPlay() override;
 

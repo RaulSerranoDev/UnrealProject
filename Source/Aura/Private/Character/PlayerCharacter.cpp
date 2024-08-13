@@ -54,6 +54,11 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 
 	InitAbilityActorInfo();
 	LoadProgress();
+
+	if (AMainGameModeBase* MainGameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		MainGameMode->LoadWorldState(GetWorld());
+	}
 }
 
 void APlayerCharacter::OnRep_PlayerState()

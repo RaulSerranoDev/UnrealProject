@@ -12,6 +12,7 @@
 #include "Game/LoadScreenSaveGame.h"
 #include "Game/MainGameInstance.h"
 #include "Interaction/SaveInterface.h"
+#include "Aura/GameLogChannels.h"
 
 AActor* AMainGameModeBase::ChoosePlayerStart_Implementation(AController* Plaver)
 {
@@ -109,7 +110,7 @@ void AMainGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 
-void AMainGameModeBase::SaveWorldState(UWorld* World)
+void AMainGameModeBase::SaveWorldState(UWorld* World) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -157,6 +158,51 @@ void AMainGameModeBase::SaveWorldState(UWorld* World)
 			}
 		}
 		UGameplayStatics::SaveGameToSlot(SaveGame, MainGameInstance->LoadSlotName, MainGameInstance->LoadSlotIndex);
+	}
+}
+
+void AMainGameModeBase::LoadWorldState(UWorld* World) const
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UMainGameInstance* MainGameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	check(MainGameInstance);
+
+	if (UGameplayStatics::DoesSaveGameExist(MainGameInstance->LoadSlotName, MainGameInstance->LoadSlotIndex))
+	{
+		ULoadScreenSaveGame* SaveGame = Cast<ULoadScreenSaveGame>(UGameplayStatics::LoadGameFromSlot(MainGameInstance->LoadSlotName, MainGameInstance->LoadSlotIndex));
+		if (SaveGame == nullptr)
+		{
+			UE_LOG(LogGame, Error, TEXT("Failed to load slot"));
+			return;
+		}
+
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+
+			if (!Actor->Implements<USaveInterface>()) continue;
+
+			for (FSavedActor SavedActor : SaveGame->GetSavedMapWithMapName(WorldName).SavedActors)
+			{
+				if (SavedActor.ActorName == Actor->GetFName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+					{
+						Actor->SetActorTransform(SavedActor.Transform);
+					}
+
+					FMemoryReader MemoryReader(SavedActor.Bytes);
+
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					Archive.ArIsSaveGame = true;
+					Actor->Serialize(Archive); // converts binary bytes back into variables
+
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
 	}
 }
 

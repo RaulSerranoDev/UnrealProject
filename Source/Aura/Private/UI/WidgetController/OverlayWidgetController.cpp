@@ -26,16 +26,16 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	}
 
 	OnXPChanged(GetPS()->GetXP());
-	OnPlayerLevelChangedDelegate.Broadcast(GetPS()->GetPlayerLevel());
+	OnPlayerLevelChangedDelegate.Broadcast(GetPS()->GetPlayerLevel(), false);
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	GetPS()->OnXPChangedDelegate.AddUObject(this, &ThisClass::OnXPChanged);
 	GetPS()->OnLevelChangedDelegate.AddLambda(
-		[this](const int32& NewLevel)
+		[this](const int32& NewLevel, bool bLevelUp)
 		{
-			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
+			OnPlayerLevelChangedDelegate.Broadcast(NewLevel, bLevelUp);
 		}
 	);
 

@@ -17,6 +17,7 @@
 #include "Game/MainGameModeBase.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "AbilitySystem/GameAttributeSet.h"
+#include "AbilitySystem/GameAbilitySystemLibrary.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -52,9 +53,6 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 
 	InitAbilityActorInfo();
 	LoadProgress();
-
-	//TODO: Load in Abilities from disk
-	AddCharacterAbilities();
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -173,7 +171,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	}
 
 	// Suscribe to the player state level up delegate
-	GamePlayerState->OnLevelChangedDelegate.AddLambda([this](int32 NewLevel) {ThisClass::LevelUp_Implementation(NewLevel); });
+	GamePlayerState->OnLevelChangedDelegate.AddLambda([this](int32 NewLevel, bool bLevelUp) {if (bLevelUp)ThisClass::LevelUp_Implementation(NewLevel); });
 }
 
 void APlayerCharacter::InitializeDefaultAttributes() const
@@ -225,14 +223,6 @@ void APlayerCharacter::LoadProgress()
 	ULoadScreenSaveGame* SaveData = MainGameMode->RetrieveInGameSaveData();
 	if (SaveData == nullptr) return;
 
-	if (AGamePlayerState* GamePlayerState = Cast<AGamePlayerState>(GetPlayerState()))
-	{
-		GamePlayerState->SetLevel(SaveData->PlayerLevel);
-		GamePlayerState->SetXP(SaveData->XP);
-		GamePlayerState->SetAttributePoints(SaveData->AttributePoints);
-		GamePlayerState->SetSpellPoints(SaveData->SpellPoints);
-	}
-
 	if (SaveData->bFirstTimeLoadIn)
 	{
 		InitializeDefaultAttributes();
@@ -240,7 +230,17 @@ void APlayerCharacter::LoadProgress()
 	}
 	else
 	{
+		//TODO: Load in Abilities from disk
 
+		if (AGamePlayerState* GamePlayerState = Cast<AGamePlayerState>(GetPlayerState()))
+		{
+			GamePlayerState->SetLevel(SaveData->PlayerLevel);
+			GamePlayerState->SetXP(SaveData->XP);
+			GamePlayerState->SetAttributePoints(SaveData->AttributePoints);
+			GamePlayerState->SetSpellPoints(SaveData->SpellPoints);
+		}
+
+		UGameAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 	}
 }
 

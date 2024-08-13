@@ -61,7 +61,7 @@ void AGamePlayerState::AddToXP(int32 InXP)
 void AGamePlayerState::AddToLevel(int32 InLevel)
 {
 	Level += InLevel;
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, true);
 }
 
 void AGamePlayerState::AddToAttributePoints(int32 InAttributePoints)
@@ -85,7 +85,7 @@ void AGamePlayerState::SetXP(int32 InXP)
 void AGamePlayerState::SetLevel(int32 InLevel)
 {
 	Level = InLevel;
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, false);
 }
 
 void AGamePlayerState::SetAttributePoints(int32 InPoints)
@@ -108,7 +108,7 @@ bool AGamePlayerState::CanLevelUp(int32 InXP) const
 
 void AGamePlayerState::OnRep_Level(int32 OldLevel)
 {
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, true);
 }
 
 void AGamePlayerState::OnRep_XP(int32 OldXP)

@@ -147,6 +147,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 
 	UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent);
 	FForEachAbility SaveAbilityDelegate;
+	SaveData->SavedAbilities.Empty();
 	SaveAbilityDelegate.BindLambda([this, ASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
 		{
 			const FGameplayTag AbilityTag = ASC->GetAbilityTagFromSpec(AbilitySpec);
@@ -161,7 +162,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 			SavedAbility.AbilityTag = AbilityTag;
 			SavedAbility.AbilityTypeTag = Info.AbilityTypeTag;
 
-			SaveData->SavedAbilities.Add(SavedAbility);
+			SaveData->SavedAbilities.AddUnique(SavedAbility);
 		});
 	ASC->ForEachAbility(SaveAbilityDelegate);
 
@@ -254,7 +255,10 @@ void APlayerCharacter::LoadProgress()
 	}
 	else
 	{
-		//TODO: Load in Abilities from disk
+		if (UGameAbilitySystemComponent* ASC = Cast<UGameAbilitySystemComponent>(AbilitySystemComponent))
+		{
+			ASC->AddCharacterAbilitiesFromSaveData(SaveData);
+		}
 
 		if (AGamePlayerState* GamePlayerState = Cast<AGamePlayerState>(GetPlayerState()))
 		{

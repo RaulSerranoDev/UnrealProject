@@ -105,3 +105,15 @@ void AMainGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
+
+void AMainGameModeBase::SaveWorldState()
+{
+	ULoadScreenSaveGame* SaveObject = RetrieveInGameSaveData();
+	if (!IsValid(SaveObject)) return;
+	//SaveObject->SaveActors.Append(SaveActors);
+	SaveInGameProgressData(SaveObject);
+}
+
+void AMainGameModeBase::LoadWorldState()
+{
+}

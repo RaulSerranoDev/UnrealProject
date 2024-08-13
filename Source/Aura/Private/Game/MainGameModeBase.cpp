@@ -84,3 +84,24 @@ void AMainGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
 }
+
+ULoadScreenSaveGame* AMainGameModeBase::RetrieveInGameSaveData()
+{
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = GameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = GameInstance->LoadSlotIndex;
+
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void AMainGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
+{
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = GameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = GameInstance->LoadSlotIndex;
+	GameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+}

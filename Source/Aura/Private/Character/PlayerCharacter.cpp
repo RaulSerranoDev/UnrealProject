@@ -5,6 +5,7 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "AbilitySystem/GameAbilitySystemComponent.h"
 #include "Player/GamePlayerState.h"
@@ -13,6 +14,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "UI/HUD/GameHUD.h"
 #include "GameGameplayTags.h"
+#include "Game/MainGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -111,6 +114,19 @@ void APlayerCharacter::HideMagicCircle_Implementation()
 	{
 		GamePlayerController->HideMagicCircle();
 	}
+}
+
+void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+{
+	AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (!GameMode) return;
+
+	ULoadScreenSaveGame* SaveData = GameMode->RetrieveInGameSaveData();
+	if (SaveData == nullptr) return;
+
+	SaveData->PlayerStartTag = CheckpointTag;
+
+	GameMode->SaveInGameProgressData(SaveData);
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation() const

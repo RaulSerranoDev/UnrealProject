@@ -28,6 +28,8 @@ public:
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 	static bool DeleteSlot(FString LoadSlotName, int32 SlotIndex);
 	void TravelToMap(UMVVM_LoadSlot* Slot);
+	ULoadScreenSaveGame* RetrieveInGameSaveData();
+	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")

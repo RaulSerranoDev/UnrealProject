@@ -51,6 +51,9 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+	LoadProgress();
+
+	//TODO: Load in Abilities from disk
 	AddCharacterAbilities();
 }
 
@@ -139,6 +142,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	SaveData->Resilience = UGameAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Vigor = UGameAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 
+	SaveData->bFirstTimeLoadIn = false;
 	GameMode->SaveInGameProgressData(SaveData);
 }
 
@@ -167,8 +171,6 @@ void APlayerCharacter::InitAbilityActorInfo()
 			GameHUD->InitOverlay(GamePlayerController, GamePlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-
-	InitializeDefaultAttributes();
 
 	// Suscribe to the player state level up delegate
 	GamePlayerState->OnLevelChangedDelegate.AddLambda([this](int32 NewLevel) {ThisClass::LevelUp_Implementation(NewLevel); });
@@ -212,6 +214,33 @@ void APlayerCharacter::OnRep_Burned()
 	else
 	{
 		BurnDebuffComponent->Deactivate();
+	}
+}
+
+void APlayerCharacter::LoadProgress()
+{
+	AMainGameModeBase* MainGameMode = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (!MainGameMode) return;
+
+	ULoadScreenSaveGame* SaveData = MainGameMode->RetrieveInGameSaveData();
+	if (SaveData == nullptr) return;
+
+	if (AGamePlayerState* GamePlayerState = Cast<AGamePlayerState>(GetPlayerState()))
+	{
+		GamePlayerState->SetLevel(SaveData->PlayerLevel);
+		GamePlayerState->SetXP(SaveData->XP);
+		GamePlayerState->SetAttributePoints(SaveData->AttributePoints);
+		GamePlayerState->SetSpellPoints(SaveData->SpellPoints);
+	}
+
+	if (SaveData->bFirstTimeLoadIn)
+	{
+		InitializeDefaultAttributes();
+		AddCharacterAbilities();
+	}
+	else
+	{
+
 	}
 }
 

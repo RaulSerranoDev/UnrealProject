@@ -52,6 +52,8 @@ protected:
 	virtual void OnRep_Stunned() override;
 	virtual void OnRep_Burned() override;
 
+	void LoadProgress();
+
 private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;

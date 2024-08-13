@@ -88,6 +88,18 @@ void AGamePlayerState::SetLevel(int32 InLevel)
 	OnLevelChangedDelegate.Broadcast(Level);
 }
 
+void AGamePlayerState::SetAttributePoints(int32 InPoints)
+{
+	AttributePoints = InPoints;
+	OnAttributePointsChangedDelegate.Broadcast(AttributePoints);
+}
+
+void AGamePlayerState::SetSpellPoints(int32 InPoints)
+{
+	SpellPoints = InPoints;
+	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
+}
+
 bool AGamePlayerState::CanLevelUp(int32 InXP) const
 {
 	const int32 NewLevel = LevelUpInfo->FindLevelForXP(InXP);

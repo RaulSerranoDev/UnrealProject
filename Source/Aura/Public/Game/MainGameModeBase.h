@@ -33,10 +33,6 @@ public:
 	void SaveWorldState(UWorld* World) const;
 	void LoadWorldState(UWorld* World) const;
 
-private:
-	void SaveWorldState();
-	void LoadWorldState();
-
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;

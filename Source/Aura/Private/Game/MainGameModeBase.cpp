@@ -205,15 +205,3 @@ void AMainGameModeBase::LoadWorldState(UWorld* World) const
 		}
 	}
 }
-
-void AMainGameModeBase::SaveWorldState()
-{
-	ULoadScreenSaveGame* SaveObject = RetrieveInGameSaveData();
-	if (!IsValid(SaveObject)) return;
-	//SaveObject->SaveActors.Append(SaveActors);
-	SaveInGameProgressData(SaveObject);
-}
-
-void AMainGameModeBase::LoadWorldState()
-{
-}

@@ -127,12 +127,12 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 
 	SaveData->PlayerStartTag = CheckpointTag;
 
-	if (AGamePlayerState* PlayerState = Cast<AGamePlayerState>(GetPlayerState()))
+	if (AGamePlayerState* GamePlayerState = Cast<AGamePlayerState>(GetPlayerState()))
 	{
-		SaveData->PlayerLevel = PlayerState->GetPlayerLevel();
-		SaveData->XP = PlayerState->GetXP();
-		SaveData->AttributePoints = PlayerState->GetAttributePoints();
-		SaveData->SpellPoints = PlayerState->GetSpellPoints();
+		SaveData->PlayerLevel = GamePlayerState->GetPlayerLevel();
+		SaveData->XP = GamePlayerState->GetXP();
+		SaveData->AttributePoints = GamePlayerState->GetAttributePoints();
+		SaveData->SpellPoints = GamePlayerState->GetSpellPoints();
 	}
 	SaveData->Strength = UGameAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Intelligence = UGameAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());

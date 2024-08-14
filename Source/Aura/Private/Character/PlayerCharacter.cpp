@@ -181,6 +181,23 @@ int32 APlayerCharacter::GetPlayerLevel_Implementation() const
 	return GamePlayerState->GetPlayerLevel();
 }
 
+void APlayerCharacter::Die(const FVector& DeathImpulse)
+{
+	Super::Die(DeathImpulse);
+
+	FTimerDelegate DeathTimerDelegate;
+	DeathTimerDelegate.BindLambda([this]()
+		{
+			AMainGameModeBase* MainGM = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(this));
+			if (MainGM)
+			{
+				MainGM->PlayerDied(this);
+			}
+		});
+	GetWorldTimerManager().SetTimer(DeathTimer, DeathTimerDelegate, DeathTime, false);
+	TopDownCameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+}
+
 void APlayerCharacter::InitAbilityActorInfo()
 {
 	AGamePlayerState* GamePlayerState = GetPlayerState<AGamePlayerState>();

@@ -43,6 +43,7 @@ public:
 
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() const override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	/** end Combat Interface */
 
 protected:
@@ -59,6 +60,12 @@ private:
 	void MulticastLevelUpParticles() const;
 
 public:
+	FTimerHandle DeathTimer;
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime = 5.f;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Setup|VFX")
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 

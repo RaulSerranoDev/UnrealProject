@@ -171,9 +171,11 @@ protected:
 	FOnASCRegistered OnASCRegistered;
 	FOnDeath OnDeath;
 
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	bool bDead = false;
+
 private:
 	int32 MinionCount = 0;
-
-	bool bDead = false;
 
 };

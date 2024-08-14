@@ -33,6 +33,7 @@ public:
 	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName = FString("")) const;
 	void LoadWorldState(UWorld* World) const;
 	FString GetMapNameFromMapAssetName(const FString& MapAssetName) const;
+	void PlayerDied(ACharacter* DeadCharacter);
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")

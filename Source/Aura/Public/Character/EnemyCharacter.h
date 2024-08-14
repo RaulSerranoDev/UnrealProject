@@ -47,6 +47,8 @@ public:
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
+	void SetLevel(int32 InLevel) { Level = InLevel; }
+
 protected:
 	virtual void BeginPlay() override;
 

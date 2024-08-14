@@ -54,6 +54,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 
+	void SetCharacterClass(ECharacterClass InClass) { CharacterClass = InClass; }
+
 protected:
 	virtual void BeginPlay() override;
 

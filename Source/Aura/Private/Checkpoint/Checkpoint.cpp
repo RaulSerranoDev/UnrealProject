@@ -5,6 +5,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/CapsuleComponent.h"
 
 #include "Interaction/PlayerInterface.h"
 #include "Game/MainGameModeBase.h"
@@ -29,6 +30,9 @@ ACheckpoint::ACheckpoint(const FObjectInitializer& ObjectInitializer)
 
 	MoveToComponent = CreateDefaultSubobject<USceneComponent>("MoveToComponent");
 	MoveToComponent->SetupAttachment(GetRootComponent());
+
+	UCapsuleComponent* CapComponent = GetCapsuleComponent();
+	CapComponent->bDrawOnlyIfSelected = false;
 }
 
 void ACheckpoint::LoadActor_Implementation()

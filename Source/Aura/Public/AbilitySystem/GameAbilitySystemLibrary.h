@@ -16,6 +16,7 @@ class UAbilitySystemComponent;
 struct FGameplayEffectContextHandle;
 class UAbilityInfo;
 class ULoadScreenSaveGame;
+class ULootTiers;
 
 /**
  *
@@ -61,6 +62,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|CharacterClassDefaults", meta = (WorldContext = "WorldContextObject"))
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|CharacterClassDefaults", meta = (DefaultToSelf = "WorldContextObject"))
+	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 
 	/*
 	* Effect Context Getters
@@ -183,10 +187,10 @@ public:
 	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
 
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
-	static TArray<FRotator> EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumRotators);
+	static TArray<FRotator> EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, float Spread, int32 NumRotators);
 
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayMechanics")
-	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumVectors);
+	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors);
 
 	static float GetRadialDamageWithFalloff(const AActor* TargetActor, float BaseDamage, float MinimumDamage, const FVector& Origin, float DamageInnerRadius, float DamageOuterRadius, float DamageFalloff);
 

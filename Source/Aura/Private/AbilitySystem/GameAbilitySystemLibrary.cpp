@@ -158,6 +158,12 @@ UAbilityInfo* UGameAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldCont
 	return GM ? GM->AbilityInfo : nullptr;
 }
 
+ULootTiers* UGameAbilitySystemLibrary::GetLootTiers(const UObject* WorldContextObject)
+{
+	AMainGameModeBase* GM = Cast<AMainGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	return GM ? GM->LootTiers : nullptr;
+}
+
 bool UGameAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
@@ -488,7 +494,7 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 	return EffectContextHandle;
 }
 
-TArray<FRotator> UGameAbilitySystemLibrary::EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumRotators)
+TArray<FRotator> UGameAbilitySystemLibrary::EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, float Spread, int32 NumRotators)
 {
 	if (NumRotators <= 0)
 	{
@@ -514,7 +520,7 @@ TArray<FRotator> UGameAbilitySystemLibrary::EvenlySpacedRotators(const FVector& 
 	return Rotators;
 }
 
-TArray<FVector> UGameAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, const float& Spread, const int32& NumVectors)
+TArray<FVector> UGameAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors)
 {
 	if (NumVectors <= 0)
 	{

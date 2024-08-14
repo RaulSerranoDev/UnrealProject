@@ -11,6 +11,7 @@ class UAbilityInfo;
 class UMVVM_LoadSlot;
 class ULoadScreenSaveGame;
 class USaveGame;
+class ULootTiers;
 
 /**
  *
@@ -41,6 +42,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Loot Tiers")
+	TObjectPtr<ULootTiers> LootTiers;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Load/Save")
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;

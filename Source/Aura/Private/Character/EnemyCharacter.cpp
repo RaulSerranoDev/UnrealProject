@@ -79,6 +79,7 @@ void AEnemyCharacter::Die(const FVector& DeathImpulse)
 	SetLifeSpan(LifeSpan);
 	if (GameAIController) GameAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
 
+	SpawnLoot();
 	Super::Die(DeathImpulse);
 }
 

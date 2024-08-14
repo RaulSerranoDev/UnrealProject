@@ -33,6 +33,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass, FGameplayEffectSpecHandle& EffectSpecHandle, bool bAllowDestroyOnApplication = true);
@@ -45,6 +46,15 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
+
+	UFUNCTION(BlueprintCallable)
+	void StartSinusoidalMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void StartRotation();
+
+private:
+	void ItemMovement(float DeltaTime);
 
 protected:
 
@@ -77,5 +87,32 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Applied Effects")
 	float ActorLevel = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	bool bRotates = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	float RotationRate = 45.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	bool bSinusoidalMovement = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	float SineAmplitude = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	float SinePeriodConstant = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement")
+	FVector InitialLocation;
+
+	UPROPERTY(BlueprintReadOnly)
+	FVector CalculatedLocation;
+
+	UPROPERTY(BlueprintReadOnly)
+	FRotator CalculatedRotation;
+
+private:
+	float RunningTime = 0.f;
 
 };

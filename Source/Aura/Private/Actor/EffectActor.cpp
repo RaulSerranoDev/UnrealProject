@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.H"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectTypes.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEffectActor::AEffectActor()
 {
@@ -18,6 +19,21 @@ void AEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = InitialLocation;
+	CalculatedRotation = GetActorRotation();
+}
+
+void AEffectActor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	RunningTime += DeltaTime;
+	const float SinePeriod = 2 * PI / SinePeriodConstant;
+	if (RunningTime > SinePeriod)
+	{
+		RunningTime = 0.f;
+	}
+	ItemMovement(DeltaTime);
 }
 
 void AEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass, FGameplayEffectSpecHandle& EffectSpecHandle, bool bAllowDestroyOnApplication)
@@ -99,5 +115,32 @@ void AEffectActor::OnEndOverlap(AActor* TargetActor)
 		{
 			TargetASC->RemoveActiveGameplayEffectBySourceEffect(GameplayEffectClass, TargetASC, 1);
 		}
+	}
+}
+
+void AEffectActor::StartSinusoidalMovement()
+{
+	bSinusoidalMovement = true;
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = InitialLocation;
+}
+
+void AEffectActor::StartRotation()
+{
+	bRotates = true;
+	CalculatedRotation = GetActorRotation();
+}
+
+void AEffectActor::ItemMovement(float DeltaTime)
+{
+	if (bRotates)
+	{
+		const FRotator DeltaRotation(0.f, DeltaTime * RotationRate, 0.f);
+		CalculatedRotation = UKismetMathLibrary::ComposeRotators(CalculatedRotation, DeltaRotation);
+	}
+	if (bSinusoidalMovement)
+	{
+		const float Sine = SineAmplitude * FMath::Sin(RunningTime * SinePeriodConstant);
+		CalculatedLocation = InitialLocation + FVector(0.f, 0.f, Sine);
 	}
 }

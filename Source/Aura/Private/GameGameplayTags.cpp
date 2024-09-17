@@ -407,6 +407,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_Teeth,
 	"Teeth"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_CombatSocket_Head,
+	"CombatSocket.Head",
+	"Head"
+)
+
 /*
 *  Montage Tags
 */

@@ -87,6 +87,8 @@ void AGamePlayerController::BeginPlay()
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
+
+	SetControlRotation(FRotator(0.f, 0.f, 0.f));
 }
 
 void AGamePlayerController::SetupInputComponent()

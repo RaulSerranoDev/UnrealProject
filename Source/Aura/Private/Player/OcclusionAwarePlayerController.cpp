@@ -69,7 +69,7 @@ void AOcclusionAwarePlayerController::SyncOccludedActors()
 		for (FHitResult Hit : OutHits)
 		{
 			const AActor* HitActor = Cast<AActor>(Hit.GetActor());
-			if (HitActor->ActorHasTag(NoOcclusionTag)) continue;
+			if (!HitActor->ActorHasTag(OcclusionTag)) continue;
 
 			HideOccludedActor(HitActor);
 			ActorsJustOccluded.Add(HitActor);

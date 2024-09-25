@@ -58,7 +58,7 @@ protected:
 	float CapsulePercentageForTrace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Occlusion|Occlusion")
-	FName NoOcclusionTag;
+	FName OcclusionTag = "Occlusion";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Occlusion|Materials")
 	UMaterialInterface* FadeMaterial;

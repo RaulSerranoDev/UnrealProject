@@ -145,6 +145,7 @@ bool ACharacterBase::IsBeingShocked_Implementation() const
 void ACharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
 {
 	bIsBeingShocked = bInShock;
+	GetCharacterMovement()->MaxWalkSpeed = bInShock ? 0.f : BaseWalkSpeed;
 }
 
 void ACharacterBase::Die(const FVector& DeathImpulse)

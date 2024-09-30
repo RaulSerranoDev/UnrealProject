@@ -12,7 +12,6 @@ void AEnemySpawnPoint::SpawnEnemy()
 
 	AEnemyCharacter* Enemy = GetWorld()->SpawnActorDeferred<AEnemyCharacter>(EnemyClass, GetActorTransform());
 	Enemy->SetLevel(EnemyLevel);
-	Enemy->SetCharacterClass(CharacterClass);
 	Enemy->FinishSpawning(GetActorTransform());
 	Enemy->SpawnDefaultController();
 }

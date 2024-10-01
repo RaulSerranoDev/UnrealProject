@@ -94,6 +94,13 @@ void UGameAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		if (GetHealth() <= 0)
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			{
+				CombatInterface->Die(FVector::ZeroVector);
+			}
+		}
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{

@@ -211,6 +211,20 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				Props.TargetCharacter->GetCharacterMovement()->StopMovementImmediately();
 				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
 			}
+
+			FGameplayTagContainer LifeTagContainer;
+			LifeTagContainer.AddTag(TAG_Abilities_Passive_LifeSiphon);
+			if (Props.SourceASC->HasAnyMatchingGameplayTags(LifeTagContainer))
+			{
+				SendLifeSiphonEvent(Props, LocalIncomingDamage);
+			}
+
+			FGameplayTagContainer ManaTagContainer;
+			ManaTagContainer.AddTag(TAG_Abilities_Passive_ManaSiphon);
+			if (Props.SourceASC->HasAnyMatchingGameplayTags(ManaTagContainer))
+			{
+				SendManaSiphonEvent(Props, LocalIncomingDamage);
+			}
 		}
 
 		const bool bBlocked = UGameAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
@@ -252,6 +266,28 @@ void UGameAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		Payload.EventMagnitude = XPReward;
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Meta_IncomingXP, Payload);
 	}
+}
+
+void UGameAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage)
+{
+	if (!IsValid(Props.SourceCharacter)) return;
+	const int32 PlayerLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+
+	FGameplayEventData Payload;
+	Payload.EventTag = TAG_Attributes_Vital_Health;
+	Payload.EventMagnitude = InIncomingDamage * 0.05f * PlayerLevel;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Vital_Health, Payload);
+}
+
+void UGameAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage)
+{
+	if (!IsValid(Props.SourceCharacter)) return;
+	const int32 PlayerLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+
+	FGameplayEventData Payload;
+	Payload.EventTag = TAG_Attributes_Vital_Mana;
+	Payload.EventMagnitude = InIncomingDamage * 0.1f * PlayerLevel;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Vital_Mana, Payload);
 }
 
 void UGameAttributeSet::Debuff(const FEffectProperties& Props)

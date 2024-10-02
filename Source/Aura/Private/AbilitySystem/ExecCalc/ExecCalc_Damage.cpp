@@ -11,6 +11,7 @@
 #include "AbilitySystem/GameAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
 #include "AbilityTypes.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 struct GameDamageStatics
 {
@@ -78,8 +79,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	TagsToCaptureDefs.Add(TAG_Attributes_Resistance_Arcane, GetDamageStatics().ResistanceArcaneDef);
 	TagsToCaptureDefs.Add(TAG_Attributes_Resistance_Physical, GetDamageStatics().ResistancePhysicalDef);
 
-	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
-	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
+	UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
+	UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
 	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
@@ -129,7 +130,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureDef, EvalParams, Resistance);
 		if (EvalParams.TargetTags->HasTagExact(TAG_Abilities_Passive_HaloOfProtection))
 		{
-			Resistance += 20.f;
+			if (UGameAbilitySystemComponent* GameASC = Cast<UGameAbilitySystemComponent>(TargetASC))
+			{
+				if (const FGameplayAbilitySpec* AbilitySpec = GameASC->GetSpecFromAbilityTag(TAG_Abilities_Passive_HaloOfProtection))
+				{
+					Resistance += 18 + AbilitySpec->Level * 2;
+				}
+			}
 		}
 		Resistance = FMath::Clamp<float>(Resistance, 0.f, 100.f);
 

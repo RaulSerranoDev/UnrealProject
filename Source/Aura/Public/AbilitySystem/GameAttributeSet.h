@@ -249,8 +249,8 @@ private:
 	void HandleIncomingDamage(const FEffectProperties& Props);
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlocked, bool bCritical) const;
 	void SendXPEvent(const FEffectProperties& Props);
-	void SendLifeSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage);
-	void SendManaSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage);
+	void SendLifeSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage, const float AbilityLevel);
+	void SendManaSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage, const float AbilityLevel);
 	void Debuff(const FEffectProperties& Props);
 
 	void HandleIncomingXP(const FEffectProperties& Props);

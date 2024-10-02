@@ -17,6 +17,7 @@
 #include "Aura/GameLogChannels.h"
 #include "Interaction/PlayerInterface.h"
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 UGameAttributeSet::UGameAttributeSet()
 {
@@ -211,19 +212,28 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				Props.TargetCharacter->GetCharacterMovement()->StopMovementImmediately();
 				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
 			}
+		}
 
+		if (UGameAbilitySystemComponent* GameASC = Cast<UGameAbilitySystemComponent>(Props.SourceASC))
+		{
 			FGameplayTagContainer LifeTagContainer;
 			LifeTagContainer.AddTag(TAG_Abilities_Passive_LifeSiphon);
 			if (Props.SourceASC->HasAnyMatchingGameplayTags(LifeTagContainer))
 			{
-				SendLifeSiphonEvent(Props, LocalIncomingDamage);
+				if (const FGameplayAbilitySpec* AbilitySpec = GameASC->GetSpecFromAbilityTag(TAG_Abilities_Passive_LifeSiphon))
+				{
+					SendLifeSiphonEvent(Props, LocalIncomingDamage, AbilitySpec->Level);
+				}
 			}
 
 			FGameplayTagContainer ManaTagContainer;
 			ManaTagContainer.AddTag(TAG_Abilities_Passive_ManaSiphon);
 			if (Props.SourceASC->HasAnyMatchingGameplayTags(ManaTagContainer))
 			{
-				SendManaSiphonEvent(Props, LocalIncomingDamage);
+				if (const FGameplayAbilitySpec* AbilitySpec = GameASC->GetSpecFromAbilityTag(TAG_Abilities_Passive_ManaSiphon))
+				{
+					SendManaSiphonEvent(Props, LocalIncomingDamage, AbilitySpec->Level);
+				}
 			}
 		}
 
@@ -268,25 +278,23 @@ void UGameAttributeSet::SendXPEvent(const FEffectProperties& Props)
 	}
 }
 
-void UGameAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage)
+void UGameAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage, const float AbilityLevel)
 {
 	if (!IsValid(Props.SourceCharacter)) return;
-	const int32 PlayerLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
 
 	FGameplayEventData Payload;
 	Payload.EventTag = TAG_Attributes_Vital_Health;
-	Payload.EventMagnitude = InIncomingDamage * 0.05f * PlayerLevel;
+	Payload.EventMagnitude = InIncomingDamage * 0.1f * AbilityLevel;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Vital_Health, Payload);
 }
 
-void UGameAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage)
+void UGameAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props, const float InIncomingDamage, const float AbilityLevel)
 {
 	if (!IsValid(Props.SourceCharacter)) return;
-	const int32 PlayerLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
 
 	FGameplayEventData Payload;
 	Payload.EventTag = TAG_Attributes_Vital_Mana;
-	Payload.EventMagnitude = InIncomingDamage * 0.1f * PlayerLevel;
+	Payload.EventMagnitude = InIncomingDamage * 0.2f * AbilityLevel;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, TAG_Attributes_Vital_Mana, Payload);
 }
 

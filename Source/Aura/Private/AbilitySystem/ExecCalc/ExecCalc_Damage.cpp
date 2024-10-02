@@ -127,6 +127,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		float Resistance = 0.f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureDef, EvalParams, Resistance);
+		if (EvalParams.TargetTags->HasTagExact(TAG_Abilities_Passive_HaloOfProtection))
+		{
+			Resistance += 20.f;
+		}
 		Resistance = FMath::Clamp<float>(Resistance, 0.f, 100.f);
 
 		DamageTypeValue *= (100.f - Resistance) / 100.f;

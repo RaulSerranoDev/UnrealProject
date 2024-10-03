@@ -97,4 +97,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage", meta = (ClampMin = 0, ClampMax = 100))
 	float RadialDamageMinPercentage = 0.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	bool bIsCharm = false;
+
 };

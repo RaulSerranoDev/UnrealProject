@@ -450,6 +450,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Effects_HitReact,
 	"Tag granted when Hit Reacting"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Effects_Charm,
+	"Effects.Charm",
+	"Tag granted when Charmed"
+)
+
 /*
 *  Player Tags
 */

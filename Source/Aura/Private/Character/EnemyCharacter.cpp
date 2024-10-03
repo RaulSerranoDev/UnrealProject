@@ -111,6 +111,22 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 	GameAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
 }
 
+void AEnemyCharacter::CharmTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	if (!HasAuthority() || NewCount > 1) return;
+
+	if (NewCount > 0)
+	{
+		Tags.Remove("Enemy");
+		Tags.Add("Player");
+	}
+	else
+	{
+		Tags.Remove("Player");
+		Tags.Add("Enemy");
+	}
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -118,6 +134,7 @@ void AEnemyCharacter::BeginPlay()
 	InitAbilityActorInfo();
 
 	InitHitReact();
+	InitCharm();
 	InitHealthBarWidget();
 }
 
@@ -156,6 +173,14 @@ void AEnemyCharacter::InitHitReact()
 	AbilitySystemComponent->RegisterGameplayTagEvent(TAG_Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
 		this,
 		&ThisClass::HitReactTagChanged
+	);
+}
+
+void AEnemyCharacter::InitCharm()
+{
+	AbilitySystemComponent->RegisterGameplayTagEvent(TAG_Effects_Charm, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this,
+		&ThisClass::CharmTagChanged
 	);
 }
 

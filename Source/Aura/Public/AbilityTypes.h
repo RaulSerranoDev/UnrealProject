@@ -80,6 +80,9 @@ struct FDamageEffectParams
 
 	UPROPERTY(BlueprintReadWrite)
 	float RadialDamageMinPercentage = 0.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsCharm = false;
 };
 
 USTRUCT(BlueprintType)
@@ -103,6 +106,7 @@ public:
 	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; }
 	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; }
 	float GetRadialDamageMinPercentage() const { return RadialDamageMinPercentage; }
+	bool IsCharm() const { return bIsCharm; }
 
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
@@ -119,6 +123,7 @@ public:
 	void SetRadialDamageOuterRadius(float InRadialDamageOuterRadius) { RadialDamageOuterRadius = InRadialDamageOuterRadius; }
 	void SetRadialDamageOrigin(const FVector& InRadialDamageOrigin) { RadialDamageOrigin = InRadialDamageOrigin; }
 	void SetRadialDamageMinPercentage(float InRadialDamageMinPercentage) { RadialDamageMinPercentage = InRadialDamageMinPercentage; }
+	void SetIsCharm(bool bInIsCharm) { bIsCharm = bInIsCharm; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -186,6 +191,9 @@ protected:
 
 	UPROPERTY()
 	float RadialDamageMinPercentage = 0.f;
+
+	UPROPERTY()
+	bool bIsCharm = false;
 };
 
 template<>

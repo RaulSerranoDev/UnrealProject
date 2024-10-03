@@ -177,7 +177,13 @@ void UGameAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	const float LocalIncomingDamage = GetIncomingDamage();
 	SetIncomingDamage(0);
 
-	if (LocalIncomingDamage > 0.f)
+	if (UGameAbilitySystemLibrary::IsCharm(Props.EffectContextHandle))
+	{
+		FGameplayTagContainer TagContainer;
+		TagContainer.AddTag(TAG_Effects_Charm);
+		Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+	}
+	else if (LocalIncomingDamage > 0.f)
 	{
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));

@@ -248,6 +248,12 @@ float UGameAbilitySystemLibrary::GetRadialDamageMinPercentage(const FGameplayEff
 	return GameContext ? GameContext->GetRadialDamageMinPercentage() : 0.f;
 }
 
+bool UGameAbilitySystemLibrary::IsCharm(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
+	return GameContext ? GameContext->IsCharm() : false;
+}
+
 bool UGameAbilitySystemLibrary::ShouldHitReact(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	const FGameGameplayEffectContext* GameContext = static_cast<const FGameGameplayEffectContext*>(EffectContextHandle.Get());
@@ -375,6 +381,14 @@ void UGameAbilitySystemLibrary::SetRadialDamageMinPercentage(UPARAM(ref)FGamepla
 	}
 }
 
+void UGameAbilitySystemLibrary::SetIsCharm(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, bool bIsCharm)
+{
+	if (FGameGameplayEffectContext* GameContext = static_cast<FGameGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		GameContext->SetIsCharm(bIsCharm);
+	}
+}
+
 TArray<FGameplayTag> UGameAbilitySystemLibrary::CallerMagnitudeTags(TSubclassOf<UGameplayEffect> GameplayEffect)
 {
 	UGameplayEffect* GE = GameplayEffect.GetDefaultObject();
@@ -470,6 +484,7 @@ FGameplayEffectContextHandle UGameAbilitySystemLibrary::ApplyDamageEffect(const 
 	EffectContextHandle.AddSourceObject(DamageEffectParams.SourceASC->GetAvatarActor());
 	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
 	SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
+	SetIsCharm(EffectContextHandle, DamageEffectParams.bIsCharm);
 
 	if (DamageEffectParams.bIsRadialDamage)
 	{

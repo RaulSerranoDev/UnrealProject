@@ -95,9 +95,13 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 				RepBits |= 1 << 21;
 			}
 		}
+		if (bIsCharm)
+		{
+			RepBits |= 1 << 22;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 22);
+	Ar.SerializeBits(&RepBits, 23);
 
 	if (RepBits & (1 << 0))
 	{
@@ -207,7 +211,10 @@ bool FGameGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 			Ar << RadialDamageMinPercentage;
 		}
 	}
-
+	if (RepBits & (1 << 22))
+	{
+		Ar << bIsCharm;
+	}
 	if (Ar.IsLoading())
 	{
 		AddInstigator(Instigator.Get(), EffectCauser.Get()); // Just to initialize InstigatorAbilitySystemComponent

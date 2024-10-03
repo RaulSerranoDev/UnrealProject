@@ -46,6 +46,7 @@ public:
 	virtual void MulticastHandleDeath_Implementation(const FVector& DeathImpulse) override;
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	void CharmTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	void SetLevel(int32 InLevel) { Level = InLevel; }
 
@@ -62,6 +63,7 @@ protected:
 
 private:
 	void InitHitReact();
+	void InitCharm();
 	void InitHealthBarWidget();
 
 public:

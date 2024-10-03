@@ -115,6 +115,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")
 	static float GetRadialDamageMinPercentage(const FGameplayEffectContextHandle& EffectContextHandle);
 
+	UFUNCTION(BlueprintPure, Category = "GameAbilitySystemLibrary|GameplayEffects")
+	static bool IsCharm(const FGameplayEffectContextHandle& EffectContextHandle);
+
 	/*
 	* Effect Context Setters
 	*/
@@ -163,6 +166,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
 	static void SetRadialDamageMinPercentage(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, float InRadialDamageMinPercentage);
+
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|GameplayEffects")
+	static void SetIsCharm(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bIsCharm);
 
 	/*
 	* Gameplay Mechanics

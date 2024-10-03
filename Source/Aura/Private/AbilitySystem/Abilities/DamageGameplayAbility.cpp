@@ -32,6 +32,7 @@ FDamageEffectParams UDamageGameplayAbility::MakeDamageEffectParamsFromClassDefau
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 	Params.KnockbackChance = KnockbackChance;
 	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
+	Params.bIsCharm = bIsCharm;
 	bool bApplyKnockback = Params.KnockbackChance > FMath::RandRange(1, 100);
 
 	if (bIsRadialDamage)

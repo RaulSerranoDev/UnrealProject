@@ -301,6 +301,11 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Arcane_ArcaneShards,
 	"ArcaneShards Ability Tag"
 )
 
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Abilities_Arcane_Charm,
+	"Abilities.Arcane.Charm",
+	"Charm Ability Tag"
+)
+
 /*
 *  Passive Spells
 */

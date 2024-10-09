@@ -125,6 +125,8 @@ void AEnemyCharacter::CharmTagChanged(const FGameplayTag CallbackTag, int32 NewC
 		Tags.Remove("Player");
 		Tags.Add("Enemy");
 	}
+
+	GameAIController->BrainComponent->RestartLogic();
 }
 
 void AEnemyCharacter::BeginPlay()

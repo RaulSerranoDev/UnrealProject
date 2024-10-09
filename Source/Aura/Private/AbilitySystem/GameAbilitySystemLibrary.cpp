@@ -19,6 +19,7 @@
 #include "Interaction/CombatInterface.h"
 #include "GameGameplayTags.h"
 #include "Game/LoadScreenSaveGame.h"
+#include "AbilitySystem/GameAbilitySystemComponent.h"
 
 bool UGameAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AGameHUD*& OutHUD)
 {
@@ -573,6 +574,15 @@ float UGameAbilitySystemLibrary::GetRadialDamageWithFalloff(const AActor* Target
 	RadialDamageParams.MinimumDamage = MinimumDamage;
 	float DamageScale = RadialDamageParams.GetDamageScale((Origin - TargetActor->GetActorLocation()).Length());
 	return BaseDamage * DamageScale;
+}
+
+int UGameAbilitySystemLibrary::GetLevelFromAbilityTag(const FGameplayTag& AbilityTag, UAbilitySystemComponent* ASC)
+{
+	if (UGameAbilitySystemComponent* GASC = Cast<UGameAbilitySystemComponent>(ASC))
+	{
+		return GASC->GetSpecFromAbilityTag(AbilityTag)->Level;
+	}
+	return 0;
 }
 
 void UGameAbilitySystemLibrary::SetIsRadialDamageEffectParam(UPARAM(ref)FDamageEffectParams& DamageEffectParams, bool bIsRadial, float InnerRadius, float OuterRadius, FVector Origin, float RadialDamageMinPercentage)

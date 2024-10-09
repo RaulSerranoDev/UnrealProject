@@ -200,6 +200,10 @@ public:
 
 	static float GetRadialDamageWithFalloff(const AActor* TargetActor, float BaseDamage, float MinimumDamage, const FVector& Origin, float DamageInnerRadius, float DamageOuterRadius, float DamageFalloff);
 
+	UFUNCTION(BlueprintCallable, Category = "GameAbilitySystemLibrary|Utilities")
+	static int GetLevelFromAbilityTag(const FGameplayTag& AbilityTag, UAbilitySystemComponent* ASC);
+
+
 	/*
 	 * Damage Effect Params
 	 */

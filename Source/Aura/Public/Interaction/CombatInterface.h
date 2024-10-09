@@ -73,6 +73,9 @@ public:
 	UNiagaraSystem* GetBloodEffect(bool bIsCritical);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UNiagaraComponent* GetCharmEffect();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

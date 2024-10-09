@@ -126,6 +126,7 @@ void AEnemyCharacter::CharmTagChanged(const FGameplayTag CallbackTag, int32 NewC
 		Tags.Add("Enemy");
 	}
 
+	GameAIController->BrainComponent->StopLogic(TEXT("Forcing Root Reset"));
 	GameAIController->BrainComponent->RestartLogic();
 }
 

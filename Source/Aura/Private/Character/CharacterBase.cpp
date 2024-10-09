@@ -37,6 +37,9 @@ ACharacterBase::ACharacterBase()
 	StunDebuffComponent->SetupAttachment(GetRootComponent());
 	StunDebuffComponent->DebuffTag = TAG_Debuff_Stun;
 
+	CharmEffectComponent = CreateDefaultSubobject<UNiagaraComponent>("CharmEffect");
+	CharmEffectComponent->SetupAttachment(GetRootComponent());
+
 	EffectAttachComponent = CreateDefaultSubobject<USceneComponent>("EffectAttachPoint");
 	EffectAttachComponent->SetupAttachment(GetRootComponent());
 	EffectAttachComponent->SetUsingAbsoluteRotation(true);
@@ -103,6 +106,11 @@ TArray<FTaggedMontage> ACharacterBase::GetAttackMontages_Implementation()
 UNiagaraSystem* ACharacterBase::GetBloodEffect_Implementation(bool bIsCritical)
 {
 	return bIsCritical ? CriticalBloodEffect : BloodEffect;
+}
+
+UNiagaraComponent* ACharacterBase::GetCharmEffect_Implementation()
+{
+	return CharmEffectComponent;
 }
 
 FTaggedMontage ACharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag)
@@ -184,6 +192,8 @@ void ACharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	Dissolve();
+
+	if (CharmEffectComponent) CharmEffectComponent->Deactivate();
 
 	bDead = true;
 	OnDeath.Broadcast(this);

@@ -230,7 +230,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		UGameAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 
 		// Double damage plus a bonus if critical hit
-		Damage = bCriticalHit ? Damage * 2 + SourceCriticalHitDamage : Damage;
+		Damage = bCriticalHit ? Damage * (2 + SourceCriticalHitDamage / 100) : Damage;
 	}
 
 	/*
